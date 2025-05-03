@@ -16,7 +16,7 @@ export default function Home() {
                 const text = await response.text();
                 setMessage(text)
             } catch (err) {
-                console.error("No communication with backend!");
+                console.error("No communication with backend:", err);
                 setMessage("Error getting data from backend!");
             }
         };
