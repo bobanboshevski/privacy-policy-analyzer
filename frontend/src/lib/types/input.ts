@@ -1,0 +1,1 @@
+export type InputMethod = 'text' | 'url' | 'pdf';

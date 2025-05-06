@@ -1,33 +1,33 @@
-// import Image from "next/image";
 'use client';
 
-
-import {useEffect, useState} from "react";
+import InputFormContainer from "@/components/forms/InputFormContainer";
+import {useApiData} from "@/hooks/useApiData";
 
 export default function Home() {
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(apiUrl || '');
-                const text = await response.text();
-                setMessage(text)
-            } catch (err) {
-                console.error("No communication with backend:", err);
-                setMessage("Error getting data from backend!");
-            }
-        };
-        fetchData();
-    },[]);
+    const {message, loading, error} = useApiData();
 
     return (
-        <div className="grid min-h-screen items-center justify-items-center bg-black text-white">
+        // <div className="grid min-h-screen items-center justify-items-center bg-black text-white">
+        <div
+            className="grid min-h-screen items-center justify-items-center p-6 bg-gradient-to-br
+            from-black via-gray-900 to-black text-white"
+        >
+
             <main className="flex flex-col gap-4 items-center">
-                <h1 className="text-4xl font-bold">Hello World</h1>
-                <p>{message}</p>
+                <h1 className="text-4xl font-bold">Privacy Policy Analyzer</h1>
+
+                {loading ? (
+                    <p className="text-center">Loading...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : (
+                    <div className="bg-gray-800 p-6 rounded-lg">
+                        <p>{message}</p>
+                    </div>
+                )}
+
+                <InputFormContainer/>
             </main>
         </div>
     );
