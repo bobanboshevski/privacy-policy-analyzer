@@ -2,8 +2,6 @@
 
 import {InputMethod} from "@/lib/types/input";
 import {INPUT_METHODS} from "@/lib/constants/inputMethods";
-import {motion} from "framer-motion";
-
 
 interface Props {
     method: InputMethod;

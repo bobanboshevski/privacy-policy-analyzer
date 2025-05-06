@@ -19,7 +19,7 @@ export default function UrlInputForm() {
             // TODO: call backend API with URL
             console.log("Submitted URL:", url);
 
-        } catch (_) {
+        } catch {
             setError('Invalid URL format');
         }
     };
