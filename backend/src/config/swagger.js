@@ -16,7 +16,7 @@ const options = {
                 description: 'Local server',
             },
             {
-                url: config.URL, //'http://localhost:3000',
+                url: config.PRODUCTION_URL, //'http://localhost:3000',
                 description: 'Production server',
             },
         ],
