@@ -12,7 +12,7 @@ const options = {
         },
         servers: [
             {
-                url: config.URL, //'http://localhost:3000',
+                url: config.URL, // TODO: This can be hidden in production environment, so its not shown on the UI as an option
                 description: 'Local server',
             },
             {
