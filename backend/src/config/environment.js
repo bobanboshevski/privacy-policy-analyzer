@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const environment = {
     PORT: process.env.PORT || 3001,
+    URL: process.env.URL,
     ALLOWED_ORIGINS: [
         'http://localhost:3000',
         'https://privacy-policy-analyzer-xi.vercel.app'

@@ -10,20 +10,20 @@ const textAnalysisService = require('../services/textAnalysisService');
  */
 const analyzeText = async (req, res, next) => {
     try {
-        const { text } = req.body;
-
-        if (!text || text.trim() === '') {
-            return res.status(400).json({
-                success: false,
-                error: 'Text content is required'
-            });
-        }
-
-        const analysisResult = await textAnalysisService.analyze(text);
+        // const { text } = req.body;
+        //
+        // if (!text || text.trim() === '') {
+        //     return res.status(400).json({
+        //         success: false,
+        //         error: 'Text content is required'
+        //     });
+        // }
+        //
+        // const analysisResult = await textAnalysisService.analyze(text);
 
         return res.status(200).json({
             success: true,
-            data: analysisResult
+            data: 'Documentation test' // analysisResult
         });
     } catch (error) {
         next(error);
