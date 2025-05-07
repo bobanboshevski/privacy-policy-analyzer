@@ -15,6 +15,10 @@ const options = {
                 url: config.URL, //'http://localhost:3000',
                 description: 'Local server',
             },
+            {
+                url: config.URL, //'http://localhost:3000',
+                description: 'Production server',
+            },
         ],
     },
     apis: ['./src/api/routes/*.js'], // Where to look for annotation
