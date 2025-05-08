@@ -16,7 +16,7 @@ This is the backend service built using Node.js and Express. It provides RESTful
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/bobanboshevski/privacy-policy-analyzer.git
 cd backend
 ```
 ### 2. Install dependencies
