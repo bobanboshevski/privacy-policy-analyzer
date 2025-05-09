@@ -1,13 +1,13 @@
 const express = require('express');
 const analysisController = require('../controllers/analysisController');
-
+const requestRestrictions = require('./../../utils/requestRestrictions')
 const router = express.Router();
 
 /**
  * @swagger
  * /api/analyze/text:
  *   post:
- *     summary: Analyze text or a URL
+ *     summary: Analyze text
  *     tags: [Analysis]
  *     requestBody:
  *       required: true
@@ -22,11 +22,9 @@ const router = express.Router();
  *       200:
  *         description: Analysis result
  */
-// Text analysis routes
 router.post('/text', analysisController.analyzeText);
 
-// PDF analysis routes
-// router.post('/pdf', analysisController.analyzePdf);
+router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdf);
 
 router.get('/url/scrape', analysisController.analyzeUrl);
 

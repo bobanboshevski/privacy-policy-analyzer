@@ -21,22 +21,13 @@ app.use(requestLogger);
 // API Routes
 app.use('/api', routes);
 
-// Basic health check route
 app.get('/', (req, res) => {
     res.send('Privacy Policy Analyzer API is running');
 });
 
-// app.use((err, req, res, next) => {
-//     console.error('Error:', err);
-//     res.status(500).json({
-//         success: false,
-//         error: err.message || 'Internal server error'
-//     });
-// });
-
 setupSwagger(app);
 
-// Error handling middleware (should be last)
+// Error handling middleware
 app.use(errorHandler);
 
 module.exports = app;
