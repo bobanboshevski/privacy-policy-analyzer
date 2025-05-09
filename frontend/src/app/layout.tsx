@@ -32,8 +32,7 @@ export default function RootLayout({
         <div className="grid bg-gradient-to-br
             from-black via-gray-900 to-black text-white">
           <Header />
-          <main>{children}</main>
-          {/* <main className="min-h-screen px-6 py-10">{children}</main> */}
+          <main className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">{children}</main>
           <Footer />
         </div>
       </body>
