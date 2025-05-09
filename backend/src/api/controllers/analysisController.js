@@ -36,27 +36,26 @@ const analyzeText = async (req, res, next) => {
 //  * @param {Object} res - Response object
 //  * @param {Function} next - Next middleware function
 //  */
-// const analyzeUrl = async (req, res, next) => {
-//     try {
-//         const { url } = req.body;
-//
-//         if (!url || url.trim() === '') {
-//             return res.status(400).json({
-//                 success: false,
-//                 error: 'URL is required'
-//             });
-//         }
-//
-//         const analysisResult = await urlAnalysisService.analyze(url);
-//
-//         return res.status(200).json({
-//             success: true,
-//             data: analysisResult
-//         });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+const analyzeUrl = async (req, res, next) => {
+    try {
+        const url = 'https://discord.com/privacy';
+        const { data } = await axios.get(url);
+
+        const $ = cheerio.load(data);
+
+        const paragraphs = [];
+        $('p').each((i, el) => {
+            paragraphs.push($(el).text());
+        });
+
+        console.log('Scraped paragraphs:', paragraphs);
+
+        res.json({ success: true, paragraphs });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 // /**
 //  * Analyze privacy policy from a PDF file
@@ -87,6 +86,6 @@ const analyzeText = async (req, res, next) => {
 
 module.exports = {
     analyzeText,
-    // analyzeUrl,
+    analyzeUrl
     // analyzePdf
 };

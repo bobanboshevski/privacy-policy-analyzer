@@ -13,7 +13,7 @@ export default function InputFormContainer() {
     const [method, setMethod] = useState<InputMethod>('text');
 
     return (
-        <div className="w-full max-w-5=7xl mx-auto px-3 py-4 space-y-8">
+        <div className="w-full max-w-5=7xl mx-auto px-3 py-4 space-y-8 items-center justify-items-center">
             <InputMethodSelector method={method} onChange={setMethod}/>
 
             <AnimatePresence mode="wait">

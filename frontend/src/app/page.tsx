@@ -9,12 +9,12 @@ export default function Home() {
 
     return (
         // <div className="grid min-h-screen items-center justify-items-center bg-black text-white">
-        <div
-            className="grid min-h-screen items-center justify-items-center p-6 bg-gradient-to-br
-            from-black via-gray-900 to-black text-white"
-        >
+        //<div
+          //  className="grid min-h-screen items-center justify-items-center p-6 bg-gradient-to-br
+            //from-black via-gray-900 to-black text-white"
+        //>
 
-            <main className="flex flex-col gap-4 items-center">
+            <div className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">
                 <h1 className="text-4xl font-bold">Privacy Policy Analyzer</h1>
 
                 {loading ? (
@@ -28,7 +28,7 @@ export default function Home() {
                 )}
 
                 <InputFormContainer/>
-            </main>
-        </div>
+            </div>
+        //</div>
     );
 }
