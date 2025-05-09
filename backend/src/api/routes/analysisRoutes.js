@@ -24,9 +24,8 @@ const router = express.Router();
  */
 router.post('/text', analysisController.analyzeText);
 
-// URL analysis routes
-// router.post('/url/scrape', analysisController.analyzeUrl);
-
 router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdf);
+
+router.get('/url/scrape', analysisController.analyzeUrl);
 
 module.exports = router;
