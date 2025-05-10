@@ -1,5 +1,5 @@
 import {fetchFromApi} from "@/services/api";
-import {AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
+import {AnalyzePdfResponse, AnalyzeUrlResponse} from "@/lib/types/privacyAnalyzer";
 
 /**
  * Get initial welcome message from the analyzer
@@ -14,9 +14,20 @@ export async function getInitialMessage(): Promise<string> {
 
 
 /**
- * Get privacy policy response for the URL from the analyzer
+ * Get privacy policy response from the URL for the analyzer
  */
+export async function analyzeUrl(trimmedUrl:string): Promise<AnalyzeUrlResponse> {
+    const url = new URL(trimmedUrl)
 
+
+    return await fetchFromApi<AnalyzeUrlResponse>('/api/analyze/url/scrape', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: trimmedUrl }),
+    });
+  }
 
 /**
  * Get privacy policy response for the PDF from the analyzer

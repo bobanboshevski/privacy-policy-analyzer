@@ -1,6 +1,6 @@
 const textAnalysisService = require('../services/textAnalysisService');
-// const urlAnalysisService = require('../services/urlAnalysisService');
 const pdfAnalysisService = require('../services/pdfAnalysisService');
+const urlAnalysisService = require('../services/urlAnalysisService');
 
 /**
  * Analyze text content of a privacy policy
@@ -30,31 +30,34 @@ const analyzeText = async (req, res, next) => {
     }
 };
 
-// /**
-//  * Analyze privacy policy from a URL
-//  * @param {Object} req - Request object
-//  * @param {Object} res - Response object
-//  * @param {Function} next - Next middleware function
-//  */
+/**
+ * Analyze privacy policy from a URL
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
 const analyzeUrl = async (req, res, next) => {
     try {
-        const url = 'https://discord.com/privacy';
-        const { data } = await axios.get(url);
+        const { url } = req.body;
 
-        const $ = cheerio.load(data);
+        if (!url) {
+            return res.status(400).json({
+                success: false,
+                error: 'URL is required',
+            });
+        }
 
-        const paragraphs = [];
-        $('p').each((i, el) => {
-            paragraphs.push($(el).text());
+        const result = await urlAnalysisService.analyze(url);
+
+        return res.status(200).json({
+            success: true,
+            ...result, // contains paragraphs
         });
-
-        console.log('Scraped paragraphs:', paragraphs);
-
-        res.json({ success: true, paragraphs });
     } catch (error) {
         next(error);
     }
 };
+
 
 
 /**
