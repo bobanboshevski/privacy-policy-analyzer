@@ -27,7 +27,7 @@ router.post('/text', analysisController.analyzeText);
 
 router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdf);
 
-router.get('/url/scrape', analysisController.analyzeUrl);
+router.post('/url/scrape', analysisController.analyzeUrl);
 
 
 router.post('/test-fastapi', async (req, res) => {
