@@ -1,5 +1,8 @@
 const axios = require('axios');
 const {post} = require("axios");
+require('dotenv').config();
+
+const baseURL = process.env.PYTHON_NLP_URL
 
 /**
  * Calls the Python NLP module for analysis
@@ -8,7 +11,7 @@ const {post} = require("axios");
  */
 const analyzeWithPython = async (text) => {
     try {
-        const response = await axios.post('http://localhost:8000/api/v1/analyze/text', {
+        const response = await axios.post(`${baseURL}/api/v1/analyze/text`, {
             text
         });
         return response.data;
