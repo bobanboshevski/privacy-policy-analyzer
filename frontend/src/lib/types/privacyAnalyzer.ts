@@ -16,7 +16,6 @@ export type AnalyzePdfResponse = {
     };
 };
 
-// types/privacyAnalyzer.ts
 export type AnalyzeUrlResponse = {
     success: boolean;
     extractedText: string;
