@@ -1,4 +1,5 @@
 import {fetchFromApi} from "@/services/api";
+import {AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
 
 /**
  * Get initial welcome message from the analyzer
@@ -21,18 +22,13 @@ export async function getInitialMessage(): Promise<string> {
  * Get privacy policy response for the PDF from the analyzer
  */
 // example that could be useful
-export async function analyzePdfFile(file: File): Promise<string> {
+export async function analyzePdfFile(file: File): Promise<AnalyzePdfResponse> {
     const formData = new FormData();
-    formData.append('pdf', file);
+    formData.append('file', file);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/analyze/pdf`, {
+    return await fetchFromApi<AnalyzePdfResponse>('/api/analyze/pdf/pdf-parse', {
         method: 'POST',
         body: formData,
+        headers: {},
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to analyze PDF');
-    }
-
-    return await response.text(); // or `.json()` depending on API
 }
