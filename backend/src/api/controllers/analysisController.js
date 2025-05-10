@@ -1,6 +1,8 @@
 const textAnalysisService = require('../services/textAnalysisService');
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
+const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
+
 
 /**
  * Analyze text content of a privacy policy
@@ -76,6 +78,11 @@ const analyzePdf = async (req, res, next) => {
         }
 
         const analysisResult = await pdfAnalysisService.analyze(req.file);
+
+
+        const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
+        console.log(pythonAnalysisResult);
+
         return res.status(200).json({
             success: true,
             data: analysisResult

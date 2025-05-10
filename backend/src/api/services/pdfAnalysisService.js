@@ -1,5 +1,6 @@
 const fs = require("fs");
 const pdfParse = require('pdf-parse');
+const {post} = require("axios");
 
 /**
  * Analyzes a PDF file and extracts text content
@@ -34,5 +35,6 @@ const analyze = async (pdf) => {
 }
 
 module.exports = {
-    analyze
+    analyze,
+    // sendTextToPython
 };
