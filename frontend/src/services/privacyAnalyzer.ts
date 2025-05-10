@@ -17,7 +17,6 @@ export async function getInitialMessage(): Promise<string> {
  * Get privacy policy response from the URL for the analyzer
  */
 export async function analyzeUrl(trimmedUrl:string): Promise<AnalyzeUrlResponse> {
-    const url = new URL(trimmedUrl)
 
 
     return await fetchFromApi<AnalyzeUrlResponse>('/api/analyze/url/scrape', {
