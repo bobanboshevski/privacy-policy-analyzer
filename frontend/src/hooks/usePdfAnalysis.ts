@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {analyzePdfFile} from "@/services/privacyAnalyzer";
+// import {useState} from "react";
+// import {analyzePdfFile} from "@/services/privacyAnalyzer";
 
 
 // This is an example. I'm not sure what is the best practice for the long run as the code gets bigger.
