@@ -1,10 +1,11 @@
 import {useState} from "react";
 import {analyzePdfFile} from "@/services/privacyAnalyzer";
+import {AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<string | null>(null);
+    const [result, setResult] = useState<AnalyzePdfResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +22,9 @@ export default function PdfUploadForm() {
         }
         try {
             setLoading(true);
-            const response = await analyzePdfFile(file); // just an example of how should probably be done
+            const response = await analyzePdfFile(file);
             setResult(response);
+            console.log(response);
             setError(null);
         } catch (err) {
             console.error(err);
@@ -50,8 +52,8 @@ export default function PdfUploadForm() {
                 />
             </div>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            {result && <p className="text-green-500 text-sm">{result}</p>} {/* JUST AS EXAMPLE! */}
+            {error && <p className="text-red-500 text-sm">{error}</p>} {/* JUST AS EXAMPLE! */}
+            {result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>} {/* JUST AS EXAMPLE! */}
 
             <div className="flex justify-end">
                 <button
