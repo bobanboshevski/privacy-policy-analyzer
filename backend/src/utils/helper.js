@@ -1,0 +1,35 @@
+const {analyzeWithPython} = require("../api/services/ExternalPrivacyAnalysisService");
+
+/**
+ * Common PDF analysis logic
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware
+ * @param {Function} analysisFunction - Function to extract text from PDF
+ */
+const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                error: 'PDF file is required'
+            });
+        }
+
+        const analysisResult = await analysisFunction(req.file);
+        const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
+
+        console.log(pythonAnalysisResult); // Or pass it to response if needed
+
+        return res.status(200).json({
+            success: true,
+            data: analysisResult
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = {
+    handlePdfAnalysis
+};
