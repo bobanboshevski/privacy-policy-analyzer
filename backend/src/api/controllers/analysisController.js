@@ -1,7 +1,8 @@
 const textAnalysisService = require('../services/textAnalysisService');
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
-const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
+const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
+const {summarizeText} = require("../services/claudeAiService");
 
 
 /**
@@ -79,13 +80,16 @@ const analyzePdf = async (req, res, next) => {
 
         const analysisResult = await pdfAnalysisService.analyze(req.file);
 
-
+        // const claudeSummary = await summarizeText(analysisResult.extractedText);
+        console.log("AI summary: ",claudeSummary);
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log(pythonAnalysisResult);
 
         return res.status(200).json({
             success: true,
-            data: analysisResult
+            data: analysisResult,
+            summary: "That part of the code is commented out!", // claudeSummary[0].text,
+            nlpAnalysis: pythonAnalysisResult
         });
     } catch (error) {
         next(error);
