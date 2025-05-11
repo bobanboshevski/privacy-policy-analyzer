@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {analyzePdfFile} from "@/services/privacyAnalyzer";
 import {AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
+import ReactMarkdown from 'react-markdown';
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -54,6 +55,12 @@ export default function PdfUploadForm() {
 
             {error && <p className="text-red-500 text-sm">{error}</p>} {/* JUST AS EXAMPLE! */}
             {result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>} {/* JUST AS EXAMPLE! */}
+            <br/>
+            {result && (
+                <div className="prose prose-sm max-w-none text-green-800">
+                    <ReactMarkdown>{result.summary}</ReactMarkdown>
+                </div>
+            )} {/* JUST AS EXAMPLE! */}
 
             <div className="flex justify-end">
                 <button
