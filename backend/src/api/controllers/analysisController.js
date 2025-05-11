@@ -79,7 +79,6 @@ const analyzePdf = async (req, res, next) => {
 
         const analysisResult = await pdfAnalysisService.analyze(req.file);
 
-
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log(pythonAnalysisResult);
 
