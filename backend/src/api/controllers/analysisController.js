@@ -1,9 +1,9 @@
 const textAnalysisService = require('../services/textAnalysisService');
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
-const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
+const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
+const {handlePdfAnalysis} = require("../../utils/helper");
 const {summarizeText} = require("../services/claudeAiService");
-
 
 /**
  * Analyze text content of a privacy policy
@@ -41,7 +41,7 @@ const analyzeText = async (req, res, next) => {
  */
 const analyzeUrl = async (req, res, next) => {
     try {
-        const { url } = req.body;
+        const {url} = req.body;
 
         if (!url) {
             return res.status(400).json({
@@ -61,7 +61,16 @@ const analyzeUrl = async (req, res, next) => {
     }
 };
 
+/**
+ * Analyze privacy policy from a PDF file
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
 
+const analyzePdfParser = (req, res, next) => {
+    return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfParse);
+};
 
 /**
  * Analyze privacy policy from a PDF file
@@ -69,6 +78,19 @@ const analyzeUrl = async (req, res, next) => {
  * @param {Object} res - Response object
  * @param {Function} next - Next middleware function
  */
+const analyzePdf2Json = (req, res, next) => {
+    return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdf2Json);
+};
+
+/**
+ * Analyze privacy policy from a PDF file
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @param {Function} next - Next middleware function
+ */
+const analyzePdfJsExtract = (req, res, next) => {
+    return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
+
 const analyzePdf = async (req, res, next) => {
     try {
         if (!req.file) {
@@ -101,5 +123,7 @@ const analyzePdf = async (req, res, next) => {
 module.exports = {
     analyzeText,
     analyzeUrl,
-    analyzePdf
+    analyzePdfParser,
+    analyzePdf2Json,
+    analyzePdfJsExtract
 };

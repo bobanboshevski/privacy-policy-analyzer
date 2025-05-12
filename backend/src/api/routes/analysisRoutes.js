@@ -25,7 +25,10 @@ const router = express.Router();
  */
 router.post('/text', analysisController.analyzeText);
 
-router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdf);
+router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdfParser);
+router.post('/pdf/pdf-2-json', requestRestrictions.enforceFileOnly, analysisController.analyzePdf2Json);
+router.post('/pdf/pdf-js-extract', requestRestrictions.enforceFileOnly, analysisController.analyzePdfJsExtract);
+
 
 router.post('/url/scrape', analysisController.analyzeUrl);
 
