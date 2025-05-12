@@ -17,8 +17,9 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
         }
 
         const analysisResult = await analysisFunction(req.file);
+        // const claudeSummary = await summarizeText(analysisResult.extractedText);
+        // console.log("AI summary: ",claudeSummary);
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
-
         console.log(pythonAnalysisResult); // Or pass it to response if needed
 
         return res.status(200).json({

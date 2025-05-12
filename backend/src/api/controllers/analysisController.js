@@ -90,7 +90,7 @@ const analyzePdf2Json = (req, res, next) => {
  */
 const analyzePdfJsExtract = (req, res, next) => {
     return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
-
+}
 const analyzePdf = async (req, res, next) => {
     try {
         if (!req.file) {
@@ -103,7 +103,8 @@ const analyzePdf = async (req, res, next) => {
         const analysisResult = await pdfAnalysisService.analyze(req.file);
 
         // const claudeSummary = await summarizeText(analysisResult.extractedText);
-        console.log("AI summary: ",claudeSummary);
+        // console.log("AI summary: ",claudeSummary);
+
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log(pythonAnalysisResult);
 
