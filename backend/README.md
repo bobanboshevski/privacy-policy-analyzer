@@ -13,10 +13,9 @@ This is the backend service built using Node.js and Express. It provides RESTful
 
 ## 🚀 Getting Started
 
-### 1. Clone the repository
+### 1. Go to backend directory
 
 ```bash
-git clone https://github.com/bobanboshevski/privacy-policy-analyzer.git
 cd backend
 ```
 ### 2. Install dependencies
@@ -25,5 +24,5 @@ npm install
 ```
 ### 3. Run the server
 ```bash
-npx nodemon index.js
+npm run dev
 ```
