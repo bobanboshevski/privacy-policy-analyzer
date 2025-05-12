@@ -11,13 +11,20 @@ export type AnalyzePdfResponse = {
                 PDFFormatVersion: string,
                 Producer: string
             },
-            pageCount: number
-        }
-    };
+            pageCount: number,
+        },
+    },
+    nlpAnalysis: {
+        flesch_score: number,
+        gunning_fog_index: number,
+        word_count: number,
+        sentence_count: number,
+    },
+    summary: string
 };
 
 export type AnalyzeUrlResponse = {
     success: boolean;
     extractedText: string;
-  };
+};
   

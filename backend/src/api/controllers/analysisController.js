@@ -3,7 +3,7 @@ const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
 const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
-
+const {summarizeText} = require("../services/claudeAiService");
 
 /**
  * Analyze text content of a privacy policy
@@ -67,6 +67,7 @@ const analyzeUrl = async (req, res, next) => {
  * @param {Object} res - Response object
  * @param {Function} next - Next middleware function
  */
+
 const analyzePdfParser = (req, res, next) => {
     return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfParse);
 };
@@ -89,6 +90,32 @@ const analyzePdf2Json = (req, res, next) => {
  */
 const analyzePdfJsExtract = (req, res, next) => {
     return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
+
+const analyzePdf = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                error: 'PDF file is required'
+            });
+        }
+
+        const analysisResult = await pdfAnalysisService.analyze(req.file);
+
+        // const claudeSummary = await summarizeText(analysisResult.extractedText);
+        console.log("AI summary: ",claudeSummary);
+        const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
+        console.log(pythonAnalysisResult);
+
+        return res.status(200).json({
+            success: true,
+            data: analysisResult,
+            summary: "That part of the code is commented out!", // claudeSummary[0].text,
+            nlpAnalysis: pythonAnalysisResult
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 module.exports = {
