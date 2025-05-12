@@ -29,3 +29,12 @@ npm install
 ```bash
 npm run dev
 ```
+
+### Other useful commands
+
+```bash
+npm run dev # Start the development server
+npm run build # Build for production
+npm run start # Start the production server
+npm run lint # Run ESLint
+```
