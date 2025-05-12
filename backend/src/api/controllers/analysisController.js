@@ -80,8 +80,10 @@ const analyzePdf = async (req, res, next) => {
 
         const analysisResult = await pdfAnalysisService.analyze(req.file);
 
+
         // const claudeSummary = await summarizeText(analysisResult.extractedText);
         console.log("AI summary: ",claudeSummary);
+
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log(pythonAnalysisResult);
 
