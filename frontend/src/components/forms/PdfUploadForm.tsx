@@ -1,13 +1,16 @@
 import {useState} from "react";
 import {analyzePdfFile} from "@/services/privacyAnalyzer";
-import {AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
-import ReactMarkdown from 'react-markdown';
+import {AnalysisMode, AnalyzePdfResponse} from "@/lib/types/privacyAnalyzer";
+import PdfAnalysisResult from "@/components/forms/PdfAnalysisResult";
+import ResultViewModeSwitcher from "@/components/ui/ResultViewModeSwitcher";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [result, setResult] = useState<AnalyzePdfResponse | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const [mode, setMode] = useState<AnalysisMode>(AnalysisMode.SIMPLE);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -54,13 +57,13 @@ export default function PdfUploadForm() {
             </div>
 
             {error && <p className="text-red-500 text-sm">{error}</p>} {/* JUST AS EXAMPLE! */}
-            {result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>} {/* JUST AS EXAMPLE! */}
-            <br/>
             {result && (
-                <div className="prose prose-sm max-w-none text-green-800">
-                    <ReactMarkdown>{result.summary}</ReactMarkdown>
-                </div>
-            )} {/* JUST AS EXAMPLE! */}
+                <>
+                    <ResultViewModeSwitcher mode={mode} onModeChange={setMode}/>
+                    <PdfAnalysisResult result={result} mode={mode}/>
+                </>
+            )}
+            <br/>
 
             <div className="flex justify-end">
                 <button
@@ -72,6 +75,5 @@ export default function PdfUploadForm() {
                 </button>
             </div>
         </form>
-
     );
 }

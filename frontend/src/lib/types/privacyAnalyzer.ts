@@ -27,4 +27,9 @@ export type AnalyzeUrlResponse = {
     success: boolean;
     extractedText: string;
 };
+
+export enum AnalysisMode {
+    SIMPLE = 'simple',
+    EXPERT = 'expert',
+}
   
