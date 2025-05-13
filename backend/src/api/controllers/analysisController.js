@@ -82,7 +82,7 @@ const analyzePdf = async (req, res, next) => {
 
 
         // const claudeSummary = await summarizeText(analysisResult.extractedText);
-        console.log("AI summary: ",claudeSummary);
+        //console.log("AI summary: ",claudeSummary);
 
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log(pythonAnalysisResult);

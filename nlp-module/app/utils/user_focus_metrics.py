@@ -1,19 +1,34 @@
-# User-Centeredness
-# How much of the policy speaks directly to the user, is personalized, and addresses user rights.
+import re
 
-# 1. Pronoun usage - Count of 2nd-person pronouns (you, your).
+RIGHT_PHRASES = [
+    "you can", "your rights", "you may request", "request access",
+    "ask us to", "opt-out", "change your settings"
+]
 
-# 2. Right-related phrases - “You can”, “your rights”, “request access”.
+CALL_TO_ACTION_PATTERNS = [
+    r"contact (us|our)", r"privacy settings", r"manage preferences", r"email (us)?",
+    r"reach out", r"click here", r"visit (our )?(support|help) page"
+]
 
-# 3. Call-to-action presence - Links to privacy settings, contact info.
+
+def pronoun_ratio(text: str) -> float:
+    words = text.lower().split()
+    total_words = len(words)
+    if total_words == 0:
+        return 0.0
+
+    second_person_pronouns = ["you", "your", "yours"]
+    pronoun_count = sum(1 for word in words if word in second_person_pronouns)
+    return pronoun_count / total_words
 
 
-# import re
-#
-# def compute_user_focus(text):
-#     you_count = len(re.findall(r'\byou\b|\byour\b', text.lower()))
-#     total_words = len(text.split())
-#     return {
-#         "user_focus_ratio": you_count / total_words
-#     }
+def rights_phrase_density(text: str) -> float:
+    text_lower = text.lower()
+    matches = sum(1 for phrase in RIGHT_PHRASES if phrase in text_lower)
+    return matches / len(RIGHT_PHRASES)
 
+
+def call_to_action_presence(text: str) -> float:
+    text_lower = text.lower()
+    matches = sum(1 for pattern in CALL_TO_ACTION_PATTERNS if re.search(pattern, text_lower))
+    return 1.0 if matches > 0 else 0.0
