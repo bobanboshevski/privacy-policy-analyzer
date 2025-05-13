@@ -51,10 +51,15 @@ const analyzeUrl = async (req, res, next) => {
         }
 
         const result = await urlAnalysisService.analyze(url);
+        
+        const pythonAnalysisResult = await analyzeWithPython(result.extractedText);
+        console.log(pythonAnalysisResult);
 
         return res.status(200).json({
             success: true,
-            ...result, // contains paragraphs
+            ...result,
+            summary: "That part of the code is commented out!", // claudeSummary[0].text,
+            nlpAnalysis: pythonAnalysisResult
         });
     } catch (error) {
         next(error);
