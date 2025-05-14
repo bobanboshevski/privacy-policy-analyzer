@@ -92,5 +92,5 @@ def analyze_text(text: str) -> AnalysisResult:
         ambiguity=ambiguity,
         coverage=coverage,
         sentiment=sentiment,
-        userFocus=userFocus,
+        userFocus=userFocus
     )

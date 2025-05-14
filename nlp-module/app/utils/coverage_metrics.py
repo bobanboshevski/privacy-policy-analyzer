@@ -26,8 +26,12 @@ TOPIC_SENTENCES = {
     ]
 }
 
-
 def coverage_score(text: str, threshold: float = 0.6) -> float:
+    """
+    Measures how well the text covers key privacy topics using semantic similarity.
+    Good: 0.75–1 (all major topics present)
+    Poor: < 0.5 (few or no topics covered)
+    """
     sentences = [s.strip() for s in text.split('.') if s.strip()]
     if not sentences:
         return 0.0
@@ -47,4 +51,4 @@ def coverage_score(text: str, threshold: float = 0.6) -> float:
         if max_score >= threshold:
             covered_topics += 1
 
-    return covered_topics / len(TOPIC_SENTENCES)
+    return round(covered_topics / len(TOPIC_SENTENCES), 2)
