@@ -26,5 +26,4 @@ export type AnalyzePdfResponse = {
 export type AnalyzeUrlResponse = {
     success: boolean;
     extractedText: string;
-};
-  
+};  

@@ -17,14 +17,13 @@ export default function UrlInputForm() {
         }
 
         try {
-            new URL(url); // Validate
+            new URL(url);
             setError(null);
             setLoading(true);
 
             const response = await analyzeUrl(url.trim());
             setResult(response);
-            console.log("Scraped response:", response); // still logs to frontend console
-
+            console.log("Scraped response:", response);
         } catch (err) {
             console.error(err);
             setError("Failed to analyze URL.");
@@ -48,7 +47,7 @@ export default function UrlInputForm() {
             <div className="flex justify-end">
                 <button
                     type="submit"
-                    className="bg-green-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
                     disabled={loading}
                 >
                     {loading ? "Analyzing..." : "Analyze URL"}
