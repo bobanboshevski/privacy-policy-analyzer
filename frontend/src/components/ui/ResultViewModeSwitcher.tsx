@@ -17,7 +17,7 @@ export default function ResultViewModeSwitcher({mode, onModeChange}: Props) {
                             onClick={() => onModeChange(m)}
                             className={`px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium ${
                                 mode === m
-                                    ? 'bg-purple-600 text-white shadow-md'
+                                    ? 'bg-green-600 text-white shadow-md'
                                     : 'text-gray-300 hover:text-white'
                             }`}
                         >

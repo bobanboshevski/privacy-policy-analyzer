@@ -13,20 +13,22 @@ const {summarizeText} = require("../services/claudeAiService");
  */
 const analyzeText = async (req, res, next) => {
     try {
-        // const { text } = req.body;
-        //
-        // if (!text || text.trim() === '') {
-        //     return res.status(400).json({
-        //         success: false,
-        //         error: 'Text content is required'
-        //     });
-        // }
-        //
-        // const analysisResult = await textAnalysisService.analyze(text);
+        const { text } = req.body;
+
+        if (!text || text.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                error: 'Text content is required'
+            });
+        }
+
+        const analysisResult = await textAnalysisService.analyze(text);
 
         return res.status(200).json({
             success: true,
-            data: 'Documentation test' // analysisResult
+            data: analysisResult, // analysisResult
+            summary: "This is temporary message",
+            nlpAnalysis: analysisResult
         });
     } catch (error) {
         next(error);
@@ -57,7 +59,7 @@ const analyzeUrl = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
-            ...result,
+            data: result, //...result,
             summary: "That part of the code is commented out!", // claudeSummary[0].text,
             nlpAnalysis: pythonAnalysisResult
         });
