@@ -29,7 +29,7 @@ export default function PdfUploadForm() {
             setError(null);
         } catch (err) {
             console.error(err);
-            setError("Error uploading or analyzing PDF.");
+            setError("Inserted file is either not PDF or not a privacy policy. Please try again.");
         } finally {
             setLoading(false);
         }

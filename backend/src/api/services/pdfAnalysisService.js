@@ -11,6 +11,17 @@ const PDFExtract = require('pdf.js-extract').PDFExtract;
  * @param {string} pdf.mimetype - The file mime type
  * @returns {Promise<Object>} The analysis result containing extracted text
  */
+
+function isPrivacyPolicy(text) {
+    const lowerText = text.toLowerCase();
+    return lowerText.includes("privacy policy") ||
+           lowerText.includes("data protection") ||
+           lowerText.includes("gdpr") ||
+           lowerText.includes("personal data") ||
+           lowerText.includes("data collection");
+}
+
+
 const analyzeWithPdfParse = async (pdf) => {
     try {
         const data = await pdfParse(pdf.buffer);
@@ -20,6 +31,12 @@ const analyzeWithPdfParse = async (pdf) => {
             .replace(/\n\n/g, ' ')
             .replace(/\n/g, ' ')
             .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.code = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: data.numpages,
@@ -33,7 +50,8 @@ const analyzeWithPdfParse = async (pdf) => {
     } catch (err) {
         throw new Error(`PDF analysis failed: ${err.message}`);
     }
-}
+};
+
 
 /**
  * Analyzes a PDF file using pdf2json library without writing to disk
@@ -71,6 +89,12 @@ const analyzeWithPdf2Json = async (pdf) => {
             .replace(/\n\n/g, " ")
             .replace(/\n/g, " ")
             .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.code = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: pdfData.Pages.length,
@@ -137,11 +161,12 @@ const analyzeWithPdfJsExtract = async (pdf) => {
         });
 
         extractedText = pageTexts.join(' ');
-        // extractedText = extractedText
-        //     .replace(/\t/g, ' ')
-        //     .replace(/\n\n/g, ' ')
-        //     .replace(/\n/g, ' ')
-        //     .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.code = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: data.pages.length,
@@ -152,11 +177,10 @@ const analyzeWithPdfJsExtract = async (pdf) => {
             extractedText,
             metadata
         };
-
     } catch (err) {
         throw new Error(`PDF analysis failed: ${err.message}`);
     }
-}
+};
 
 module.exports = {
     analyzeWithPdfParse,
