@@ -3,65 +3,65 @@ import { analyzeUrl } from "@/services/privacyAnalyzer";
 import { AnalyzeUrlResponse } from "@/lib/types/privacyAnalyzer";
 
 export default function UrlInputForm() {
-    const [url, setUrl] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<AnalyzeUrlResponse | null>(null);
-    const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<AnalyzeUrlResponse | null>(null);
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        if (!url.trim()) {
-            setError("Please enter a URL");
-            return;
-        }
+    if (!url.trim()) {
+      setError("Please enter a URL");
+      return;
+    }
 
-        try {
-            new URL(url);
-            setError(null);
-            setLoading(true);
+    try {
+      new URL(url);
+      setError(null);
+      setLoading(true);
 
-            const response = await analyzeUrl(url.trim());
-            setResult(response);
-            console.log("Scraped response:", response);
-        } catch (err) {
-            console.error(err);
-            setError("Failed to analyze URL.");
-        } finally {
-            setLoading(false);
-        }
-    };
+      const response = await analyzeUrl(url.trim());
+      setResult(response);
+      setError(null); // clear any previous error
+      console.log("Scraped response:", response);
+    } catch (err: any) {
+      console.error("API error:", err);
 
-    return (
-        <form onSubmit={handleSubmit} className="md:w-[600px] lg:w-[800px] space-y-4">
-            <input
-                className="w-full p-3 border rounded-lg text-white bg-gray-800"
-                placeholder="Enter URL to privacy policy"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-            />
+      const apiMessage =
+        err?.response?.data?.error?.toLowerCase() || "";
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            {result && <p className="text-green-500 text-sm">{result.extractedText}</p>}
+      if (apiMessage.includes("does not appear to point to a privacy policy")) {
+        setError("Please choose another URL");
+      } else {
+        setError("It seems like URL does not contain privacy policy. Please try again");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            <div className="flex justify-end">
-                <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
-                    disabled={loading}
-                >
-                    {loading ? "Analyzing..." : "Analyze URL"}
-                </button>
-            </div>
-            {/*extracted text in divs with scrolling*/}
-            {/* {result?.extractedText && (
-                <div className="mt-4 bg-gray-900 text-white p-4 rounded max-h-64 overflow-y-auto">
-                    <h3 className="text-lg font-bold mb-2">Extracted Text:</h3>
-                    <p className="text-sm leading-relaxed whitespace-pre-line">{result.extractedText}</p>
-                </div>
-            )} */}
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit} className="md:w-[600px] lg:w-[800px] space-y-4">
+      <input
+        className="w-full p-3 border rounded-lg text-white bg-gray-800"
+        placeholder="Enter URL to privacy policy"
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
+      />
+
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {result && <p className="text-green-500 text-sm">{result.extractedText}</p>}
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+          disabled={loading}
+        >
+          {loading ? "Analyzing..." : "Analyze URL"}
+        </button>
+      </div>
+    </form>
+  );
 }
-
-
