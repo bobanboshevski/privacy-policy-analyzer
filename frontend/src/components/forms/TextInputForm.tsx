@@ -42,8 +42,9 @@ export default function TextInputForm() {
                     <button
                         type="submit"
                         className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+                        disabled={loading}
                     >
-                        Analyze Text
+                        {loading ? "Analyzing..." : "Analyze Text"}
                     </button>
                 </div>
             </form>

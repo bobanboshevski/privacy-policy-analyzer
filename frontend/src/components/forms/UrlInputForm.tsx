@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {analyzeUrl} from "@/services/privacyAnalyzer";
-import {AnalysisMode, AnalyzedPrivacyResponse, AnalyzeUrlResponse} from "@/lib/types/privacyAnalyzer";
+import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 
 export default function UrlInputForm() {

@@ -1,5 +1,5 @@
 import {fetchFromApi} from "@/services/api";
-import {AnalyzedPrivacyResponse, AnalyzeUrlResponse} from "@/lib/types/privacyAnalyzer";
+import {AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 
 /**
  * Get initial welcome message from the analyzer
