@@ -1,13 +1,11 @@
 import {useState} from "react";
 import {analyzeUrl} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse, AnalyzeUrlResponse} from "@/lib/types/privacyAnalyzer";
-import ResultViewModeSwitcher from "@/components/ui/ResultViewModeSwitcher";
-import AnalysisResult from "@/components/ui/AnalysisResult";
+import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 
 export default function UrlInputForm() {
     const [url, setUrl] = useState("");
     const [error, setError] = useState<string | null>(null);
-    // const [result, setResult] = useState<AnalyzeUrlResponse | null>(null);
     const [result, setResult] = useState<AnalyzedPrivacyResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -67,16 +65,12 @@ export default function UrlInputForm() {
                 </div>*/}
             </form>
 
-            <div className="md:w-[600px] lg:w-[800px] space-y-4">
-                {error && <p className="text-red-500 text-sm">{error}</p>} {/* JUST AS EXAMPLE! */}
-                {result && (
-                    <>
-                        <ResultViewModeSwitcher mode={mode} onModeChange={setMode}/>
-                        <AnalysisResult result={result} mode={mode}/>
-                    </>
-                )}
-                <br/>
-            </div>
+            <AnalysisResultContainer
+                error={error}
+                result={result}
+                mode={mode}
+                setMode={setMode}
+            />
         </>
     );
 }

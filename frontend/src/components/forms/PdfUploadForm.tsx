@@ -1,8 +1,7 @@
 import {useState} from "react";
 import {analyzePdfFile} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
-import AnalysisResult from "@/components/ui/AnalysisResult";
-import ResultViewModeSwitcher from "@/components/ui/ResultViewModeSwitcher";
+import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -42,7 +41,7 @@ export default function PdfUploadForm() {
         <>
             <form onSubmit={handleSubmit} className="w-full md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
                 <div>
-                {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
+                    {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
                     <label
                         htmlFor="pdf-upload"
                         className="block w-full p-3 rounded-lg text-white bg-gray-800 cursor-pointer text-center"
@@ -68,16 +67,13 @@ export default function PdfUploadForm() {
                     </button>
                 </div>
             </form>
-            <div className="w-full md:w-[600px] lg:w-[800px] space-y-4">
-                {error && <p className="text-red-500 text-sm">{error}</p>} {/* JUST AS EXAMPLE! */}
-                {result && (
-                    <>
-                        <ResultViewModeSwitcher mode={mode} onModeChange={setMode}/>
-                        <AnalysisResult result={result} mode={mode}/>
-                    </>
-                )}
-                <br/>
-            </div>
+
+            <AnalysisResultContainer
+                error={error}
+                result={result}
+                mode={mode}
+                setMode={setMode}
+            />
         </>
     );
 

@@ -37,7 +37,7 @@ export default function AnalysisResult({result, mode}: Props) {
                             {renderMetric("average_sentence_length", result.nlpAnalysis.complexity.avg_sentence_length)}
                             {renderMetric("average_word_length", result.nlpAnalysis.complexity.avg_word_length)}
                             {renderMetric("subjectivity", result.nlpAnalysis.sentiment.subjectivity)}
-                            {renderMetric("subjectivity", result.nlpAnalysis.sentiment.polarity)}
+                            {renderMetric("polarity", result.nlpAnalysis.sentiment.polarity)}
                             {/*{renderMetric("pronoun_ratio", result.nlpAnalysis.userFocus.pronoun_ratio)}*/}
                         </div>
 
