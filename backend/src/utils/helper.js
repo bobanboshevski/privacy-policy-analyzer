@@ -24,7 +24,9 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
 
         return res.status(200).json({
             success: true,
-            data: analysisResult
+            data: analysisResult,
+            summary: "That part of the code is commented out!", // claudeSummary
+            nlpAnalysis: pythonAnalysisResult
         });
     } catch (error) {
         next(error);
