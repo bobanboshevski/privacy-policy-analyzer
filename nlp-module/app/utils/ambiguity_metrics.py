@@ -33,7 +33,7 @@ def passive_voice_ratio(text: str) -> float:
     return round (passive_sentences / total_sentences if total_sentences else 0.0,2)
 
 
-CONDITIONAL_WORDS = {"if", "when", "could", "would", "should", "unless"}
+CONDITIONAL_WORDS = {"if", "when", "could", "would", "should", "unless", "might"}
 
 def conditional_statement_ratio(text: str) -> float:
     """
