@@ -2,6 +2,8 @@ const fs = require("fs");
 const pdfParse = require('pdf-parse');
 const PDFParser = require("pdf2json");
 const PDFExtract = require('pdf.js-extract').PDFExtract;
+const { isPrivacyPolicy } = require('../utils/pdfUtils');
+
 
 /**
  * Analyzes a PDF file and extracts text content
@@ -11,16 +13,6 @@ const PDFExtract = require('pdf.js-extract').PDFExtract;
  * @param {string} pdf.mimetype - The file mime type
  * @returns {Promise<Object>} The analysis result containing extracted text
  */
-
-function isPrivacyPolicy(text) {
-    const lowerText = text.toLowerCase();
-    return lowerText.includes("privacy policy") ||
-           lowerText.includes("data protection") ||
-           lowerText.includes("gdpr") ||
-           lowerText.includes("personal data") ||
-           lowerText.includes("data collection");
-}
-
 
 const analyzeWithPdfParse = async (pdf) => {
     try {
