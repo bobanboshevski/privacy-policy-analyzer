@@ -9,16 +9,9 @@ export async function getInitialMessage(): Promise<string> {
 }
 
 /**
- * Get privacy policy response for the text from the analyzer
- */
-
-
-/**
  * Get privacy policy response from the URL for the analyzer
  */
 export async function analyzeUrl(trimmedUrl: string): Promise<AnalyzedPrivacyResponse> {
-
-
     return await fetchFromApi<AnalyzedPrivacyResponse>('/api/analyze/url/scrape', {
         method: 'POST',
         headers: {
@@ -42,7 +35,7 @@ export async function analyzePdfFile(file: File): Promise<AnalyzedPrivacyRespons
     });
 }
 
-/*
+/**
  * Get privacy policy response for the text from the analyzer
  */
 export async function analyzeText(text: string): Promise<AnalyzedPrivacyResponse> {
