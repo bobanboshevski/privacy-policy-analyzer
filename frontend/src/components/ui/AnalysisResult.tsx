@@ -5,6 +5,9 @@ import ReactMarkdown from 'react-markdown';
 import {AnimatePresence, motion} from "framer-motion";
 import {renderMetric} from "@/lib/utils/renderHelpers";
 import {easyMotionProps, expertMotionProps} from "@/lib/utils/animations";
+import {useEffect, useRef, useState} from "react";
+import {exportToPdf} from "@/services/exporter";
+import ScoreDisplay from "@/components/ui/ScoreDisplay";
 
 interface Props {
     result: AnalyzedPrivacyResponse;
@@ -31,8 +34,8 @@ export default function AnalysisResult({result, mode}: Props) {
                         <hr className="border-gray-700"/>
 
                         <h3 className="text-lg font-semibold pt-4">Key Metrics</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                            {renderMetric("flesch_score", result.nlpAnalysis.complexity.sentence_count)}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-6">
+                            {renderMetric("flesch_score", result.nlpAnalysis.readability.flesch_score)}
                             {renderMetric("word_count", result.nlpAnalysis.complexity.word_count)}
                             {renderMetric("average_sentence_length", result.nlpAnalysis.complexity.avg_sentence_length)}
                             {renderMetric("average_word_length", result.nlpAnalysis.complexity.avg_word_length)}
@@ -72,23 +75,7 @@ export default function AnalysisResult({result, mode}: Props) {
                             </div>
                             <hr className="border-gray-700 my-6"/>
 
-                            {result.data.metadata && (
-                                <div className="pt-4">
-                                    <h3 className="font-semibold text-lg">PDF Metadata</h3>
-                                    <div className="text-sm space-y-1">
-                                        {Object.entries(result.data.metadata.info).map(([k, v]) => (
-                                            <div key={k} className="flex justify-between">
-                                                <span className="capitalize">{k}</span>
-                                                <span className="font-mono">{String(v)}</span>
-                                            </div>
-                                        ))}
-                                        <div className="flex justify-between">
-                                            <span>Page Count</span>
-                                            <span className="font-mono">{result.data.metadata.pageCount}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                            <ScoreDisplay score={result.overallScore} />
                         </motion.div>
                     </div>
                 )}
