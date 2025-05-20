@@ -23,7 +23,7 @@ export default function UrlInputForm() {
 
       const response = await analyzeUrl(url.trim());
       setResult(response);
-      setError(null); // clear any previous error
+      setError(null);
       console.log("Scraped response:", response);
     } catch (err: any) {
       console.error("API error:", err);
