@@ -5,6 +5,9 @@ import ReactMarkdown from 'react-markdown';
 import {AnimatePresence, motion} from "framer-motion";
 import {renderMetric} from "@/lib/utils/renderHelpers";
 import {easyMotionProps, expertMotionProps} from "@/lib/utils/animations";
+import {useEffect, useRef, useState} from "react";
+import {exportToPdf} from "@/services/exporter";
+import ScoreDisplay from "@/components/ui/ScoreDisplay";
 
 interface Props {
     result: AnalyzedPrivacyResponse;
