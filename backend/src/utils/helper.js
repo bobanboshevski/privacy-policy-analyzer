@@ -1,4 +1,5 @@
 const {analyzeWithPython} = require("../api/services/externalPrivacyAnalysisService");
+const {computeOverallScore} = require("./metricScoring");
 
 /**
  * Common PDF analysis logic
