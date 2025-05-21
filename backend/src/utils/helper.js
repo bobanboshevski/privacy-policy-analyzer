@@ -22,11 +22,15 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
         console.log("Python analysis: ", pythonAnalysisResult);
 
+        const overallScore = computeOverallScore(pythonAnalysisResult);
+        console.log("Overall rating: ", overallScore);
+
         return res.status(200).json({
             success: true,
             data: analysisResult,
             summary: "That part of the code is commented out! Here will be the claude summary, which is commented out.", // claudeSummary
-            nlpAnalysis: pythonAnalysisResult
+            nlpAnalysis: pythonAnalysisResult,
+            overallScore: overallScore
         });
     } catch (error) {
         next(error);

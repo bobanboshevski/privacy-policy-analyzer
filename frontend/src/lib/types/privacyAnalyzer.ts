@@ -48,7 +48,8 @@ export type AnalyzedPrivacyResponse = {
             call_to_action_presence: number
         }
     },
-    summary: string
+    summary: string,
+    overallScore: number
 };
 
 export enum AnalysisMode {

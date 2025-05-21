@@ -2,6 +2,7 @@ const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
 const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
+const {computeOverallScore} = require("../../utils/metricScoring");
 /**
  * Analyze text content of a privacy policy
  * @param {Object} req - Request object
@@ -23,11 +24,16 @@ const analyzeText = async (req, res, next) => {
         // console.log("AI summary: ",claudeSummary);
 
         const pythonAnalysisResult = await analyzeWithPython(text.trim());
+
+        const overallScore = computeOverallScore(pythonAnalysisResult);
+        console.log("overall score:", overallScore);
+
         return res.status(200).json({
                 success: true,
                 data: {extractedText: text.trim()}, // analysisResult
                 summary: "This is temporary message",
-                nlpAnalysis: pythonAnalysisResult
+                nlpAnalysis: pythonAnalysisResult,
+                overallScore: overallScore
             }
         );
     } catch
@@ -54,14 +60,21 @@ const analyzeUrl = async (req, res, next) => {
         }
 
         const result = await urlAnalysisService.analyze(url);
+
+        console.log("URL scraped text: ", result);
+
         const pythonAnalysisResult = await analyzeWithPython(result.extractedText);
+
+        const overallScore = computeOverallScore(pythonAnalysisResult);
         console.log(pythonAnalysisResult);
+        console.log("Overall rating: ", overallScore);
 
         return res.status(200).json({
             success: true,
             data: result, //...result,
             summary: "That part of the code is commented out!", // claudeSummary[0].text,
-            nlpAnalysis: pythonAnalysisResult
+            nlpAnalysis: pythonAnalysisResult,
+            overallScore: overallScore
         });
     } catch (error) {
         next(error);
