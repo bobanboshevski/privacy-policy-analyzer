@@ -37,7 +37,7 @@ export default function UrlInputForm() {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="md:w-[600px] lg:w-[800px] space-y-4">
+            <form onSubmit={handleSubmit} className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4">
                 <input
                     className="w-full p-3 border rounded-lg text-white bg-gray-800"
                     placeholder="Enter URL to privacy policy"

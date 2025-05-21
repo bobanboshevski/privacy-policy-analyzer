@@ -1,6 +1,6 @@
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
-const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
+const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 /**
  * Analyze text content of a privacy policy

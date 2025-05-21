@@ -38,8 +38,9 @@ export default function PdfUploadForm() {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className="w-full md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
+        <div>
+            <form onSubmit={handleSubmit}
+                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
                 <div>
                     {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
                     <label
@@ -74,7 +75,7 @@ export default function PdfUploadForm() {
                 mode={mode}
                 setMode={setMode}
             />
-        </>
+        </div>
     );
 
 }
