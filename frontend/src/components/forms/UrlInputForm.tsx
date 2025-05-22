@@ -2,6 +2,7 @@ import {useState} from "react";
 import {analyzeUrl} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
+import {ApiError} from "@/lib/types/input";
 
 export default function UrlInputForm() {
     const [url, setUrl] = useState("");
@@ -14,13 +15,13 @@ export default function UrlInputForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!url.trim()) {
-            setError("Please enter a URL");
-            return;
-        }
+        // if (!url.trim()) {
+        //     setError("Please enter a URL.");
+        //     return;
+        // }
 
         try {
-            new URL(url);
+            // new URL(url);
             setError(null);
             setLoading(true);
 
@@ -28,8 +29,9 @@ export default function UrlInputForm() {
             setResult(response);
             console.log("Scraped response:", response);
         } catch (err) {
-            console.error(err);
-            setError("Failed to analyze URL.");
+            const error = err as ApiError;
+            console.error("Error during analyzeUrl:", error);
+            setError(error.message || "Failed to analyze URL.");
         } finally {
             setLoading(false);
         }
@@ -45,7 +47,6 @@ export default function UrlInputForm() {
                     onChange={(e) => setUrl(e.target.value)}
                 />
 
-                {error && <p className="text-red-500 text-sm">{error}</p>}
                 {/*{result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>}*/}
 
                 <div className="flex justify-end">

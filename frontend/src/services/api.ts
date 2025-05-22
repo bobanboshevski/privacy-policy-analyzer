@@ -12,38 +12,45 @@ export async function fetchFromApi<T>(
     options: RequestInit = {},
     responseType: 'json' | 'text' | 'blob' = 'json'
 ): Promise<T> {
-    try {
-        const url = `${API_URL}${endpoint}`;
+    const url = `${API_URL}${endpoint}`;
 
-        const headers = options.body instanceof FormData
-            ? options.headers || {} // don't set Content-Type for FormData
-            : {
-                'Content-Type': 'application/json',
-                ...options.headers,
-            };
+    const headers = options.body instanceof FormData
+        ? options.headers || {} // don't set Content-Type for FormData
+        : {
+            'Content-Type': 'application/json',
+            ...options.headers,
+        };
 
-        const response = await fetch(url, {
-            ...options,
-            headers,
-        });
+    const response = await fetch(url, {
+        ...options,
+        headers,
+    });
 
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+    if (!response.ok) {
+        let errorMessage = `API error: ${response.status}`;
+
+        try {
+            const errorBody: { error?: string } = await response.json();
+            if (errorBody?.error) {
+                errorMessage = errorBody.error;
+            }
+        } catch (jsonError) {
+            console.warn("Failed to parse error response as JSON:", jsonError);
         }
-
-        if (responseType === 'blob') {
-            return await response.blob() as T;
-        }
-
-        const contentType = response.headers.get('content-type');
-        if (contentType?.includes('application/json')) {
-            return await response.json(); // return await response.blob() as T;
-        } else {
-            const text = await response.text();
-            return text as unknown as T;
-        }
-    } catch (error) {
-        console.error('API request failed:', error);
+        const error = new Error(errorMessage);
+        Object.assign(error, {status: response.status});
         throw error;
+    }
+
+    if (responseType === 'blob') {
+        return await response.blob() as T;
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
+        return await response.json(); // return await response.blob() as T;
+    } else {
+        const text = await response.text();
+        return text as unknown as T;
     }
 }
