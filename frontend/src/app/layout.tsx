@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import {AuthProvider} from "@/context/AuthContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -25,11 +26,14 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-        <div className="grid bg-gradient-to-br from-black via-gray-900 to-black text-white">
-            <Header/>
-            <main className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">{children}</main>
-            <Footer/>
-        </div>
+        <AuthProvider>
+            <div className="grid bg-gradient-to-br from-black via-gray-900 to-black text-white">
+                <Header/>
+                <main
+                    className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">{children}</main>
+                <Footer/>
+            </div>
+        </AuthProvider>
         </body>
         </html>
     );
