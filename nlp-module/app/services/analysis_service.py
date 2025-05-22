@@ -1,4 +1,6 @@
 import re
+from typing import Dict, Any, Optional
+
 from app.models.response_models import (
     AnalysisResult,
     ReadabilityMetrics,
@@ -6,7 +8,9 @@ from app.models.response_models import (
     AmbiguityMetrics,
     CoverageMetrics,
     SentimentMetrics,
-    UserFocusMetrics
+    UserFocusMetrics,
+    GdprComplianceMetrics,
+    CcpaComplianceMetrics
 )
 
 from app.utils.readability_metrics import (
@@ -43,8 +47,40 @@ from app.utils.user_focus_metrics import (
     call_to_action_presence,
 )
 
+from app.utils.gdpr_compliance_metrics import (
+    check_lawful_basis_coverage,
+    check_data_subject_rights_coverage,
+    check_consent_mechanism_quality,
+    check_dpo_information,
+    check_international_transfers,
+    check_security_measures,
+    check_breach_notification,
+    check_retention_periods,
+    gdpr_overall_score,
+    gdpr_compliance_percentage,
+    gdpr_is_compliant
+)
+
+from app.utils.ccpa_compliance_metrics import (
+    check_right_to_know_coverage,
+    check_right_to_delete_coverage,
+    check_right_to_opt_out_coverage,
+    check_non_discrimination_coverage,
+    check_notice_at_collection,
+    check_verification_process,
+    check_authorized_agent_process,
+    ccpa_overall_score,
+    ccpa_compliance_percentage,
+    ccpa_is_compliant
+)
+
+from app.utils.compliance_analyzers import (
+    analyze_gdpr_compliance_metrics,
+    analyze_ccpa_compliance_metrics
+)
 
 def analyze_text(text: str) -> AnalysisResult:
+    """Main text analysis function with all metrics"""
     sentences = re.split(r'[.!?]+', text)
     words = text.split()
 
@@ -80,11 +116,14 @@ def analyze_text(text: str) -> AnalysisResult:
         opinion_density=opinion_density(text),
     )
 
-    userFocus = UserFocusMetrics(
+    user_focus = UserFocusMetrics(
         pronoun_ratio=pronoun_ratio(text),
         rights_phrase_density=rights_phrase_density(text),
         call_to_action_presence=call_to_action_presence(text),
     )
+
+    gdpr_compliance = analyze_gdpr_compliance_metrics(text)
+    ccpa_compliance = analyze_ccpa_compliance_metrics(text)
 
     return AnalysisResult(
         readability=readability,
@@ -92,5 +131,7 @@ def analyze_text(text: str) -> AnalysisResult:
         ambiguity=ambiguity,
         coverage=coverage,
         sentiment=sentiment,
-        userFocus=userFocus
+        userFocus=user_focus,
+        gdprCompliance=gdpr_compliance,
+        ccpaCompliance=ccpa_compliance
     )
