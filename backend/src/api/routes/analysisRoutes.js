@@ -2,6 +2,7 @@ const express = require('express');
 const analysisController = require('../controllers/analysisController');
 const requestRestrictions = require('./../../utils/requestRestrictions')
 const {sendTextToPython} = require("../services/pdfAnalysisService");
+const verifyFirebaseToken = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 /**
@@ -41,6 +42,11 @@ router.post('/test-fastapi', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: 'Python service failed' });
     }
+});
+
+/* CHECKING IF FIREBASE IS WORKING */
+router.get('/secure-analysis', verifyFirebaseToken, (req, res) => {
+    res.json({ message: 'Access granted', user: req.user });
 });
 
 

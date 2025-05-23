@@ -1,10 +1,8 @@
-const textAnalysisService = require('../services/textAnalysisService');
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
-const {analyzeWithPython} = require("../services/ExternalPrivacyAnalysisService");
+const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
-const {summarizeText} = require("../services/claudeAiService");
-
+const {computeOverallScore} = require("../../utils/metricScoring");
 /**
  * Analyze text content of a privacy policy
  * @param {Object} req - Request object
@@ -13,22 +11,33 @@ const {summarizeText} = require("../services/claudeAiService");
  */
 const analyzeText = async (req, res, next) => {
     try {
-        // const { text } = req.body;
-        //
-        // if (!text || text.trim() === '') {
-        //     return res.status(400).json({
-        //         success: false,
-        //         error: 'Text content is required'
-        //     });
-        // }
-        //
-        // const analysisResult = await textAnalysisService.analyze(text);
+        const {text} = req.body;
+
+        if (!text || text.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                error: 'Text content is required'
+            });
+        }
+
+        // const claudeSummary = await summarizeText(text.trim());
+        // console.log("AI summary: ",claudeSummary);
+
+        const pythonAnalysisResult = await analyzeWithPython(text.trim());
+
+        const overallScore = computeOverallScore(pythonAnalysisResult);
+        console.log("overall score:", overallScore);
 
         return res.status(200).json({
-            success: true,
-            data: 'Documentation test' // analysisResult
-        });
-    } catch (error) {
+                success: true,
+                data: {extractedText: text.trim()}, // analysisResult
+                summary: "This is temporary message",
+                nlpAnalysis: pythonAnalysisResult,
+                overallScore: overallScore
+            }
+        );
+    } catch
+        (error) {
         next(error);
     }
 };
@@ -52,9 +61,20 @@ const analyzeUrl = async (req, res, next) => {
 
         const result = await urlAnalysisService.analyze(url);
 
+        console.log("URL scraped text: ", result);
+
+        const pythonAnalysisResult = await analyzeWithPython(result.extractedText);
+
+        const overallScore = computeOverallScore(pythonAnalysisResult);
+        console.log(pythonAnalysisResult);
+        console.log("Overall rating: ", overallScore);
+
         return res.status(200).json({
             success: true,
-            ...result, // contains paragraphs
+            data: result, //...result,
+            summary: "That part of the code is commented out!", // claudeSummary[0].text,
+            nlpAnalysis: pythonAnalysisResult,
+            overallScore: overallScore
         });
     } catch (error) {
         next(error);
@@ -91,35 +111,6 @@ const analyzePdf2Json = (req, res, next) => {
 const analyzePdfJsExtract = (req, res, next) => {
     return handlePdfAnalysis(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
 }
-const analyzePdf = async (req, res, next) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                error: 'PDF file is required'
-            });
-        }
-
-        const analysisResult = await pdfAnalysisService.analyze(req.file);
-
-
-        // const claudeSummary = await summarizeText(analysisResult.extractedText);
-        // console.log("AI summary: ",claudeSummary);
-
-
-        const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
-        console.log(pythonAnalysisResult);
-
-        return res.status(200).json({
-            success: true,
-            data: analysisResult,
-            summary: "That part of the code is commented out!", // claudeSummary[0].text,
-            nlpAnalysis: pythonAnalysisResult
-        });
-    } catch (error) {
-        next(error);
-    }
-};
 
 module.exports = {
     analyzeText,
