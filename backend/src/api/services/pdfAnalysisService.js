@@ -2,7 +2,7 @@ const fs = require("fs");
 const pdfParse = require('pdf-parse');
 const PDFParser = require("pdf2json");
 const PDFExtract = require('pdf.js-extract').PDFExtract;
-const { isPrivacyPolicy } = require('../../utils/pdfUtils.js');
+const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
 
 
 /**
@@ -26,7 +26,7 @@ const analyzeWithPdfParse = async (pdf) => {
 
         if (!isPrivacyPolicy(extractedText)) {
             const error = new Error("PDF does not appear to be a privacy policy.");
-            error.code = 400;
+            error.statusCode = 400;
             throw error;
         }
 
@@ -40,7 +40,7 @@ const analyzeWithPdfParse = async (pdf) => {
             metadata
         };
     } catch (err) {
-        throw new Error(`PDF analysis failed: ${err.message}`);
+        throw err;
     }
 };
 
@@ -84,7 +84,7 @@ const analyzeWithPdf2Json = async (pdf) => {
 
         if (!isPrivacyPolicy(extractedText)) {
             const error = new Error("PDF does not appear to be a privacy policy.");
-            error.code = 400;
+            error.statusCode = 400;
             throw error;
         }
 
@@ -156,7 +156,7 @@ const analyzeWithPdfJsExtract = async (pdf) => {
 
         if (!isPrivacyPolicy(extractedText)) {
             const error = new Error("PDF does not appear to be a privacy policy.");
-            error.code = 400;
+            error.statusCode = 400;
             throw error;
         }
 
@@ -180,3 +180,4 @@ module.exports = {
     analyzeWithPdfJsExtract
     // sendTextToPython
 };
+
