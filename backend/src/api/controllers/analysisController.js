@@ -3,6 +3,8 @@ const urlAnalysisService = require('../services/urlAnalysisService');
 const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
+const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
+
 /**
  * Analyze text content of a privacy policy
  * @param {Object} req - Request object
@@ -19,6 +21,12 @@ const analyzeText = async (req, res, next) => {
                 error: 'Text content is required'
             });
         }
+
+         if (!isPrivacyPolicy(text)) {
+                    const error = new Error("Text does not contain sufficient words or is not a privacy policy.");
+                    error.statusCode = 400;
+                    throw error;
+                }
 
         // const claudeSummary = await summarizeText(text.trim());
         // console.log("AI summary: ",claudeSummary);

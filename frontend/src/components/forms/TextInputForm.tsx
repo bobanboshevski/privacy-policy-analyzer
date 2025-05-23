@@ -1,7 +1,8 @@
-import {useState} from "react";
-import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
-import {analyzeText} from "@/services/privacyAnalyzer";
+import { useState } from "react";
+import { AnalysisMode, AnalyzedPrivacyResponse } from "@/lib/types/privacyAnalyzer";
+import { analyzeText } from "@/services/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
+import { ApiError } from "next/dist/server/api-utils";
 
 export default function TextInputForm() {
     const [text, setText] = useState('');
@@ -20,8 +21,9 @@ export default function TextInputForm() {
             setResult(response);
             console.log("Text response: ", response);
         } catch (err) {
-            console.log(err);
-            setError("Failed to analyze text!");
+            const error = err as ApiError;
+            console.error("Error during analyzing text:", error);
+            setError(error.message || "Failed to analyze text.");
         } finally {
             setLoading(false);
         }
@@ -30,14 +32,14 @@ export default function TextInputForm() {
     return (
         <div>
             <form onSubmit={handleSumbit} className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4">
-            <textarea
-                className="w-full p-3 border rounded-lg text-white bg-gray-800
+                <textarea
+                    className="w-full p-3 border rounded-lg text-white bg-gray-800
                 focus:outline-none focus:border-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Paste privacy policy text here..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                rows={8}
-            />
+                    placeholder="Paste privacy policy text here..."
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    rows={8}
+                />
                 <div className="flex justify-end">
                     <button
                         type="submit"
