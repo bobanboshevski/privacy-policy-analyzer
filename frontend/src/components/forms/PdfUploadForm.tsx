@@ -2,6 +2,7 @@ import {useState} from "react";
 import {analyzePdfFile} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
+import {ApiError} from "@/lib/types/input";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -30,8 +31,9 @@ export default function PdfUploadForm() {
             console.log(response);
             setError(null);
         } catch (err) {
-            console.error(err);
-            setError("Error uploading or analyzing PDF.");
+            const error = err as ApiError;
+            console.error("Error during analyzePdf:", error);
+            setError(error.message || "Failed to analyze URL.")
         } finally {
             setLoading(false);
         }

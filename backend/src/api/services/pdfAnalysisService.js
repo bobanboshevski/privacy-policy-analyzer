@@ -2,6 +2,8 @@ const fs = require("fs");
 const pdfParse = require('pdf-parse');
 const PDFParser = require("pdf2json");
 const PDFExtract = require('pdf.js-extract').PDFExtract;
+const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
+
 
 /**
  * Analyzes a PDF file and extracts text content
@@ -11,6 +13,7 @@ const PDFExtract = require('pdf.js-extract').PDFExtract;
  * @param {string} pdf.mimetype - The file mime type
  * @returns {Promise<Object>} The analysis result containing extracted text
  */
+
 const analyzeWithPdfParse = async (pdf) => {
     try {
         const data = await pdfParse(pdf.buffer);
@@ -20,6 +23,12 @@ const analyzeWithPdfParse = async (pdf) => {
             .replace(/\n\n/g, ' ')
             .replace(/\n/g, ' ')
             .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: data.numpages,
@@ -31,9 +40,10 @@ const analyzeWithPdfParse = async (pdf) => {
             metadata
         };
     } catch (err) {
-        throw new Error(`PDF analysis failed: ${err.message}`);
+        throw err;
     }
-}
+};
+
 
 /**
  * Analyzes a PDF file using pdf2json library without writing to disk
@@ -71,6 +81,12 @@ const analyzeWithPdf2Json = async (pdf) => {
             .replace(/\n\n/g, " ")
             .replace(/\n/g, " ")
             .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: pdfData.Pages.length,
@@ -137,11 +153,12 @@ const analyzeWithPdfJsExtract = async (pdf) => {
         });
 
         extractedText = pageTexts.join(' ');
-        // extractedText = extractedText
-        //     .replace(/\t/g, ' ')
-        //     .replace(/\n\n/g, ' ')
-        //     .replace(/\n/g, ' ')
-        //     .trim();
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("PDF does not appear to be a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
 
         const metadata = {
             pageCount: data.pages.length,
@@ -152,11 +169,10 @@ const analyzeWithPdfJsExtract = async (pdf) => {
             extractedText,
             metadata
         };
-
     } catch (err) {
         throw new Error(`PDF analysis failed: ${err.message}`);
     }
-}
+};
 
 module.exports = {
     analyzeWithPdfParse,
@@ -164,3 +180,4 @@ module.exports = {
     analyzeWithPdfJsExtract
     // sendTextToPython
 };
+
