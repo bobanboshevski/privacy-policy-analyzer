@@ -15,10 +15,10 @@ export default function UrlInputForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // if (!url.trim()) {
-        //     setError("Please enter a URL.");
-        //     return;
-        // }
+         if (!url.trim()) {
+             setError("Please enter a URL.");
+             return;
+         }
 
         try {
             // new URL(url);
