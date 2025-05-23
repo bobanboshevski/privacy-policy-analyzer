@@ -13,7 +13,7 @@ const analyze = async (url) => {
         browser = await puppeteer.launch({ headless: 'new' });
         const page = await browser.newPage();
 
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
         let extractedText = await page.evaluate(() => {
             const paragraphs = Array.from(document.querySelectorAll('p'));
