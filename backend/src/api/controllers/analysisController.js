@@ -3,8 +3,7 @@ const urlAnalysisService = require('../services/urlAnalysisService');
 const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
-const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
-
+const {isPrivacyPolicy} = require("../../utils/privacyPolicyChecker");
 /**
  * Analyze text content of a privacy policy
  * @param {Object} req - Request object
