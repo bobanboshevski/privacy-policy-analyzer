@@ -1,6 +1,7 @@
 /**
  * Base API client for making HTTP requests
  */
+import {auth} from "@/lib/firebase";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -14,12 +15,22 @@ export async function fetchFromApi<T>(
 ): Promise<T> {
     const url = `${API_URL}${endpoint}`;
 
-    const headers = options.body instanceof FormData
-        ? options.headers || {} // don't set Content-Type for FormData
-        : {
-            'Content-Type': 'application/json',
-            ...options.headers,
-        };
+    // Get token if user is logged in
+    const currentUser = auth.currentUser;
+    const token = currentUser ? await currentUser.getIdToken() : null;
+
+    const baseHeaders: HeadersInit =
+        options.body instanceof FormData
+            ? options.headers || {} // don't override content-type
+            : {
+                'Content-Type': 'application/json',
+                ...(options.headers || {}),
+            };
+
+    const headers: HeadersInit = {
+        ...baseHeaders,
+        ...(token ? {Authorization: `Bearer ${token}`} : {}),
+    };
 
     const response = await fetch(url, {
         ...options,

@@ -22,7 +22,6 @@ const enforceFileOnly = (req, res, next) => {
                 error: 'Only a PDF file is allowed. No additional fields should be sent.'
             });
         }
-
         next();
     });
 };
