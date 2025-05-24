@@ -1,6 +1,5 @@
 import {fetchFromApi} from "@/services/api";
 import {AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
-import {auth} from '@/lib/firebase'
 
 /**
  * Get initial welcome message from the analyzer
