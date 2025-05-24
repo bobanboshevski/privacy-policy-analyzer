@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { AnalysisMode, AnalyzedPrivacyResponse } from "@/lib/types/privacyAnalyzer";
-import { analyzeText } from "@/services/privacyAnalyzer";
+import {useState} from "react";
+import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
+import {analyzeText} from "@/services/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
-import { ApiError } from "next/dist/server/api-utils";
+import LoadingTips from "@/components/ui/LoadingTips";
+import {ApiError} from "@/lib/types/input";
 
 export default function TextInputForm() {
     const [text, setText] = useState('');
@@ -49,6 +50,7 @@ export default function TextInputForm() {
                         {loading ? "Analyzing..." : "Analyze Text"}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-blue-600"/>}
             </form>
 
             <AnalysisResultContainer

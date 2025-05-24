@@ -3,6 +3,7 @@ import {analyzeUrl} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 import {ApiError} from "@/lib/types/input";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 export default function UrlInputForm() {
     const [url, setUrl] = useState("");
@@ -58,6 +59,8 @@ export default function UrlInputForm() {
                         {loading ? "Analyzing..." : "Analyze URL"}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-green-600"/>}
+
                 {/*extracted text in divs with scrolling*/}
                 {/* {result?.extractedText && (
                 <div className="mt-4 bg-gray-900 text-white p-4 rounded max-h-64 overflow-y-auto">
