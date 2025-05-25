@@ -1,4 +1,5 @@
-const {analyzeWithPython} = require("../api/services/ExternalPrivacyAnalysisService");
+const {analyzeWithPython} = require("../api/services/externalPrivacyAnalysisService");
+const {computeOverallScore} = require("./metricScoring");
 
 /**
  * Common PDF analysis logic
@@ -20,11 +21,17 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
         // const claudeSummary = await summarizeText(analysisResult.extractedText);
         // console.log("AI summary: ",claudeSummary);
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
-        console.log(pythonAnalysisResult); // Or pass it to response if needed
+        console.log("Python analysis: ", pythonAnalysisResult);
+
+        const overallScore = computeOverallScore(pythonAnalysisResult);
+        console.log("Overall rating: ", overallScore);
 
         return res.status(200).json({
             success: true,
-            data: analysisResult
+            data: analysisResult,
+            summary: "That part of the code is commented out! Here will be the claude summary, which is commented out.", // claudeSummary
+            nlpAnalysis: pythonAnalysisResult,
+            overallScore: overallScore
         });
     } catch (error) {
         next(error);

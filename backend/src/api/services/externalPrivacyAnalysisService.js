@@ -24,16 +24,3 @@ const analyzeWithPython = async (text) => {
 module.exports = {
     analyzeWithPython
 };
-
-
-// async function sendTextToPython(text) {
-//     try {
-//         const response = await post('http://localhost:8000/api/v1/analyze/text', {
-//             text: text
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error communicating with Python:', error.message);
-//         throw error;
-//     }
-// }

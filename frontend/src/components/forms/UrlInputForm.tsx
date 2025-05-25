@@ -1,67 +1,77 @@
-import { useState } from "react";
-import { analyzeUrl } from "@/services/privacyAnalyzer";
-import { AnalyzeUrlResponse } from "@/lib/types/privacyAnalyzer";
+import {useState} from "react";
+import {analyzeUrl} from "@/services/privacyAnalyzer";
+import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
+import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
+import {ApiError} from "@/lib/types/input";
 
 export default function UrlInputForm() {
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<AnalyzeUrlResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+    const [url, setUrl] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [result, setResult] = useState<AnalyzedPrivacyResponse | null>(null);
+    const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const [mode, setMode] = useState<AnalysisMode>(AnalysisMode.SIMPLE);
 
-    if (!url.trim()) {
-      setError("Please enter a URL");
-      return;
-    }
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    try {
-      new URL(url);
-      setError(null);
-      setLoading(true);
+         if (!url.trim()) {
+             setError("Please enter a URL.");
+             return;
+         }
 
-      const response = await analyzeUrl(url.trim());
-      setResult(response);
-      setError(null);
-      console.log("Scraped response:", response);
-    } catch (err: any) {
-      console.error("API error:", err);
+        try {
+            // new URL(url);
+            setError(null);
+            setLoading(true);
 
-      const apiMessage =
-        err?.response?.data?.error?.toLowerCase() || "";
+            const response = await analyzeUrl(url.trim());
+            setResult(response);
+            console.log("Scraped response:", response);
+        } catch (err) {
+            const error = err as ApiError;
+            console.error("Error during analyzeUrl:", error);
+            setError(error.message || "Failed to analyze URL.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      if (apiMessage.includes("does not appear to point to a privacy policy")) {
-        setError("Please choose another URL");
-      } else {
-        setError("It seems like URL does not contain privacy policy. Please try again");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    return (
+        <>
+            <form onSubmit={handleSubmit} className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4">
+                <input
+                    className="w-full p-3 border rounded-lg text-white bg-gray-800"
+                    placeholder="Enter URL to privacy policy"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                />
 
-  return (
-    <form onSubmit={handleSubmit} className="md:w-[600px] lg:w-[800px] space-y-4">
-      <input
-        className="w-full p-3 border rounded-lg text-white bg-gray-800"
-        placeholder="Enter URL to privacy policy"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
+                {/*{result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>}*/}
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-      {result && <p className="text-green-500 text-sm">{result.extractedText}</p>}
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
+                        disabled={loading}
+                    >
+                        {loading ? "Analyzing..." : "Analyze URL"}
+                    </button>
+                </div>
+                {/*extracted text in divs with scrolling*/}
+                {/* {result?.extractedText && (
+                <div className="mt-4 bg-gray-900 text-white p-4 rounded max-h-64 overflow-y-auto">
+                    <h3 className="text-lg font-bold mb-2">Extracted Text:</h3>
+                    <p className="text-sm leading-relaxed whitespace-pre-line">{result.extractedText}</p>
+                </div>*/}
+            </form>
 
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
-          disabled={loading}
-        >
-          {loading ? "Analyzing..." : "Analyze URL"}
-        </button>
-      </div>
-    </form>
-  );
+            <AnalysisResultContainer
+                error={error}
+                result={result}
+                mode={mode}
+                setMode={setMode}
+            />
+        </>
+    );
 }

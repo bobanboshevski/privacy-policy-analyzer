@@ -1,0 +1,20 @@
+export const metricThresholds: Record<string, (value: number) => boolean> = {
+    flesch_score: (value: number) => value < 30, // lower then 30 means bad
+    gunning_fog_index: (value: number) => value > 16,
+    smog_index: (value: number) => value > 14,
+    dale_chall_score: (value: number) => value > 8,
+    flesch_kincaid_grade: (value: number) => value > 12,
+    avg_sentence_length: (value: number) => value > 25,
+    avg_word_length: (value: number) => value > 6,
+    syntactic_depth: (value: number) => value > 7,
+    vague_word_ratio: (value: number) => value > 0.05,
+    passive_voice_ratio: (value: number) => value > 0.2,
+    conditional_statement_ratio: (value: number) => value > 0.03,
+    coverage_score: (value: number) => value < 0.5,
+    subjectivity: (value: number) => value > 0.3,
+    polarity: (value: number) => Math.abs(value) > 0.2,
+    opinion_density: (value: number) => value > 0.2,
+    pronoun_ratio: (value: number) => value < 0.02,
+    rights_phrase_density: (value: number) => value < 0.1,
+    call_to_action_presence: (value: number) => value === 0,
+};
