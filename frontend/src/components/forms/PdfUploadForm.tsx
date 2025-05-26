@@ -33,8 +33,9 @@ export default function PdfUploadForm() {
             setError(null);
         } catch (err) {
             const error = err as ApiError;
-            console.error("Error during analyzePdf:", error);
-            setError(error.message || "Failed to analyze URL.")
+            console.error(error.message);
+            console.error(error.status);
+            setError(error.message || "Error uploading or analyzing PDF.");
         } finally {
             setLoading(false);
         }
