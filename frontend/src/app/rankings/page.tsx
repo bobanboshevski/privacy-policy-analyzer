@@ -7,7 +7,7 @@ import {PolicyRankingsResponse, PrivacyPolicy} from "@/lib/types/policyRanking";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const RankingsPage = () => {
-    const {user, loading} = useAuth();
+    const {user} = useAuth();
     const router = useRouter();
     const [rankings, setRankings] = useState<PolicyRankingsResponse | null>(null);
 
@@ -37,7 +37,6 @@ const RankingsPage = () => {
         const borderColor = isBest ? "border-green-500" : "border-red-500";
         const titleColor = isBest ? "text-green-700" : "text-red-700";
         const scoreColor = isBest ? "text-green-600" : "text-red-600";
-        const buttonColor = isBest ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600";
 
         return (
             <div className={`bg-white rounded-2xl shadow p-6 border-l-8 border-r-8 ${borderColor}`}>
