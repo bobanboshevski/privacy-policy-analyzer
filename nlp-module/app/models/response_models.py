@@ -77,5 +77,23 @@ class AnalysisResult(BaseModel):
     coverage: CoverageMetrics
     sentiment: SentimentMetrics
     userFocus: UserFocusMetrics
+
+
+class GdprAnalysisResult(BaseModel):
     gdprCompliance: GdprComplianceMetrics
+
+
+class CcpaAnalysisResult(BaseModel):
     ccpaCompliance: CcpaComplianceMetrics
+
+
+# Full analysis result with compliance (for backward compatibility if needed)
+class FullAnalysisResult(BaseModel):
+    readability: ReadabilityMetrics
+    complexity: ComplexityMetrics
+    ambiguity: AmbiguityMetrics
+    coverage: CoverageMetrics
+    sentiment: SentimentMetrics
+    userFocus: UserFocusMetrics
+    gdprCompliance: Optional[GdprComplianceMetrics] = None
+    ccpaCompliance: Optional[CcpaComplianceMetrics] = None

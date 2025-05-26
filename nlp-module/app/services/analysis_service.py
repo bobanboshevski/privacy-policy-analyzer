@@ -3,6 +3,8 @@ from typing import Dict, Any, Optional
 
 from app.models.response_models import (
     AnalysisResult,
+    GdprAnalysisResult,
+    CcpaAnalysisResult,
     ReadabilityMetrics,
     ComplexityMetrics,
     AmbiguityMetrics,
@@ -47,40 +49,14 @@ from app.utils.user_focus_metrics import (
     call_to_action_presence,
 )
 
-from app.utils.gdpr_compliance_metrics import (
-    check_lawful_basis_coverage,
-    check_data_subject_rights_coverage,
-    check_consent_mechanism_quality,
-    check_dpo_information,
-    check_international_transfers,
-    check_security_measures,
-    check_breach_notification,
-    check_retention_periods,
-    gdpr_overall_score,
-    gdpr_compliance_percentage,
-    gdpr_is_compliant
-)
-
-from app.utils.ccpa_compliance_metrics import (
-    check_right_to_know_coverage,
-    check_right_to_delete_coverage,
-    check_right_to_opt_out_coverage,
-    check_non_discrimination_coverage,
-    check_notice_at_collection,
-    check_verification_process,
-    check_authorized_agent_process,
-    ccpa_overall_score,
-    ccpa_compliance_percentage,
-    ccpa_is_compliant
-)
-
 from app.utils.compliance_analyzers import (
     analyze_gdpr_compliance_metrics,
     analyze_ccpa_compliance_metrics
 )
 
+
 def analyze_text(text: str) -> AnalysisResult:
-    """Main text analysis function with all metrics"""
+    """Main text analysis function without compliance metrics"""
     sentences = re.split(r'[.!?]+', text)
     words = text.split()
 
@@ -122,16 +98,29 @@ def analyze_text(text: str) -> AnalysisResult:
         call_to_action_presence=call_to_action_presence(text),
     )
 
-    gdpr_compliance = analyze_gdpr_compliance_metrics(text)
-    ccpa_compliance = analyze_ccpa_compliance_metrics(text)
-
     return AnalysisResult(
         readability=readability,
         complexity=complexity,
         ambiguity=ambiguity,
         coverage=coverage,
         sentiment=sentiment,
-        userFocus=user_focus,
-        gdprCompliance=gdpr_compliance,
+        userFocus=user_focus
+    )
+
+
+def analyze_gdpr_compliance(text: str) -> GdprAnalysisResult:
+    """Separate GDPR compliance analysis function"""
+    gdpr_compliance = analyze_gdpr_compliance_metrics(text)
+    
+    return GdprAnalysisResult(
+        gdprCompliance=gdpr_compliance
+    )
+
+
+def analyze_ccpa_compliance(text: str) -> CcpaAnalysisResult:
+    """Separate CCPA compliance analysis function"""
+    ccpa_compliance = analyze_ccpa_compliance_metrics(text)
+    
+    return CcpaAnalysisResult(
         ccpaCompliance=ccpa_compliance
     )
