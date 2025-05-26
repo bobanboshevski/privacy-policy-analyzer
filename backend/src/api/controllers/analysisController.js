@@ -3,8 +3,7 @@ const urlAnalysisService = require('../services/urlAnalysisService');
 const {analyzeWithPython} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
-const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
-
+const {isPrivacyPolicy} = require('../../utils/privacyPolicyChecker.js');
 const {saveAnalysisToFirestore} = require("../services/firestoreService");
 const {InputType} = require("../../utils/InputType");
 /**
@@ -24,11 +23,11 @@ const analyzeText = async (req, res, next) => {
             });
         }
 
-         if (!isPrivacyPolicy(text)) {
-                    const error = new Error("Text does not contain sufficient words or is not a privacy policy.");
-                    error.statusCode = 400;
-                    throw error;
-                }
+        if (!isPrivacyPolicy(text)) {
+            const error = new Error("Text does not contain sufficient words or is not a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
 
         // const claudeSummary = await summarizeText(text.trim());
         // console.log("AI summary: ",claudeSummary);
