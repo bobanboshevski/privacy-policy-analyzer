@@ -26,3 +26,11 @@ export const metricExplanations: Record<string, string> = {
     rights_phrase_density: " Measures how often user rights-related phrases appear. Good: Higher ratio suggests clearer user rights explanation. Bad: Lower ratio suggests less emphasis on user rights.",
     call_to_action_presence: "Presence of strong user directives. Good: Presence indicates actionable instructions for users. Bad: Absence suggests lack of clear instructions or user engagement."
 };
+
+export const overallScoreExplanation = `
+The overall score (1–10) reflects how clear, user-focused, and privacy-aware the document is.
+
+It’s calculated from key metrics across readability, ambiguity, topic coverage, sentiment, and user relevance — with critical metrics weighted more heavily.
+
+Higher scores mean the document is clearer and more helpful to users.
+`;
