@@ -5,6 +5,7 @@ export async function exportToPdf(data: AnalyzedPrivacyResponse): Promise<Blob> 
     const payload = {
         summary: data.summary,
         metrics: data.nlpAnalysis,
+        overallRating: data.overallScore
     };
     return await fetchFromApi<Blob>('/api/export/pdf', {
         method: 'POST',

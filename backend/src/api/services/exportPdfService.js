@@ -2,7 +2,7 @@ const PDFDocument = require("pdfkit");
 const {metricThresholds, metricExplanations} = require("../../utils/analysisMetrics");
 
 
-const generatePdfBuffer = async (summary, metrics) => {
+const generatePdfBuffer = async (summary, metrics, overallRating) => {
     return new Promise((resolve, reject) => {
         try {
             const doc = new PDFDocument();
@@ -40,13 +40,22 @@ const generatePdfBuffer = async (summary, metrics) => {
                         {indent: 20}
                     );
                 });
-
                 doc.moveDown(1);
             });
 
+            // Overall rating
+            doc.addPage().fontSize(14).text('Overall rating', {underline: true}).moveDown(0.5);
+            let ratingColor = '#22c55e';
+            if (overallRating < 0.50) {
+                ratingColor = '#ef4444';
+            } else if (overallRating < 0.75) {
+                ratingColor = '#facc15';
+            }
+            doc.fontSize(20).fillColor(ratingColor).text(`${(overallRating * 10).toFixed(2)}`);
+            doc.moveDown(1.5);
+
             // Legend
             doc.addPage().fontSize(14).fillColor('#000').text('Metric Legend', {underline: true}).moveDown(0.5);
-
             Object.entries(metricExplanations).forEach(([key, explanation]) => {
                 doc.fontSize(12).text(
                     `• ${key.replaceAll("_", " ").replace(/^./, c => c.toUpperCase())}: ${explanation}`,
