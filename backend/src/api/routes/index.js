@@ -4,8 +4,9 @@ const cheerio = require('cheerio');
 const router = express.Router();
 const analysisRoutes = require('./analysisRoutes');
 const exportRoutes = require('./../routes/exportRoutes');
-
+const policyRoutes = require('./../routes/policyRoutes');
 
 router.use('/analyze', analysisRoutes);
 router.use('/export', exportRoutes);
+router.use('/policies', policyRoutes);
 module.exports = router;
