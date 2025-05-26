@@ -3,6 +3,7 @@ import {analyzePdfFile} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 import {ApiError} from "@/lib/types/input";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -69,6 +70,7 @@ export default function PdfUploadForm() {
                         {loading ? 'Analyzing...' : 'Analyze PDF'}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-purple-600"/>}
             </form>
 
             <AnalysisResultContainer
