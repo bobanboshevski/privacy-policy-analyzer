@@ -23,14 +23,13 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
             <div className="grid bg-gradient-to-br from-black via-gray-900 to-black text-white">
                 <Header/>
-                <main
-                    className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">{children}</main>
+                <main className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">
+                    {children}
+                </main>
                 <Footer/>
             </div>
         </AuthProvider>

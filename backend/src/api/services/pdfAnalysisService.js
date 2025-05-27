@@ -2,7 +2,7 @@ const fs = require("fs");
 const pdfParse = require('pdf-parse');
 const PDFParser = require("pdf2json");
 const PDFExtract = require('pdf.js-extract').PDFExtract;
-const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
+const {isPrivacyPolicy} = require('../../utils/privacyPolicyChecker.js');
 
 
 /**
