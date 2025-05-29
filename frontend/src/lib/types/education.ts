@@ -1,4 +1,4 @@
-interface TrainingItem {
+export interface TrainingItem {
     id: string;
     title: string;
     description: string;

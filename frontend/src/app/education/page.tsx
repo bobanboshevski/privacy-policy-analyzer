@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {getTrainingText} from "@/services/education";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {TrainingItem} from "@/lib/types/education";
 
 export default function TrainingPage() {
     const {user} = useAuth();
