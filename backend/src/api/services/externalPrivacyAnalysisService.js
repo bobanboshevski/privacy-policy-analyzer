@@ -27,7 +27,7 @@ const analyzeWithPython = async (text) => {
  */
 const analyzeGdprWithPython = async (text) => {
     try {
-        const response = await axios.post(`${config.pythonServiceUrl}/api/v1/analyze/gdpr`, {
+        const response = await axios.post(`${baseURL}/api/v1/analyze/gdpr`, {
             text: text
         }, {
             headers: {
@@ -54,7 +54,7 @@ const analyzeGdprWithPython = async (text) => {
  */
 const analyzeCcpaWithPython = async (text) => {
     try {
-        const response = await axios.post(`${config.pythonServiceUrl}/api/v1/analyze/ccpa`, {
+        const response = await axios.post(`${baseURL}/api/v1/analyze/ccpa`, {
             text: text
         }, {
             headers: {

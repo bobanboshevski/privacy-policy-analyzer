@@ -33,6 +33,19 @@ router.post('/pdf/pdf-js-extract', requestRestrictions.enforceFileOnly, analysis
 router.post('/gdpr-compliance', analysisController.analyzeGdprCompliance);
 router.post('/ccpa-compliance', analysisController.analyzeCcpaCompliance);
 
+// URL compliance analysis routes
+router.post('/url/gdpr-compliance', analysisController.analyzeUrlGdprCompliance);
+router.post('/url/ccpa-compliance', analysisController.analyzeUrlCcpaCompliance);
+
+// PDF compliance analysis routes
+router.post('/pdf/gdpr-compliance/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdfGdprCompliance);
+router.post('/pdf/ccpa-compliance/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdfCcpaCompliance);
+router.post('/pdf/gdpr-compliance/pdf-2-json', requestRestrictions.enforceFileOnly, analysisController.analyzePdf2JsonGdprCompliance);
+router.post('/pdf/ccpa-compliance/pdf-2-json', requestRestrictions.enforceFileOnly, analysisController.analyzePdf2JsonCcpaCompliance);
+router.post('/pdf/gdpr-compliance/pdf-js-extract', requestRestrictions.enforceFileOnly, analysisController.analyzePdfJsExtractGdprCompliance);
+router.post('/pdf/ccpa-compliance/pdf-js-extract', requestRestrictions.enforceFileOnly, analysisController.analyzePdfJsExtractCcpaCompliance);
+
+
 router.post('/url/scrape', analysisController.analyzeUrl);
 
 
