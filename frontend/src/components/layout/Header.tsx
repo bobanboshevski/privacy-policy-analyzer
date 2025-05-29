@@ -22,7 +22,7 @@ export default function Header() {
                     <Link href="#about" className="hover:text-indigo-400 cursor-pointer">About</Link>
                     <Link href="#docs" className="hover:text-indigo-400 cursor-pointer">Docs</Link>
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
-                    {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer">Training</Link>}
+                    {user && <Link href="/education" className="hover:text-indigo-400 cursor-pointer">Education</Link>}
                     {user && (
                         <button onClick={logout} className="hover:text-red-400 ml-4 cursor-pointer">
                             Logout
