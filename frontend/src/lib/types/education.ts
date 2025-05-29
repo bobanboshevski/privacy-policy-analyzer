@@ -12,6 +12,6 @@ interface TrainingItem {
     updatedAt: string | null;
 }
 
-interface TrainingDataResponse {
+export interface TrainingDataResponse {
     trainingItems: TrainingItem[];
 }
