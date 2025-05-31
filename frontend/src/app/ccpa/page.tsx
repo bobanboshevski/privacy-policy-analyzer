@@ -3,7 +3,6 @@
 import CcpaInputFormContainer from "@/components/forms/ccpa/CcpaInputFormContainer";
 import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 
 export default function CcpaPage() {
