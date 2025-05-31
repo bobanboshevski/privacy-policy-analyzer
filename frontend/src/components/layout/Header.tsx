@@ -19,12 +19,12 @@ export default function Header() {
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex space-x-8 text-lg font-semibold text-gray-300">
                     <Link href="/" className="hover:text-indigo-400 cursor-pointer">Home</Link>
-                    <Link href="#about" className="hover:text-indigo-400 cursor-pointer">About</Link>
                     <Link href="#docs" className="hover:text-indigo-400 cursor-pointer">Docs</Link>
                     {user && <Link href="/gdpr" className="hover:text-indigo-400 cursor-pointer">GDPR</Link>}
                     {user && <Link href="/ccpa" className="hover:text-indigo-400 cursor-pointer">CCPA</Link>}
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
                     {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer">Training</Link>}
+                    <Link href="/about-us" className="hover:text-indigo-400 cursor-pointer">About us</Link>
                     {user && (
                         <button onClick={logout} className="hover:text-red-40=0 ml-4 cursor-pointer">
                             Logout
