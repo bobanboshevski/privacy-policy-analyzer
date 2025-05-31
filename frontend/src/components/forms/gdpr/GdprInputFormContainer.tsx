@@ -3,17 +3,17 @@
 import {useState} from "react";
 import InputMethodSelector from "@/components/ui/InputMethodSelector";
 import {InputMethod} from "@/lib/types/input";
-import TextInputForm from "@/components/forms/TextInputForm";
-import PdfUploadForm from "@/components/forms/PdfUploadForm";
-import UrlInputForm from "@/components/forms/UrlInputForm";
 import {AnimatePresence, motion} from "framer-motion";
 import {fadeSlide} from "@/lib/utils/animations";
+import GdprTextInputForm from "@/components/forms/gdpr/GdprTextInputForm";
+import GdprPdfUploadForm from "@/components/forms/gdpr/GdprPdfUploadForm";
+import GdprUrlInputForm from "@/components/forms/gdpr/GdprUrlInputForm";
 
-export default function InputFormContainer() {
+export default function GdprInputFormContainer() {
     const [method, setMethod] = useState<InputMethod>('text');
 
     return (
-        <div className="w-full mx-auto px-3 py-4 space-y-8 items-center"> {/* justify-items-center */}
+        <div className="w-full max-w-3xl mx-auto py-4 flex flex-col justify-items-center space-y-8 mt-8">
             <InputMethodSelector method={method} onChange={setMethod}/>
 
             <AnimatePresence mode="wait">
@@ -21,9 +21,9 @@ export default function InputFormContainer() {
                     key={method}
                     {...fadeSlide}
                 >
-                    {method === 'text' && <TextInputForm/>}
-                    {method === 'pdf' && <PdfUploadForm/>}
-                    {method === 'url' && <UrlInputForm/>}
+                    {method === 'text' && <GdprTextInputForm/>}
+                    {method === 'pdf' && <GdprPdfUploadForm/>}
+                    {method === 'url' && <GdprUrlInputForm/>}
                 </motion.div>
             </AnimatePresence>
         </div>

@@ -3,9 +3,10 @@ const {computeOverallScore} = require("./metricScoring");
 const {saveAnalysisToFirestore, uploadPdfAndGetPath} = require("../api/services/firestoreService");
 const {InputType} = require("../utils/InputType");
 const {getStorage} = require("firebase-admin/storage");
+const {summarizeText} = require("../api/services/claudeAiService");
 
 /**
- * Common PDF analysis logic
+ * Common PDF root-analysis logic
  * @param {Object} req - Request object
  * @param {Object} res - Response object
  * @param {Function} next - Next middleware
@@ -20,12 +21,10 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
         }
 
         const analysisResult = await analysisFunction(req.file);
-        // const claudeSummary = await summarizeText(analysisResult.extractedText);
-        const claudeSummary = "That part of the code is commented out! Here will be the claude summary, " +
-            "which is commented out.";
-        // console.log("AI summary: ",claudeSummary);
+        const claudeSummary = await summarizeText(analysisResult.extractedText);
+        console.log("AI summary: ", claudeSummary);
         const pythonAnalysisResult = await analyzeWithPython(analysisResult.extractedText);
-        console.log("Python analysis: ", pythonAnalysisResult);
+        console.log("Python root-analysis: ", pythonAnalysisResult);
 
         const overallScore = computeOverallScore(pythonAnalysisResult);
         console.log("Overall rating: ", overallScore);
@@ -48,7 +47,7 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
         return res.status(200).json({
             success: true,
             data: analysisResult,
-            summary: claudeSummary,
+            summary: claudeSummary[0].text,
             nlpAnalysis: pythonAnalysisResult,
             overallScore: overallScore
         });

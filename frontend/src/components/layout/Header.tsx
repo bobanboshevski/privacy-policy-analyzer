@@ -21,10 +21,12 @@ export default function Header() {
                     <Link href="/" className="hover:text-indigo-400 cursor-pointer">Home</Link>
                     <Link href="#about" className="hover:text-indigo-400 cursor-pointer">About</Link>
                     <Link href="#docs" className="hover:text-indigo-400 cursor-pointer">Docs</Link>
+                    {user && <Link href="/gdpr" className="hover:text-indigo-400 cursor-pointer">GDPR</Link>}
+                    {user && <Link href="/ccpa" className="hover:text-indigo-400 cursor-pointer">CCPA</Link>}
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
                     {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer">Training</Link>}
                     {user && (
-                        <button onClick={logout} className="hover:text-red-400 ml-4 cursor-pointer">
+                        <button onClick={logout} className="hover:text-red-40=0 ml-4 cursor-pointer">
                             Logout
                         </button>
                     )}
@@ -50,6 +52,8 @@ export default function Header() {
                           onClick={() => setMenuOpen(false)}>About</Link>
                     <Link href="#docs" className="hover:text-indigo-400 cursor-pointer"
                           onClick={() => setMenuOpen(false)}>Docs</Link>
+                    {user && <Link href="/gdpr" className="hover:text-indigo-400 cursor-pointer"
+                                   onClick={() => setMenuOpen(false)}>GDPR</Link>}
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
                     {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer"
                                    onClick={() => setMenuOpen(false)}>Training</Link>}

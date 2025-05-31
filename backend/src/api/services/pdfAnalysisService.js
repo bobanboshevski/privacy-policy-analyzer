@@ -11,7 +11,7 @@ const {isPrivacyPolicy} = require('../../utils/privacyPolicyChecker.js');
  * @param {Buffer} pdf.buffer - The file content as a buffer
  * @param {string} pdf.originalname - The original filename
  * @param {string} pdf.mimetype - The file mime type
- * @returns {Promise<Object>} The analysis result containing extracted text
+ * @returns {Promise<Object>} The root-analysis result containing extracted text
  */
 
 const analyzeWithPdfParse = async (pdf) => {
@@ -51,7 +51,7 @@ const analyzeWithPdfParse = async (pdf) => {
  * @param {Buffer} pdf.buffer - The file content as a buffer
  * @param {string} pdf.originalname - The original filename
  * @param {string} pdf.mimetype - The file mime type
- * @returns {Promise<Object>} The analysis result containing extracted text and metadata
+ * @returns {Promise<Object>} The root-analysis result containing extracted text and metadata
  */
 const analyzeWithPdf2Json = async (pdf) => {
     try {
@@ -108,7 +108,7 @@ const analyzeWithPdf2Json = async (pdf) => {
  * @param {Buffer} pdf.buffer - The file content as a buffer
  * @param {string} pdf.originalname - The original filename
  * @param {string} pdf.mimetype - The file mime type
- * @returns {Promise<Object>} The analysis result containing extracted text and metadata
+ * @returns {Promise<Object>} The root-analysis result containing extracted text and metadata
  */
 const analyzeWithPdfJsExtract = async (pdf) => {
     try {

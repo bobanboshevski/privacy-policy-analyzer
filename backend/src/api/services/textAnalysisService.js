@@ -9,10 +9,10 @@ const analyze = async (text) => {
     //     // Perform text preprocessing if needed
     //     const processedText = text.trim();
     //
-    //     // Get complexity analysis from Python service
+    //     // Get complexity root-analysis from Python service
     //     // const complexityResults = await analyze(processedText);
     //
-    //     // Get privacy analysis from Python service
+    //     // Get privacy root-analysis from Python service
     //     // const privacyResults = await privacyAnalyzer.analyze(processedText);
     //
     //     // Combine results

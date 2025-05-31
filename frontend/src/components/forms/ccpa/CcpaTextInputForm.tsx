@@ -1,16 +1,14 @@
 import {useState} from "react";
-import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
-import {analyzeText} from "@/services/privacyAnalyzer";
-import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
-import LoadingTips from "@/components/ui/LoadingTips";
-import {ApiError} from "@/lib/types/input";
+import {analyzeText} from "@/services/ccpaPrivacyAnalyzer";
+import {ApiError} from "next/dist/server/api-utils";
+import {AnalyzedCcpaPrivacyResponse} from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
+import CcpaAnalysisResultContainer from "@/components/ui/ccpa/CcpaAnalysisResultContainer";
 
-export default function TextInputForm() {
+export default function CcpaTextInputForm() {
     const [text, setText] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<AnalyzedPrivacyResponse | null>(null);
+    const [result, setResult] = useState<AnalyzedCcpaPrivacyResponse | null>(null);
     const [loading, setLoading] = useState(false);
-    const [mode, setMode] = useState<AnalysisMode>(AnalysisMode.SIMPLE);
 
     const handleSumbit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,7 +30,8 @@ export default function TextInputForm() {
 
     return (
         <div>
-            <form onSubmit={handleSumbit} className="sm:w-[500px] md:w-[600px] lg:w-[800px] space-y-4">
+            <form onSubmit={handleSumbit}
+                  className="w-full max-w-[95%] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[800px] space-y-4 mx-auto">
                 <textarea
                     className="w-full p-3 border rounded-lg text-white bg-gray-800
                 focus:outline-none focus:border-none focus:ring-2 focus:ring-blue-500"
@@ -50,14 +49,11 @@ export default function TextInputForm() {
                         {loading ? "Analyzing..." : "Analyze Text"}
                     </button>
                 </div>
-                {loading && <LoadingTips colorClass="text-blue-600"/>}
             </form>
 
-            <AnalysisResultContainer
+            <CcpaAnalysisResultContainer
                 error={error}
                 result={result}
-                mode={mode}
-                setMode={setMode}
             />
         </div>
     )
