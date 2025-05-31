@@ -12,7 +12,7 @@ const AboutPage = () => {
 
   useEffect(() => {
     setIsVisible(true);
-    const handleMouseMove = (e: { clientX: any; clientY: any; }) => {
+    const handleMouseMove = (e: { clientX: number; clientY: number; }) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
