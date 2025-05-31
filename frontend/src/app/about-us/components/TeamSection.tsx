@@ -17,7 +17,7 @@ const TeamSection = ({isVisible}: { isVisible: boolean }) => {
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
-                {teamMembers.map((member, i) => (
+                {teamMembers.map((member) => (
                     <TeamCard key={member.name} member={member}/>
                 ))}
             </div>
