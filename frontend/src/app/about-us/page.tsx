@@ -132,7 +132,7 @@ const AboutPage = () => {
                     {[
                         {name: "Boban Boshevski", role: "Student & Developer", color: "from-purple-500 to-blue-500"},
                         {name: "Andrej Bokonjic", role: "Student & Developer", color: "from-blue-500 to-emerald-500"}
-                    ].map((member, i) => (
+                    ].map((member) => (
                         <TeamCard key={member.name} member={member}/>
                     ))}
                 </div>
