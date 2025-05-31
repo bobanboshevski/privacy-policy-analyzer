@@ -133,7 +133,7 @@ const AboutPage = () => {
                         {name: "Boban Boshevski", role: "Student & Developer", color: "from-purple-500 to-blue-500"},
                         {name: "Andrej Bokonjic", role: "Student & Developer", color: "from-blue-500 to-emerald-500"}
                     ].map((member, i) => (
-                        <TeamCard key={member.name} member={member} index={i}/>
+                        <TeamCard key={member.name} member={member}/>
                     ))}
                 </div>
             </section>
@@ -186,9 +186,8 @@ const VisionCard = ({icon, title, description}: {
     </div>
 );
 
-const TeamCard = ({member, index}: {
+const TeamCard = ({member}: {
     member: { name: string; role: string; color: string };
-    index: number
 }) => (
     <div
         className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl shadow-2xl hover:shadow-purple-500/20 hover:bg-white/10 transition-all duration-500 transform hover:-translate-y-2 border border-white/10 group relative overflow-hidden">
