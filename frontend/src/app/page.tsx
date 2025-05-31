@@ -8,7 +8,7 @@ export default function Home() {
     const {message, loading, error} = useApiData();
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">
+        <div className="flex flex-col gap-4 items-center justify-items-center text-center min-h-screen mt-30">
             <h1 className="text-4xl font-bold">Privacy Policy Analyzer</h1>
 
             {loading ? (
@@ -23,6 +23,5 @@ export default function Home() {
 
             <InputFormContainer/>
         </div>
-        //</div>
     );
 }

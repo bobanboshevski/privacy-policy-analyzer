@@ -30,14 +30,15 @@ router.post('/pdf/pdf-parse', requestRestrictions.enforceFileOnly, analysisContr
 router.post('/pdf/pdf-2-json', requestRestrictions.enforceFileOnly, analysisController.analyzePdf2Json);
 router.post('/pdf/pdf-js-extract', requestRestrictions.enforceFileOnly, analysisController.analyzePdfJsExtract);
 
-router.post('/gdpr-compliance', analysisController.analyzeGdprCompliance);
-router.post('/ccpa-compliance', analysisController.analyzeCcpaCompliance);
+router.post('/text/gdpr-compliance', analysisController.analyzeGdprCompliance);
+router.post('/text/ccpa-compliance', analysisController.analyzeCcpaCompliance);
 
-// URL compliance analysis routes
+// URL compliance root-analysis routes (GDPR and CCPA)
 router.post('/url/gdpr-compliance', analysisController.analyzeUrlGdprCompliance);
 router.post('/url/ccpa-compliance', analysisController.analyzeUrlCcpaCompliance);
 
-// PDF compliance analysis routes
+// PDF compliance root-analysis routes (GDPR and CCPA)
+// TODO: WE SHOULD ADD TOKEN CHECK FUNCTION WHICH IS ON MAIN BRANCH !!!
 router.post('/pdf/gdpr-compliance/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdfGdprCompliance);
 router.post('/pdf/ccpa-compliance/pdf-parse', requestRestrictions.enforceFileOnly, analysisController.analyzePdfCcpaCompliance);
 router.post('/pdf/gdpr-compliance/pdf-2-json', requestRestrictions.enforceFileOnly, analysisController.analyzePdf2JsonGdprCompliance);
@@ -51,17 +52,17 @@ router.post('/url/scrape', analysisController.analyzeUrl);
 
 router.post('/test-fastapi', async (req, res) => {
     try {
-        const { text } = req.body;
+        const {text} = req.body;
         const result = await sendTextToPython(text);
         res.json(result);
     } catch (err) {
-        res.status(500).json({ error: 'Python service failed' });
+        res.status(500).json({error: 'Python service failed'});
     }
 });
 
 /* CHECKING IF FIREBASE IS WORKING */
 router.get('/secure-analysis', verifyFirebaseToken, (req, res) => {
-    res.json({ message: 'Access granted', user: req.user });
+    res.json({message: 'Access granted', user: req.user});
 });
 
 

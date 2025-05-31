@@ -1,9 +1,14 @@
 const pdfAnalysisService = require('../services/pdfAnalysisService');
 const urlAnalysisService = require('../services/urlAnalysisService');
-const {analyzeWithPython, analyzeGdprWithPython, analyzeCcpaWithPython} = require("../services/externalPrivacyAnalysisService");
+const {
+    analyzeWithPython,
+    analyzeGdprWithPython,
+    analyzeCcpaWithPython
+} = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
-const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
+const {isPrivacyPolicy} = require('../../utils/privacyPolicyChecker.js');
+const {summarizeText} = require("../services/claudeAiService");
 
 /**
  * Analyze text content of a privacy policy (without compliance metrics)
@@ -30,13 +35,13 @@ const analyzeText = async (req, res, next) => {
 
         const pythonAnalysisResult = await analyzeWithPython(text.trim());
         const overallScore = computeOverallScore(pythonAnalysisResult);
-        
+        const claudeSummary = await summarizeText(text);
         console.log("overall score:", overallScore);
 
         return res.status(200).json({
             success: true,
             data: {extractedText: text.trim()},
-            summary: "This is temporary message",
+            summary: claudeSummary[0].text,
             nlpAnalysis: pythonAnalysisResult,
             overallScore: overallScore
         });
@@ -69,13 +74,13 @@ const analyzeGdprCompliance = async (req, res, next) => {
         }
 
         const gdprAnalysisResult = await analyzeGdprWithPython(text.trim());
-        
-        console.log("GDPR compliance analysis:", gdprAnalysisResult);
+
+        console.log("GDPR compliance root-analysis:", gdprAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: {extractedText: text.trim()},
-            gdprCompliance: gdprAnalysisResult
+            gdprCompliance: gdprAnalysisResult.gdprCompliance
         });
     } catch (error) {
         next(error);
@@ -106,13 +111,13 @@ const analyzeCcpaCompliance = async (req, res, next) => {
         }
 
         const ccpaAnalysisResult = await analyzeCcpaWithPython(text.trim());
-        
-        console.log("CCPA compliance analysis:", ccpaAnalysisResult);
+
+        console.log("CCPA compliance root-analysis:", ccpaAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: {extractedText: text.trim()},
-            ccpaCompliance: ccpaAnalysisResult
+            ccpaCompliance: ccpaAnalysisResult.ccpaCompliance
         });
     } catch (error) {
         next(error);
@@ -141,14 +146,16 @@ const analyzeUrl = async (req, res, next) => {
 
         const pythonAnalysisResult = await analyzeWithPython(result.extractedText);
         const overallScore = computeOverallScore(pythonAnalysisResult);
-        
+
         console.log(pythonAnalysisResult);
         console.log("Overall rating: ", overallScore);
+
+        const claudeSummary = await summarizeText(result.extractedText);
 
         return res.status(200).json({
             success: true,
             data: result,
-            summary: "That part of the code is commented out!",
+            summary: claudeSummary[0].text,
             nlpAnalysis: pythonAnalysisResult,
             overallScore: overallScore
         });
@@ -195,7 +202,7 @@ const analyzeUrlGdprCompliance = async (req, res, next) => {
         }
 
         const result = await urlAnalysisService.analyze(url);
-        console.log("URL scraped text for GDPR analysis: ", result);
+        console.log("URL scraped text for GDPR root-analysis: ", result);
 
         if (!isPrivacyPolicy(result.extractedText)) {
             const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
@@ -204,13 +211,13 @@ const analyzeUrlGdprCompliance = async (req, res, next) => {
         }
 
         const gdprAnalysisResult = await analyzeGdprWithPython(result.extractedText);
-        
-        console.log("URL GDPR compliance analysis:", gdprAnalysisResult);
+
+        console.log("URL GDPR compliance root-analysis:", gdprAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: result,
-            gdprCompliance: gdprAnalysisResult
+            gdprCompliance: gdprAnalysisResult.gdprCompliance
         });
     } catch (error) {
         next(error);
@@ -235,7 +242,7 @@ const analyzeUrlCcpaCompliance = async (req, res, next) => {
         }
 
         const result = await urlAnalysisService.analyze(url);
-        console.log("URL scraped text for CCPA analysis: ", result);
+        console.log("URL scraped text for CCPA root-analysis: ", result);
 
         if (!isPrivacyPolicy(result.extractedText)) {
             const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
@@ -244,13 +251,13 @@ const analyzeUrlCcpaCompliance = async (req, res, next) => {
         }
 
         const ccpaAnalysisResult = await analyzeCcpaWithPython(result.extractedText);
-        
-        console.log("URL CCPA compliance analysis:", ccpaAnalysisResult);
+
+        console.log("URL CCPA compliance root-analysis:", ccpaAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: result,
-            ccpaCompliance: ccpaAnalysisResult
+            ccpaCompliance: ccpaAnalysisResult.ccpaCompliance
         });
     } catch (error) {
         next(error);
@@ -258,12 +265,12 @@ const analyzeUrlCcpaCompliance = async (req, res, next) => {
 };
 
 /**
- * Helper function for PDF GDPR compliance analysis
+ * Helper function for PDF GDPR compliance root-analysis
  */
 const handlePdfGdprCompliance = async (req, res, next, analyzeFunction) => {
     try {
         const result = await analyzeFunction(req.file);
-        
+
         if (!result.extractedText || !isPrivacyPolicy(result.extractedText)) {
             const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
             error.statusCode = 400;
@@ -271,13 +278,13 @@ const handlePdfGdprCompliance = async (req, res, next, analyzeFunction) => {
         }
 
         const gdprAnalysisResult = await analyzeGdprWithPython(result.extractedText);
-        
-        console.log("PDF GDPR compliance analysis:", gdprAnalysisResult);
+
+        console.log("PDF GDPR compliance root-analysis:", gdprAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: result,
-            gdprCompliance: gdprAnalysisResult
+            gdprCompliance: gdprAnalysisResult.gdprCompliance
         });
     } catch (error) {
         next(error);
@@ -285,12 +292,12 @@ const handlePdfGdprCompliance = async (req, res, next, analyzeFunction) => {
 };
 
 /**
- * Helper function for PDF CCPA compliance analysis
+ * Helper function for PDF CCPA compliance root-analysis
  */
 const handlePdfCcpaCompliance = async (req, res, next, analyzeFunction) => {
     try {
         const result = await analyzeFunction(req.file);
-        
+
         if (!result.extractedText || !isPrivacyPolicy(result.extractedText)) {
             const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
             error.statusCode = 400;
@@ -298,13 +305,13 @@ const handlePdfCcpaCompliance = async (req, res, next, analyzeFunction) => {
         }
 
         const ccpaAnalysisResult = await analyzeCcpaWithPython(result.extractedText);
-        
-        console.log("PDF CCPA compliance analysis:", ccpaAnalysisResult);
+
+        console.log("PDF CCPA compliance root-analysis:", ccpaAnalysisResult);
 
         return res.status(200).json({
             success: true,
             data: result,
-            ccpaCompliance: ccpaAnalysisResult
+            ccpaCompliance: ccpaAnalysisResult.ccpaCompliance
         });
     } catch (error) {
         next(error);
@@ -312,7 +319,7 @@ const handlePdfCcpaCompliance = async (req, res, next, analyzeFunction) => {
 };
 
 /**
- * PDF GDPR compliance analysis functions
+ * PDF GDPR compliance root-analysis functions
  */
 const analyzePdfGdprCompliance = (req, res, next) => {
     return handlePdfGdprCompliance(req, res, next, pdfAnalysisService.analyzeWithPdfParse);
@@ -327,7 +334,7 @@ const analyzePdfJsExtractGdprCompliance = (req, res, next) => {
 };
 
 /**
- * PDF CCPA compliance analysis functions
+ * PDF CCPA compliance root-analysis functions
  */
 const analyzePdfCcpaCompliance = (req, res, next) => {
     return handlePdfCcpaCompliance(req, res, next, pdfAnalysisService.analyzeWithPdfParse);

@@ -2,8 +2,8 @@
 
 import React from "react";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
-import ResultViewModeSwitcher from "./ResultViewModeSwitcher";
-import AnalysisResult from "./AnalysisResult";
+import ResultViewModeSwitcher from "@/components/ui/ResultViewModeSwitcher";
+import AnalysisResult from "@/components/ui/root-analysis/AnalysisResult";
 
 interface AnalysisResultContainerProps {
     error: string | null;

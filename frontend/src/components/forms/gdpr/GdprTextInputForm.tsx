@@ -1,15 +1,14 @@
-import { useState } from "react";
-import { AnalysisMode, AnalyzedPrivacyResponse } from "@/lib/types/privacyAnalyzer";
-import { analyzeText } from "@/services/privacyAnalyzer";
-import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
-import { ApiError } from "next/dist/server/api-utils";
+import {useState} from "react";
+import {analyzeText} from "@/services/gdprPrivacyAnalyzer";
+import {ApiError} from "next/dist/server/api-utils";
+import {AnalyzedGdprPrivacyResponse} from "@/lib/types/gdpr/gdprPrivacyAnalyzer";
+import GdprAnalysisResultContainer from "@/components/ui/gdpr/GdprAnalysisResultContainer";
 
-export default function TextInputForm() {
+export default function GdprTextInputForm() {
     const [text, setText] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<AnalyzedPrivacyResponse | null>(null);
+    const [result, setResult] = useState<AnalyzedGdprPrivacyResponse | null>(null);
     const [loading, setLoading] = useState(false);
-    const [mode, setMode] = useState<AnalysisMode>(AnalysisMode.SIMPLE);
 
     const handleSumbit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,7 +30,8 @@ export default function TextInputForm() {
 
     return (
         <div>
-            <form onSubmit={handleSumbit} className="sm:w-[500px] md:w-[600px] lg:w-[800px] space-y-4">
+            <form onSubmit={handleSumbit}
+                  className="w-full max-w-[95%] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[800px] space-y-4 mx-auto">
                 <textarea
                     className="w-full p-3 border rounded-lg text-white bg-gray-800
                 focus:outline-none focus:border-none focus:ring-2 focus:ring-blue-500"
@@ -51,11 +51,9 @@ export default function TextInputForm() {
                 </div>
             </form>
 
-            <AnalysisResultContainer
+            <GdprAnalysisResultContainer
                 error={error}
                 result={result}
-                mode={mode}
-                setMode={setMode}
             />
         </div>
     )
