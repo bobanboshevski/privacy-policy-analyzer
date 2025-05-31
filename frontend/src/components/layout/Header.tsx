@@ -19,7 +19,7 @@ export default function Header() {
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex space-x-8 text-lg font-semibold text-gray-300">
                     <Link href="/" className="hover:text-indigo-400 cursor-pointer">Home</Link>
-                    <Link href="#about" className="hover:text-indigo-400 cursor-pointer">About</Link>
+                    <Link href="/about" className="hover:text-indigo-400 cursor-pointer">About</Link>
                     <Link href="#docs" className="hover:text-indigo-400 cursor-pointer">Docs</Link>
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
                     {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer">Training</Link>}
