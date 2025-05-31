@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import BackgroundElements from "./components/BackgroundElements";
-import HeroSection from "./components/HeroSection";
-import HighlightsSection from "./components/HighlightsSection";
-import VisionSection from "./components/VisionSection";
-import TeamSection from "./components/TeamSection";
+import BackgroundElements from "../about-us/components/BackgroundElements";
+import HeroSection from "../about-us/components/HeroSection";
+import HighlightsSection from "../about-us/components/HighlightsSection";
+import VisionSection from "../about-us/components/VisionSection";
+import TeamSection from "../about-us/components/TeamSection";
 
 const AboutPage = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
