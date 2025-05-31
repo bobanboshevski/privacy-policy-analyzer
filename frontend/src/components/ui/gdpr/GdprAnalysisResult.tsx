@@ -3,7 +3,6 @@
 import {AnimatePresence, motion} from "framer-motion";
 import {gdprRenderMetric} from "@/lib/utils/gdpr/gdprRenderHelpers";
 import {easyMotionProps} from "@/lib/utils/animations";
-import {useEffect, useRef, useState} from "react";
 import {AnalyzedGdprPrivacyResponse} from "@/lib/types/gdpr/gdprPrivacyAnalyzer";
 
 interface Props {
