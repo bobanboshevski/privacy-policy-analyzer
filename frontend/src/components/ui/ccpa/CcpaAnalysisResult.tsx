@@ -3,7 +3,6 @@
 import {AnimatePresence, motion} from "framer-motion";
 import {ccpaRenderMetric} from "@/lib/utils/ccpa/ccpaRenderHelpers";
 import {easyMotionProps} from "@/lib/utils/animations";
-import {useEffect, useRef, useState} from "react";
 import {AnalyzedCcpaPrivacyResponse} from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
 
 interface Props {
@@ -12,8 +11,8 @@ interface Props {
 
 export default function CcpaAnalysisResult({result}: Props) {
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
+    // const dropdownRef = useRef<HTMLDivElement>(null);
 
     // async function handleExportPDF() {
     //     try {
@@ -31,23 +30,23 @@ export default function CcpaAnalysisResult({result}: Props) {
     //     }
     // }
 
-    function handleExportCSV() {
-        // TODO: implement CSV export logic
-        setDropdownOpen(false);
-    }
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setDropdownOpen(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // function handleExportCSV() {
+    //     // TODO: implement CSV export logic
+    //     setDropdownOpen(false);
+    // }
+    //
+    // useEffect(() => {
+    //     function handleClickOutside(event: MouseEvent) {
+    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    //             setDropdownOpen(false);
+    //         }
+    //     }
+    //
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);
 
     return (
         <div className="bg-gray-900 text-white p-4 rounded-lg shadow-md space-y-4">

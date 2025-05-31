@@ -12,8 +12,8 @@ interface Props {
 
 export default function GdprAnalysisResult({result}: Props) {
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
+    // const dropdownRef = useRef<HTMLDivElement>(null);
 
     // async function handleExportPDF() {
     //     try {
@@ -31,23 +31,23 @@ export default function GdprAnalysisResult({result}: Props) {
     //     }
     // }
 
-    function handleExportCSV() {
-        // TODO: implement CSV export logic
-        setDropdownOpen(false);
-    }
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setDropdownOpen(false);
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // function handleExportCSV() {
+    //     // TODO: implement CSV export logic
+    //     setDropdownOpen(false);
+    // }
+    //
+    // useEffect(() => {
+    //     function handleClickOutside(event: MouseEvent) {
+    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    //             setDropdownOpen(false);
+    //         }
+    //     }
+    //
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);
 
     return (
         <div className="bg-gray-900 text-white p-4 rounded-lg shadow-md space-y-4">
@@ -56,7 +56,6 @@ export default function GdprAnalysisResult({result}: Props) {
                     key="simple"
                     {...easyMotionProps}
                 >
-
                     <h3 className="text-lg font-semibold pt-4">GDPR Compliance Metrics</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-6">
                         {gdprRenderMetric("lawful_basis_coverage", result.gdprCompliance.lawful_basis_coverage)}

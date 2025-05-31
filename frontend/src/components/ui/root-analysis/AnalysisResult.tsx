@@ -23,7 +23,11 @@ export default function AnalysisResult({result, mode}: Props) {
     const toggleSection = (section: string) => {
         setExpandedSections(prev => {
             const newSet = new Set(prev);
-            newSet.has(section) ? newSet.delete(section) : newSet.add(section);
+            if (newSet.has(section)) {
+                newSet.delete(section);
+            } else {
+                newSet.add(section);
+            }
             return newSet;
         });
     };
