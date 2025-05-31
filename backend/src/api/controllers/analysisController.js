@@ -7,7 +7,10 @@ const {
 } = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
-const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
+const {isPrivacyPolicy} = require('../../utils/privacyPolicyChecker.js');
+const {summarizeText} = require("../services/claudeAiService");
+const {saveAnalysisToFirestore} = require("../services/firestoreService");
+const {InputType} = require("../../utils/InputType");
 
 /**
  * Analyze text content of a privacy policy (without compliance metrics)
