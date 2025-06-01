@@ -42,7 +42,7 @@ export default function AuthForm() {
         const provider = new GoogleAuthProvider();
         try {
             await signInWithPopup(auth, provider);
-            router.push("/training");
+            router.push("/education");
         } catch (error) {
             alert("Google login failed: " + (error as Error).message);
         }
