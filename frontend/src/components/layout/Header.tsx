@@ -24,7 +24,6 @@ export default function Header() {
                     {user && <Link href="/ccpa" className="hover:text-indigo-400 cursor-pointer">CCPA</Link>}
                     {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
                     {user && <Link href="/education" className="hover:text-indigo-400 cursor-pointer">Education</Link>}
-                    {user && <Link href="/training" className="hover:text-indigo-400 cursor-pointer">Training</Link>}
                     <Link href="/about-us" className="hover:text-indigo-400 cursor-pointer">About us</Link>
                     {user && (
                         <button onClick={logout} className="hover:text-red-40=0 ml-4 cursor-pointer">
