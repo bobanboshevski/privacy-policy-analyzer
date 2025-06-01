@@ -49,7 +49,7 @@ const analyzeText = async (req, res, next) => {
             extractedText: text.trim(),
             nlpAnalysis: pythonAnalysisResult,
             overallScore,
-            summary: "Temporary summary placeholder"
+            summary: claudeSummary[0].text
         });
 
         return res.status(200).json({
@@ -165,6 +165,18 @@ const analyzeUrl = async (req, res, next) => {
         console.log("Overall rating: ", overallScore);
 
         const claudeSummary = await summarizeText(result.extractedText);
+        const userId = req.user?.uid || null;
+        console.log("USER ID:", userId);
+
+        const docId = await saveAnalysisToFirestore({
+            inputType: InputType.URL,
+            userId,
+            originalInput: url,
+            extractedText: result.extractedText,
+            nlpAnalysis: pythonAnalysisResult,
+            overallScore,
+            summary: claudeSummary[0].text
+        });
 
         return res.status(200).json({
             success: true,

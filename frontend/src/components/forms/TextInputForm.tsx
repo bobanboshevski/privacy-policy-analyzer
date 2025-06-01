@@ -32,7 +32,7 @@ export default function TextInputForm() {
 
     return (
         <div>
-            <form onSubmit={handleSumbit} className="sm:w-[500px] md:w-[600px] lg:w-[800px] space-y-4">
+            <form onSubmit={handleSumbit} className="sm:w-[500px] md:w-[600px] lg:w-[800px] space-y-4 mb-4">
                 <textarea
                     className="w-full p-3 border rounded-lg text-white bg-gray-800
                 focus:outline-none focus:border-none focus:ring-2 focus:ring-blue-500"
