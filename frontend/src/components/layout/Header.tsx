@@ -33,10 +33,6 @@ export default function Header() {
                                           d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
-
-                            {/*<div className="absolute left-0 mt-2 hidden group-hover:flex flex-col bg-zinc-800 border*/}
-                            {/*border-zinc-600 text-sm rounded-xl shadow-xl py-2 w-32 z-50 transition-opacity duration-200*/}
-                            {/*opacity-0 group-hover:opacity-100">*/}
                             <div className="absolute left-0 mt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100
                             transition-all duration-200 flex flex-col bg-zinc-800 border border-zinc-600 text-sm rounded-xl
                             shadow-xl py-2 w-32 z-50">

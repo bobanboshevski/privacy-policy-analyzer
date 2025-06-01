@@ -74,11 +74,10 @@ const RankingsPage = () => {
                 {policy.inputType === "pdf" && policy.signedUrl && (
                     <p className="mt-6 text-sm">
                         <span className="font-semibold text-gray-800">Source: </span>
-                        <a
-                            href={policy.signedUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
+                        <a href={policy.signedUrl}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="text-blue-600 hover:underline"
                         >
                             View PDF
                         </a>
@@ -88,11 +87,10 @@ const RankingsPage = () => {
                 {policy.inputType === "url" && policy.originalInput && (
                     <p className="mt-6 text-sm">
                         <span className="font-semibold text-gray-800">Source: </span>
-                        <a
-                            href={policy.originalInput}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
+                        <a href={policy.originalInput}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="text-blue-600 hover:underline"
                         >
                             Visit Website
                         </a>
@@ -115,21 +113,17 @@ const RankingsPage = () => {
                 </span>
                 </p>
 
-                {/*<p className="mt-4 text-gray-700">{policy.summary}</p>*/}
                 {type == 'best' && <SummarySection
                     sections={splitSummaryIntoSections(policy.summary)}
                     expandedSections={expandedSectionsBest}
-                    toggleSection={toggleSectionBest}
-                />
+                    toggleSection={toggleSectionBest}/>
                 }
 
                 {type == 'worst' && <SummarySection
                     sections={splitSummaryIntoSections(policy.summary)}
                     expandedSections={expandedSectionsWorst}
-                    toggleSection={toggleSectionWorst}
-                />
+                    toggleSection={toggleSectionWorst}/>
                 }
-
 
                 {/* READABILITY */}
                 <div className="mt-4 text-sm text-gray-800">
@@ -201,10 +195,6 @@ const RankingsPage = () => {
             ) : (
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12">
-                    {/*<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-7xl mx-auto mt-8 sm:mt-12"> */}
-
-                    {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12">*/}
-                    {/*<div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 max-w-6xl mx-auto mt-12">*/}
                     {renderPolicyCard(rankings?.bestPolicy ?? null, "best")}
                     {renderPolicyCard(rankings?.worstPolicy ?? null, "worst")}
                 </div>
