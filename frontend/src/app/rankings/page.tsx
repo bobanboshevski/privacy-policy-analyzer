@@ -5,12 +5,38 @@ import {useRouter} from "next/navigation";
 import {fetchWeeklyBestAndWorstRankings} from "@/services/policyRanking";
 import {PolicyRankingsResponse, PrivacyPolicy} from "@/lib/types/policyRanking";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import SummarySection from "@/components/ui/root-analysis/SummarySection";
+import {splitSummaryIntoSections} from "@/components/ui/root-analysis/splitSummaryIntoSections";
 
 const RankingsPage = () => {
     const {user} = useAuth();
     const router = useRouter();
     const [rankings, setRankings] = useState<PolicyRankingsResponse | null>(null);
+    const [expandedSectionsBest, setExpandedSectionsBest] = useState<Set<string>>(new Set());
+    const [expandedSectionsWorst, setExpandedSectionsWorst] = useState<Set<string>>(new Set());
 
+    const toggleSectionBest = (section: string) => {
+        setExpandedSectionsBest(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(section)) {
+                newSet.delete(section);
+            } else {
+                newSet.add(section);
+            }
+            return newSet;
+        });
+    };
+    const toggleSectionWorst = (section: string) => {
+        setExpandedSectionsWorst(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(section)) {
+                newSet.delete(section);
+            } else {
+                newSet.add(section);
+            }
+            return newSet;
+        });
+    };
 
     useEffect(() => {
         if (user === null) {
@@ -39,7 +65,8 @@ const RankingsPage = () => {
         const scoreColor = isBest ? "text-green-600" : "text-red-600";
 
         return (
-            <div className={`bg-white rounded-2xl shadow p-6 border-l-8 border-r-8 ${borderColor}`}>
+            <div
+                className={`w-full sm:w-128 md:w-170 lg:w-108 xl:w-128 bg-white rounded-2xl shadow p-6 border-l-8 border-r-8 ${borderColor}`}>
                 <h2 className={`text-xl font-semibold ${titleColor}`}>
                     {isBest ? "🏆 Best Privacy Policy" : "🚫 Worst Privacy Policy"}
                 </h2>
@@ -47,11 +74,10 @@ const RankingsPage = () => {
                 {policy.inputType === "pdf" && policy.signedUrl && (
                     <p className="mt-6 text-sm">
                         <span className="font-semibold text-gray-800">Source: </span>
-                        <a
-                            href={policy.signedUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
+                        <a href={policy.signedUrl}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="text-blue-600 hover:underline"
                         >
                             View PDF
                         </a>
@@ -61,24 +87,43 @@ const RankingsPage = () => {
                 {policy.inputType === "url" && policy.originalInput && (
                     <p className="mt-6 text-sm">
                         <span className="font-semibold text-gray-800">Source: </span>
-                        <a
-                            href={policy.originalInput}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
+                        <a href={policy.originalInput}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="text-blue-600 hover:underline"
                         >
                             Visit Website
                         </a>
                     </p>
                 )}
 
-                <p className="text-sm text-gray-600 mt-1">
+                {policy.inputType === "text" && policy.originalInput && (
+                    <div className="mt-6 text-sm">
+                        <span className="font-semibold text-gray-800 block mb-2">Source - text input:</span>
+                        <div
+                            className="max-h-60 overflow-y-auto whitespace-pre-wrap bg-gray-100 p-4 rounded text-gray-700 border border-gray-200">
+                            {policy.originalInput}
+                        </div>
+                    </div>
+                )}
+
+                <p className="text-sm text-gray-600 mt-1 mb-2">
                     Score: <span className={`${scoreColor} font-semibold`}>
                     {(policy.overallScore * 10).toFixed(1)} / 10
                 </span>
                 </p>
 
-                <p className="mt-4 text-gray-700">{policy.summary}</p>
+                {type == 'best' && <SummarySection
+                    sections={splitSummaryIntoSections(policy.summary)}
+                    expandedSections={expandedSectionsBest}
+                    toggleSection={toggleSectionBest}/>
+                }
+
+                {type == 'worst' && <SummarySection
+                    sections={splitSummaryIntoSections(policy.summary)}
+                    expandedSections={expandedSectionsWorst}
+                    toggleSection={toggleSectionWorst}/>
+                }
 
                 {/* READABILITY */}
                 <div className="mt-4 text-sm text-gray-800">
@@ -148,7 +193,8 @@ const RankingsPage = () => {
             {!rankings ? (
                 <LoadingSpinner/>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12">
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12">
                     {renderPolicyCard(rankings?.bestPolicy ?? null, "best")}
                     {renderPolicyCard(rankings?.worstPolicy ?? null, "worst")}
                 </div>

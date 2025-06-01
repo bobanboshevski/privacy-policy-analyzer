@@ -41,7 +41,7 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
             extractedText: analysisResult.extractedText,
             nlpAnalysis: pythonAnalysisResult,
             overallScore,
-            summary: claudeSummary
+            summary: claudeSummary[0].text
         });
 
         return res.status(200).json({

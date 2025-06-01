@@ -44,7 +44,7 @@ export default function PdfUploadForm() {
     return (
         <div>
             <form onSubmit={handleSubmit}
-                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
+                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4 mb-4"> {/* sm:w-[500px]*/}
                 <div>
                     {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
                     <label
