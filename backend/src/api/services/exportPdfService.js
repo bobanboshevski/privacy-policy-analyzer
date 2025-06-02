@@ -17,9 +17,7 @@ const generatePdfBuffer = async (summary, metrics, overallRating) => {
             // Title
             doc.fontSize(20).text('Privacy Policy Report', {align: 'center'}).moveDown(1.5);
 
-            // Summary
-            doc.fontSize(14).text('Summary', {underline: true}).moveDown(0.5);
-            doc.fontSize(12).text(summary).moveDown(1.5);
+            renderMarkdownText(doc, summary);
 
             // Metrics Section
             doc.fontSize(14).text('Analysis Metrics', {underline: true}).moveDown(0.5);
@@ -108,6 +106,33 @@ const renderOverallRatingSection = (doc, overallRating) => {
     doc.fontSize(12).fillColor('#444444').text(overallScoreExplanation.trim());
     doc.moveDown(1.5);
 }
+
+const renderMarkdownText = (doc, markdownText) => {
+    const lines = markdownText.split('\n');
+
+    lines.forEach(line => {
+        if (line.startsWith('## ')) {
+            let text = line.replace(/^#\s/, '');
+            let color = '#000';
+
+            if (text.trim().toLowerCase().includes('positive')) {
+                color = '#22c55e';
+            } else if (text.trim().toLowerCase().includes('negative')) {
+                color = '#ef4444';
+            }
+            doc.moveDown(0.5).fontSize(13).fillColor(color).text(line.replace(/^##\s/, ''), {underline: true});
+        } else if (line.startsWith('# ')) {
+            doc.moveDown(1).fontSize(14).fillColor('#000').text(line.replace(/^#\s/, ''), {underline: true});
+
+        } else if (line.trim() === '') {
+            doc.moveDown(0.5);
+        } else {
+            doc.fontSize(12).fillColor('#000').text(line);
+        }
+    });
+
+    doc.moveDown(1.5);
+};
 
 module.exports = {
     generatePdfBuffer,
