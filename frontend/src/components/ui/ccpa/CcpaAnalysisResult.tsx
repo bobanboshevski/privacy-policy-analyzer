@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {ccpaRenderMetric} from "@/lib/utils/ccpa/ccpaRenderHelpers";
 import {easyMotionProps} from "@/lib/utils/animations";
 import {AnalyzedCcpaPrivacyResponse} from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
+import FeedbackForm from "@/components/forms/FeedbackForm";
 
 interface Props {
     result: AnalyzedCcpaPrivacyResponse;
@@ -70,6 +71,8 @@ export default function CcpaAnalysisResult({result}: Props) {
                     </div>
                 </motion.div>
             </AnimatePresence>
+
+            <FeedbackForm category={'ccpa'}/>
         </div>
     );
 }

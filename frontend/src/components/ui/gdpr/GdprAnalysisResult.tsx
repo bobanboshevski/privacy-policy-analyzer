@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {gdprRenderMetric} from "@/lib/utils/gdpr/gdprRenderHelpers";
 import {easyMotionProps} from "@/lib/utils/animations";
 import {AnalyzedGdprPrivacyResponse} from "@/lib/types/gdpr/gdprPrivacyAnalyzer";
+import FeedbackForm from "@/components/forms/FeedbackForm";
 
 interface Props {
     result: AnalyzedGdprPrivacyResponse;
@@ -69,9 +70,10 @@ export default function GdprAnalysisResult({result}: Props) {
                         {gdprRenderMetric("Compliance %", result.gdprCompliance.compliance_percentage)}
                         {gdprRenderMetric("Compliant", result.gdprCompliance.is_compliant ? "✅ Yes" : "❌ No")}
                     </div>
-
                 </motion.div>
             </AnimatePresence>
+
+            <FeedbackForm category={'gdpr'}/>
         </div>
     );
 }

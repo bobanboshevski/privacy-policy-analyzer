@@ -9,6 +9,7 @@ import {splitSummaryIntoSections} from "@/components/ui/root-analysis/splitSumma
 import ExportDropdown from "@/components/ui/root-analysis/ExportDropdown";
 import SummarySection from "@/components/ui/root-analysis/SummarySection";
 import {renderMetric} from "@/lib/utils/renderHelpers";
+import FeedbackForm from "@/components/forms/FeedbackForm";
 
 
 interface Props {
@@ -85,6 +86,8 @@ export default function AnalysisResult({result, mode}: Props) {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <FeedbackForm/>
         </div>
     );
 }
