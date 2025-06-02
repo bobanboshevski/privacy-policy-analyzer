@@ -2,7 +2,7 @@ const PDFDocument = require("pdfkit");
 const {metricThresholds, metricExplanations} = require("../../utils/analysisMetrics");
 
 
-const generatePdfBuffer = async (summary, metrics) => {
+const generatePdfBuffer = async (summary, metrics, overallRating) => {
     return new Promise((resolve, reject) => {
         try {
             const doc = new PDFDocument();
@@ -40,13 +40,13 @@ const generatePdfBuffer = async (summary, metrics) => {
                         {indent: 20}
                     );
                 });
-
                 doc.moveDown(1);
             });
 
+            renderOverallRatingSection(doc, overallRating);
+
             // Legend
             doc.addPage().fontSize(14).fillColor('#000').text('Metric Legend', {underline: true}).moveDown(0.5);
-
             Object.entries(metricExplanations).forEach(([key, explanation]) => {
                 doc.fontSize(12).text(
                     `• ${key.replaceAll("_", " ").replace(/^./, c => c.toUpperCase())}: ${explanation}`,
@@ -57,10 +57,57 @@ const generatePdfBuffer = async (summary, metrics) => {
 
             doc.end();
         } catch (error) {
-            reject(error);
+            // reject(error);
+            throw new Error("Pdf export was not successful...");
         }
     });
 };
+
+
+const renderOverallRatingSection = (doc, overallRating) => {
+    const label = 'Overall rating:';
+    const fontSize = 18;
+    doc.addPage().fontSize(fontSize);
+
+    let ratingColor = '#22c55e';
+    if (overallRating < 0.50) {
+        ratingColor = '#ef4444';
+    } else if (overallRating < 0.75) {
+        ratingColor = '#facc15';
+    }
+
+    doc.fillColor('#000').text(label, {continued: true});
+    doc.fillColor(ratingColor).text(` ${(overallRating * 10).toFixed(2)}`); // continues same line
+    doc.moveDown(1.5);
+    const overallScoreExplanation = `
+            The overall score (1 to 10) represents the clarity, user-focus, and privacy transparency of the document. 
+
+            It is calculated using a weighted average of 10+ metrics from six key categories:
+
+            Critical factors (50%)
+                - Coverage of important topics
+                - Use of vague or ambiguous language
+                - Presence of rights-related phrases
+                - Presence of clear calls to action
+
+            Medium importance (30%)
+                - Readability score (Flesch)
+                - Use of passive voice
+                - Subjectivity and sentiment
+                - Opinion density
+
+            Helpful indicators (20%)
+                - Sentence and word complexity
+                - Use of conditional language
+                - Use of personal pronouns
+
+            Each metric is normalized between 0 and 1. Higher is better. Boolean metrics (like call to action presence) are handled specially. Polarity favors neutrality.
+
+            This ensures the score reflects not just writing style, but how well the policy serves and respects the user.
+            `;
+    doc.fontSize(12).fillColor('#444444').text(overallScoreExplanation.trim());
+    doc.moveDown(1.5);
+}
 
 module.exports = {
     generatePdfBuffer,

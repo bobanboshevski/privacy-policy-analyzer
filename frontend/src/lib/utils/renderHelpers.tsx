@@ -8,7 +8,7 @@ export function renderMetric(name: string, value: number | string) {
 
     return (
         <div key={name} className="flex items-center justify-between py-1">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-left">
                 {capitalizeFirst(name.replace(/_/g, ' '))}
                 <TooltipIcon text={metricExplanations[name] || "No description"}/>
             </span>

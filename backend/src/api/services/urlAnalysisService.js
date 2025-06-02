@@ -4,7 +4,7 @@ const { isPrivacyPolicy } = require('../../utils/privacyPolicyChecker.js');
 /**
  * Analyzes a URL and extracts paragraphs from its HTML content using Puppeteer.
  * @param {string} url - The URL to analyze
- * @returns {Promise<Object>} The analysis result
+ * @returns {Promise<Object>} The root-analysis result
  */
 const analyze = async (url) => {
     let browser;

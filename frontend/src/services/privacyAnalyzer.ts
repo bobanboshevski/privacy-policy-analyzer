@@ -14,9 +14,6 @@ export async function getInitialMessage(): Promise<string> {
 export async function analyzeUrl(trimmedUrl: string): Promise<AnalyzedPrivacyResponse> {
     return await fetchFromApi<AnalyzedPrivacyResponse>('/api/analyze/url/scrape', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
         body: JSON.stringify({url: trimmedUrl}),
     });
 }
@@ -31,7 +28,6 @@ export async function analyzePdfFile(file: File): Promise<AnalyzedPrivacyRespons
     return await fetchFromApi<AnalyzedPrivacyResponse>('/api/analyze/pdf/pdf-parse', {
         method: 'POST',
         body: formData,
-        headers: {},
     });
 }
 
@@ -42,6 +38,5 @@ export async function analyzeText(text: string): Promise<AnalyzedPrivacyResponse
     return await fetchFromApi<AnalyzedPrivacyResponse>('/api/analyze/text', {
         method: 'POST',
         body: JSON.stringify({text}),
-        headers: {}
     });
 }

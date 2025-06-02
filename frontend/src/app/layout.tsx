@@ -20,17 +20,15 @@ export const metadata: Metadata = {
     title: "Privacy Policy Analyzer",
 };
 
-export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
+export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
             <div className="grid bg-gradient-to-br from-black via-gray-900 to-black text-white">
                 <Header/>
                 <main
-                    className="flex flex-col gap-4 items-center justify-items-center min-h-screen mt-12">{children}</main>
+                    className="w-full flex flex-col px-2 sm:px-4 lg:px-8 items-center min-h-screen justify-items-center">{children}</main>
                 <Footer/>
             </div>
         </AuthProvider>

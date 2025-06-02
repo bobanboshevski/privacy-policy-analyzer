@@ -14,7 +14,7 @@ export default function ScoreDisplay({score}: Props) {
     }
 
     return (
-        <div>
+        <div className="text-left">
             <h3 className="font-semibold text-lg">Overall Score</h3>
             <div className={`text-3xl font-bold ${scoreColor}`}>
                 {(score * 10).toFixed(2)}

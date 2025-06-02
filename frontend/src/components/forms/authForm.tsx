@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {auth} from '@/lib/firebase';
 import {
     createUserWithEmailAndPassword,
@@ -8,13 +8,20 @@ import {
     signInWithPopup
 } from 'firebase/auth';
 import {useRouter} from "next/navigation";
+import {useAuth} from "@/context/AuthContext";
 
 export default function AuthForm() {
+    const {user} = useAuth();
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegister, setIsRegister] = useState(false);
 
+    useEffect(() => {
+        if (user) {
+            router.push("/");
+        }
+    }, [user, router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,7 +31,7 @@ export default function AuthForm() {
             } else {
                 await signInWithEmailAndPassword(auth, email, password);
             }
-            router.push("/training");
+            router.push("/");
         } catch (error) {
             // alert("Login failed: " + (error as Error).message);
             alert(`${isRegister ? "Registration" : "Login"} failed: ${(error as Error).message}`);
@@ -35,11 +42,15 @@ export default function AuthForm() {
         const provider = new GoogleAuthProvider();
         try {
             await signInWithPopup(auth, provider);
-            router.push("/training");
+            router.push("/education");
         } catch (error) {
             alert("Google login failed: " + (error as Error).message);
         }
     };
+
+    if (user) {
+        return null;
+    }
 
     return (
         <div className="p-8 max-w-md mx-auto">
@@ -87,7 +98,6 @@ export default function AuthForm() {
                     {isRegister ? "Login" : "Register"}
                 </button>
             </p>
-
         </div>
     );
 }

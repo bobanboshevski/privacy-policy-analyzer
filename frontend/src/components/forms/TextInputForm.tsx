@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { AnalysisMode, AnalyzedPrivacyResponse } from "@/lib/types/privacyAnalyzer";
-import { analyzeText } from "@/services/privacyAnalyzer";
+import {useState} from "react";
+import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
+import {analyzeText} from "@/services/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
-import { ApiError } from "next/dist/server/api-utils";
+import LoadingTips from "@/components/ui/LoadingTips";
+import {ApiError} from "@/lib/types/input";
 
 export default function TextInputForm() {
     const [text, setText] = useState('');
@@ -31,7 +32,7 @@ export default function TextInputForm() {
 
     return (
         <div>
-            <form onSubmit={handleSumbit} className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4">
+            <form onSubmit={handleSumbit} className="sm:w-[500px] md:w-[600px] lg:w-[800px] space-y-4 mb-4">
                 <textarea
                     className="w-full p-3 border rounded-lg text-white bg-gray-800
                 focus:outline-none focus:border-none focus:ring-2 focus:ring-blue-500"
@@ -49,6 +50,7 @@ export default function TextInputForm() {
                         {loading ? "Analyzing..." : "Analyze Text"}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-blue-600"/>}
             </form>
 
             <AnalysisResultContainer

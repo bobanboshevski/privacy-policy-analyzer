@@ -3,6 +3,7 @@ import {analyzePdfFile} from "@/services/privacyAnalyzer";
 import {AnalysisMode, AnalyzedPrivacyResponse} from "@/lib/types/privacyAnalyzer";
 import AnalysisResultContainer from "@/components/ui/AnalysisResultContainer";
 import {ApiError} from "@/lib/types/input";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 export default function PdfUploadForm() {
     const [file, setFile] = useState<File | null>(null);
@@ -32,8 +33,9 @@ export default function PdfUploadForm() {
             setError(null);
         } catch (err) {
             const error = err as ApiError;
-            console.error("Error during analyzePdf:", error);
-            setError(error.message || "Failed to analyze URL.")
+            console.error(error.message);
+            console.error(error.status);
+            setError(error.message || "Error uploading or analyzing PDF.");
         } finally {
             setLoading(false);
         }
@@ -42,7 +44,7 @@ export default function PdfUploadForm() {
     return (
         <div>
             <form onSubmit={handleSubmit}
-                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
+                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4 mb-4"> {/* sm:w-[500px]*/}
                 <div>
                     {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
                     <label
@@ -69,6 +71,7 @@ export default function PdfUploadForm() {
                         {loading ? 'Analyzing...' : 'Analyze PDF'}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-purple-600"/>}
             </form>
 
             <AnalysisResultContainer

@@ -8,6 +8,7 @@ import {easyMotionProps, expertMotionProps} from "@/lib/utils/animations";
 import {useEffect, useRef, useState} from "react";
 import {exportToPdf} from "@/services/exporter";
 import ScoreDisplay from "@/components/ui/ScoreDisplay";
+import {overallScoreExplanation} from "@/lib/constants/metricExplanations";
 
 interface Props {
     result: AnalyzedPrivacyResponse;
@@ -144,6 +145,9 @@ export default function AnalysisResult({result, mode}: Props) {
                             <hr className="border-gray-700 my-6"/>
 
                             <ScoreDisplay score={result.overallScore} />
+                            <div className="mt-2 text-sm text-gray-300 prose prose-invert max-w-none">
+                                <ReactMarkdown>{overallScoreExplanation}</ReactMarkdown>
+                            </div>
                         </motion.div>
                     </div>
                 )}

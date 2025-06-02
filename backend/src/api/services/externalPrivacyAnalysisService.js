@@ -5,7 +5,7 @@ require('dotenv').config();
 const baseURL = process.env.PYTHON_NLP_URL
 
 /**
- * Calls the Python NLP module for analysis
+ * Calls the Python NLP module for root-analysis
  * @param {string} text - Text content to analyze
  * @returns {Promise<Object>} - Analysis result from the Python module
  */
@@ -21,9 +21,9 @@ const analyzeWithPython = async (text) => {
     }
 };
 /**
- * Send text to Python GDPR compliance analysis service
+ * Send text to Python GDPR compliance root-analysis service
  * @param {string} text - Text to analyze
- * @returns {Promise<Object>} GDPR compliance analysis result
+ * @returns {Promise<Object>} GDPR compliance root-analysis result
  */
 const analyzeGdprWithPython = async (text) => {
     try {
@@ -38,19 +38,19 @@ const analyzeGdprWithPython = async (text) => {
 
         return response.data;
     } catch (error) {
-        console.error('Error calling Python GDPR analysis service:', error.message);
+        console.error('Error calling Python GDPR root-analysis service:', error.message);
         if (error.response) {
             console.error('Response status:', error.response.status);
             console.error('Response data:', error.response.data);
         }
-        throw new Error('Python GDPR analysis service failed');
+        throw new Error('Python GDPR root-analysis service failed');
     }
 };
 
 /**
- * Send text to Python CCPA compliance analysis service
+ * Send text to Python CCPA compliance root-analysis service
  * @param {string} text - Text to analyze
- * @returns {Promise<Object>} CCPA compliance analysis result
+ * @returns {Promise<Object>} CCPA compliance root-analysis result
  */
 const analyzeCcpaWithPython = async (text) => {
     try {
@@ -65,12 +65,12 @@ const analyzeCcpaWithPython = async (text) => {
 
         return response.data;
     } catch (error) {
-        console.error('Error calling Python CCPA analysis service:', error.message);
+        console.error('Error calling Python CCPA root-analysis service:', error.message);
         if (error.response) {
             console.error('Response status:', error.response.status);
             console.error('Response data:', error.response.data);
         }
-        throw new Error('Python CCPA analysis service failed');
+        throw new Error('Python CCPA root-analysis service failed');
     }
 };
 

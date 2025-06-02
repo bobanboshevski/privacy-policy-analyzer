@@ -6,7 +6,6 @@
  * @param {Function} next - Next middleware function
  */
 const errorHandler = (err, req, res, next) => {
-    console.error('Error:', err);
 
     // Default error status and message
     const status = err.statusCode || 500;
