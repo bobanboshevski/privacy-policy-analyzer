@@ -70,6 +70,125 @@ class CcpaComplianceMetrics(BaseModel):
     is_compliant: bool
 
 
+# NEW FLAGGING MODELS
+class ReadabilityFlags(BaseModel):
+    difficult_sentences_flesch: List[str] = Field(
+        default_factory=list,
+        description="Sentences with very low Flesch Reading Ease scores"
+    )
+    high_grade_level_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences requiring high education level"
+    )
+    complex_sentences_gunning_fog: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high Gunning Fog index"
+    )
+    hard_sentences_smog: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high SMOG index"
+    )
+    difficult_sentences_dale_chall: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high Dale-Chall score"
+    )
+    polysyllabic_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high ratio of polysyllabic words"
+    )
+
+
+class ComplexityFlags(BaseModel):
+    long_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences that are too long"
+    )
+    complex_vocabulary_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with overly complex vocabulary"
+    )
+    syntactically_complex_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high syntactic complexity"
+    )
+
+
+class AmbiguityFlags(BaseModel):
+    vague_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high vague word density"
+    )
+    passive_voice_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences using passive voice"
+    )
+    conditional_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with high conditional word density"
+    )
+
+
+class CoverageFlags(BaseModel):
+    missing_topics: List[str] = Field(
+        default_factory=list,
+        description="Privacy topics not adequately covered"
+    )
+    weak_coverage_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with weak topic coverage"
+    )
+    irrelevant_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences irrelevant to privacy policy topics"
+    )
+
+
+class SentimentFlags(BaseModel):
+    subjective_sentences: List[str] = Field(
+        default_factory=list,
+        description="Highly subjective sentences"
+    )
+    biased_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences with strong sentiment bias"
+    )
+    opinion_heavy_sentences: List[str] = Field(
+        default_factory=list,
+        description="Opinionated sentences"
+    )
+    emotionally_charged_sentences: List[str] = Field(
+        default_factory=list,
+        description="Emotionally charged sentences"
+    )
+    non_neutral_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences that aren't neutral/formal"
+    )
+
+
+class UserFocusFlags(BaseModel):
+    impersonal_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences not directly addressing users"
+    )
+    rights_absent_sections: List[str] = Field(
+        default_factory=list,
+        description="Text sections without user rights mentions"
+    )
+    no_action_sentences: List[str] = Field(
+        default_factory=list,
+        description="Passive sentences that could be more actionable"
+    )
+    missing_contact_sections: List[str] = Field(
+        default_factory=list,
+        description="Sections without contact/action information"
+    )
+    corporate_speak_sentences: List[str] = Field(
+        default_factory=list,
+        description="Sentences using corporate jargon"
+    )
+
+
 class AnalysisResult(BaseModel):
     readability: ReadabilityMetrics
     complexity: ComplexityMetrics
@@ -87,13 +206,10 @@ class CcpaAnalysisResult(BaseModel):
     ccpaCompliance: CcpaComplianceMetrics
 
 
-# Full analysis result with compliance (for backward compatibility if needed)
-class FullAnalysisResult(BaseModel):
-    readability: ReadabilityMetrics
-    complexity: ComplexityMetrics
-    ambiguity: AmbiguityMetrics
-    coverage: CoverageMetrics
-    sentiment: SentimentMetrics
-    userFocus: UserFocusMetrics
-    gdprCompliance: Optional[GdprComplianceMetrics] = None
-    ccpaCompliance: Optional[CcpaComplianceMetrics] = None
+class FlaggingAnalysisResult(BaseModel):
+    readability_flags: ReadabilityFlags
+    complexity_flags: ComplexityFlags
+    ambiguity_flags: AmbiguityFlags
+    coverage_flags: CoverageFlags
+    sentiment_flags: SentimentFlags
+    user_focus_flags: UserFocusFlags
