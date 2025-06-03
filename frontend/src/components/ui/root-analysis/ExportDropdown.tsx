@@ -38,16 +38,17 @@ export default function ExportDropdown({result}: Props) {
 
     return (
         <div ref={ref} className="relative inline-block text-left mr-4">
-            <button onClick={() => setOpen((prev) => !prev)} className="text-white text-2xl hover:text-gray-300">
+            <button onClick={() => setOpen((prev) => !prev)}
+                    className="text-white text-2xl hover:text-gray-300 cursor-pointer">
                 ⋮
             </button>
             {open && (
                 <div className="absolute right-0 mt-2 w-36 origin-top-right rounded-md bg-gray-800 shadow-lg z-50">
                     <div className="py-1">
-                        <button className="block w-full px-4 py-2 text-sm text-white hover:bg-gray-700"
+                        <button className="block w-full px-4 py-2 text-sm text-white hover:bg-gray-700 cursor-pointer"
                                 onClick={handleExportPDF}>Export to PDF
                         </button>
-                        <button className="block w-full px-4 py-2 text-sm text-white hover:bg-gray-700"
+                        <button className="block w-full px-4 py-2 text-sm text-white hover:bg-gray-700 cursor-pointer"
                                 onClick={handleExportCSV}>Export to CSV
                         </button>
                     </div>
