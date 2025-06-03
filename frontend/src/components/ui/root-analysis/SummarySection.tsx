@@ -30,7 +30,7 @@ export default function SummarySection({sections, expandedSections, toggleSectio
                 <div key={key} className="bg-gray-800 rounded-lg">
                     <button
                         onClick={() => toggleSection(key)}
-                        className={`w-full text-left p-3 font-semibold hover:bg-gray-700 ${
+                        className={`w-full text-left p-3 font-semibold hover:bg-gray-700 cursor-pointer ${
                             key === "positive" ? "text-green-400" : key === "negative" ? "text-red-400" : "text-white"
                         }`}
                     >

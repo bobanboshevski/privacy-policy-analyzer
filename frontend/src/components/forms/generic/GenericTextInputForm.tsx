@@ -49,7 +49,7 @@ export default function GenericTextInputForm<TResponse>({config}: Props<TRespons
                 <div className="flex justify-end">
                     <button
                         type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded cursor-pointer"
                         disabled={loading}
                     >
                         {loading ? "Analyzing..." : "Analyze Text"}
