@@ -1,9 +1,9 @@
 'use client';
 
-import CcpaInputFormContainer from "@/components/forms/ccpa/CcpaInputFormContainer";
 import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
 import {useRouter} from "next/navigation";
+import CcpaInputFormContainer from "@/components/forms/ccpa/CcpaInputFormContainer";
 
 export default function CcpaPage() {
     const {user} = useAuth();

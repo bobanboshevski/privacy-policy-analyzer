@@ -1,13 +1,15 @@
 import {useState} from "react";
-import {analyzeUrl} from "@/services/ccpaPrivacyAnalyzer";
 import {ApiError} from "@/lib/types/input";
-import CcpaAnalysisResultContainer from "@/components/ui/ccpa/CcpaAnalysisResultContainer";
-import {AnalyzedCcpaPrivacyResponse} from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
+import {PrivacyAnalysisConfig} from "@/lib/types/privacy";
 
-export default function CcpaUrlInputForm() {
+interface Props<TResponse> {
+    config: PrivacyAnalysisConfig<TResponse>;
+}
+
+export default function GenericUrlInputForm<TResponse>({config}: Props<TResponse>) {
     const [url, setUrl] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<AnalyzedCcpaPrivacyResponse | null>(null);
+    const [result, setResult] = useState<TResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -19,11 +21,10 @@ export default function CcpaUrlInputForm() {
         }
 
         try {
-            // new URL(url);
             setError(null);
             setLoading(true);
 
-            const response = await analyzeUrl(url.trim());
+            const response = await config.services.analyzeUrl(url.trim());
             setResult(response);
             console.log("Scraped response:", response);
         } catch (err) {
@@ -34,6 +35,8 @@ export default function CcpaUrlInputForm() {
             setLoading(false);
         }
     };
+
+    const {AnalysisResultContainer} = config.components;
 
     return (
         <>
@@ -56,10 +59,7 @@ export default function CcpaUrlInputForm() {
                 </div>
             </form>
 
-            <CcpaAnalysisResultContainer
-                error={error}
-                result={result}
-            />
+            <AnalysisResultContainer error={error} result={result}/>
         </>
     );
 }

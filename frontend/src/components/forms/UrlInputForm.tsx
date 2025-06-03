@@ -48,8 +48,6 @@ export default function UrlInputForm() {
                     onChange={(e) => setUrl(e.target.value)}
                 />
 
-                {/*{result && <p className="text-green-500 text-sm">{result.data.extractedText}</p>}*/}
-
                 <div className="flex justify-end">
                     <button
                         type="submit"
@@ -60,13 +58,6 @@ export default function UrlInputForm() {
                     </button>
                 </div>
                 {loading && <LoadingTips colorClass="text-green-600"/>}
-
-                {/*extracted text in divs with scrolling*/}
-                {/* {result?.extractedText && (
-                <div className="mt-4 bg-gray-900 text-white p-4 rounded max-h-64 overflow-y-auto">
-                    <h3 className="text-lg font-bold mb-2">Extracted Text:</h3>
-                    <p className="text-sm leading-relaxed whitespace-pre-line">{result.extractedText}</p>
-                </div>*/}
             </form>
 
             <AnalysisResultContainer
