@@ -1,13 +1,15 @@
 import {useState} from "react";
-import {analyzePdfFile} from "@/services/gdprPrivacyAnalyzer";
 import {ApiError} from "@/lib/types/input";
-import GdprAnalysisResultContainer from "@/components/ui/gdpr/GdprAnalysisResultContainer";
-import {AnalyzedGdprPrivacyResponse} from "@/lib/types/gdpr/gdprPrivacyAnalyzer";
+import {PrivacyAnalysisConfig} from "@/lib/types/privacy";
 
-export default function GdprPdfUploadForm() {
+interface Props<TResponse> {
+    config: PrivacyAnalysisConfig<TResponse>;
+}
+
+export default function GenericPdfUploadForm<TResponse>({config}: Props<TResponse>) {
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [result, setResult] = useState<AnalyzedGdprPrivacyResponse | null>(null);
+    const [result, setResult] = useState<TResponse | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,27 +24,28 @@ export default function GdprPdfUploadForm() {
             setError("Please select a PDF file.");
             return;
         }
+
         try {
             setLoading(true);
-            const response = await analyzePdfFile(file);
+            const response = await config.services.analyzePdfFile(file);
             setResult(response);
             console.log(response);
             setError(null);
         } catch (err) {
             const error = err as ApiError;
             console.error("Error during analyzePdf:", error);
-            setError(error.message || "Failed to analyze URL.")
+            setError(error.message || "Failed to analyze PDF.");
         } finally {
             setLoading(false);
         }
     };
 
+    const {AnalysisResultContainer} = config.components;
+
     return (
         <div>
-            <form onSubmit={handleSubmit}
-                  className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4"> {/* sm:w-[500px]*/}
+            <form onSubmit={handleSubmit} className="sm:w-[400px] md:w-[600px] lg:w-[800px] space-y-4">
                 <div>
-                    {/*<div className="w-full md:w-[600px] lg:w-[800px] space-y-4">*/}
                     <label
                         htmlFor="pdf-upload"
                         className="block w-full p-3 rounded-lg text-white bg-gray-800 cursor-pointer text-center"
@@ -69,10 +72,7 @@ export default function GdprPdfUploadForm() {
                 </div>
             </form>
 
-            <GdprAnalysisResultContainer
-                error={error}
-                result={result}
-            />
+            <AnalysisResultContainer error={error} result={result}/>
         </div>
     );
 }
