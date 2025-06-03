@@ -1,9 +1,9 @@
 "use client";
 
-import GdprInputFormContainer from "@/components/forms/gdpr/GdprInputFormContainer";
 import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
 import {useRouter} from "next/navigation";
+import GdprInputFormContainer from "@/components/forms/gdpr/GdprInputFormContainer";
 
 export default function GdprPage() {
     const {user} = useAuth();
@@ -21,7 +21,6 @@ export default function GdprPage() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Analyze Your Privacy Policy for GDPR
                 Compliance</h1>
             <GdprInputFormContainer/>
-
         </div>
     )
 }
