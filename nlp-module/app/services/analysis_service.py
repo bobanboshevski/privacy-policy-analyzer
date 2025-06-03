@@ -60,7 +60,6 @@ from app.utils.compliance_analyzers import (
     analyze_ccpa_compliance_metrics
 )
 
-# NEW FLAGGING IMPORTS
 from app.utils.flagging.readability_flagging import (
     flag_difficult_sentences_flesch,
     flag_hard_sentences_smog,
@@ -139,41 +138,24 @@ def analyze_text(text: str) -> AnalysisResult:
         call_to_action_presence=call_to_action_presence(text),
     )
 
-    return AnalysisResult(
-        readability=readability,
-        complexity=complexity,
-        ambiguity=ambiguity,
-        coverage=coverage,
-        sentiment=sentiment,
-        userFocus=user_focus
-    )
-
-
-def analyze_text_flagging(text: str) -> FlaggingAnalysisResult:
-    """Main text flagging analysis function - returns problematic sentences"""
-    
-    # Readability flagging
     readability_flags = ReadabilityFlags(
         difficult_sentences_flesch=flag_difficult_sentences_flesch(text),
         hard_sentences_smog=flag_hard_sentences_smog(text),
         polysyllabic_sentences=flag_polysyllabic_sentences(text)
     )
 
-    # Complexity flagging
     complexity_flags = ComplexityFlags(
         long_sentences=flag_long_sentences(text),
         complex_vocabulary_sentences=flag_complex_vocabulary_sentences(text),
         syntactically_complex_sentences=flag_syntactically_complex_sentences(text)
     )
 
-    # Ambiguity flagging
     ambiguity_flags = AmbiguityFlags(
         vague_sentences=flag_vague_sentences(text),
         passive_voice_sentences=flag_passive_voice_sentences(text),
         conditional_sentences=flag_conditional_sentences(text)
     )
 
-    # Coverage flagging
     coverage_data = flag_missing_topics(text)
     coverage_flags = CoverageFlags(
         missing_topics=coverage_data.get("missing_topics", []),
@@ -181,14 +163,68 @@ def analyze_text_flagging(text: str) -> FlaggingAnalysisResult:
         irrelevant_sentences=flag_irrelevant_sentences(text)
     )
 
-    # Sentiment flagging
     sentiment_flags = SentimentFlags(
         biased_sentences=flag_biased_sentences(text),
         opinion_heavy_sentences=flag_opinion_heavy_sentences(text),
         emotionally_charged_sentences=flag_emotionally_charged_sentences(text)
     )
 
-    # User focus flagging
+    user_focus_flags = UserFocusFlags(
+        impersonal_sentences=flag_impersonal_sentences(text),
+        no_action_sentences=flag_no_action_sentences(text),
+        corporate_speak_sentences=flag_corporate_speak_sentences(text)
+    )
+
+    return AnalysisResult(
+        readability=readability,
+        readabilityFlags = readability_flags,
+        complexity=complexity,
+        complexityFlags = complexity_flags,
+        ambiguity=ambiguity,
+        ambiguityFlags=ambiguity_flags,
+        coverage=coverage,
+        coverageFlags=coverage_flags,
+        sentiment=sentiment,
+        sentimentFlags=sentiment_flags,
+        userFocus=user_focus,
+        userFocusFlags=user_focus_flags
+    )
+
+
+def analyze_text_flagging(text: str) -> FlaggingAnalysisResult:
+    """Main text flagging analysis function - returns problematic sentences"""
+    
+    readability_flags = ReadabilityFlags(
+        difficult_sentences_flesch=flag_difficult_sentences_flesch(text),
+        hard_sentences_smog=flag_hard_sentences_smog(text),
+        polysyllabic_sentences=flag_polysyllabic_sentences(text)
+    )
+
+    complexity_flags = ComplexityFlags(
+        long_sentences=flag_long_sentences(text),
+        complex_vocabulary_sentences=flag_complex_vocabulary_sentences(text),
+        syntactically_complex_sentences=flag_syntactically_complex_sentences(text)
+    )
+
+    ambiguity_flags = AmbiguityFlags(
+        vague_sentences=flag_vague_sentences(text),
+        passive_voice_sentences=flag_passive_voice_sentences(text),
+        conditional_sentences=flag_conditional_sentences(text)
+    )
+
+    coverage_data = flag_missing_topics(text)
+    coverage_flags = CoverageFlags(
+        missing_topics=coverage_data.get("missing_topics", []),
+        weak_coverage_sentences=coverage_data.get("weak_coverage_sentences", []),
+        irrelevant_sentences=flag_irrelevant_sentences(text)
+    )
+
+    sentiment_flags = SentimentFlags(
+        biased_sentences=flag_biased_sentences(text),
+        opinion_heavy_sentences=flag_opinion_heavy_sentences(text),
+        emotionally_charged_sentences=flag_emotionally_charged_sentences(text)
+    )
+
     user_focus_flags = UserFocusFlags(
         impersonal_sentences=flag_impersonal_sentences(text),
         no_action_sentences=flag_no_action_sentences(text),

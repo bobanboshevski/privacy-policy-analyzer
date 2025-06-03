@@ -69,7 +69,6 @@ class CcpaComplianceMetrics(BaseModel):
     is_compliant: bool
 
 
-# NEW FLAGGING MODELS
 class ReadabilityFlags(BaseModel):
     difficult_sentences_flesch: List[str] = Field(
         default_factory=list,
@@ -179,6 +178,12 @@ class AnalysisResult(BaseModel):
     coverage: CoverageMetrics
     sentiment: SentimentMetrics
     userFocus: UserFocusMetrics
+    readabilityFlags: ReadabilityFlags
+    complexityFlags: ComplexityFlags
+    ambiguityFlags: AmbiguityFlags
+    coverageFlags: CoverageFlags
+    sentimentFlags: SentimentFlags
+    userFocusFlags: UserFocusFlags
 
 
 class GdprAnalysisResult(BaseModel):
