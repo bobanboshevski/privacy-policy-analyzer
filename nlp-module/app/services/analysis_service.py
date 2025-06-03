@@ -26,7 +26,6 @@ from app.utils.readability_metrics import (
     flesch_reading_ease,
     gunning_fog,
     smog_index,
-    dale_chall_score,
     flesch_kincaid_grade
 )
 
@@ -64,10 +63,7 @@ from app.utils.compliance_analyzers import (
 # NEW FLAGGING IMPORTS
 from app.utils.flagging.readability_flagging import (
     flag_difficult_sentences_flesch,
-    flag_high_grade_level_sentences,
-    flag_complex_sentences_gunning_fog,
     flag_hard_sentences_smog,
-    flag_difficult_sentences_dale_chall,
     flag_polysyllabic_sentences
 )
 
@@ -89,18 +85,14 @@ from app.utils.flagging.coverage_flagging import (
 )
 
 from app.utils.flagging.sentiment_flagging import (
-    flag_subjective_sentences,
     flag_biased_sentences,
     flag_opinion_heavy_sentences,
-    flag_emotionally_charged_sentences,
-    flag_non_neutral_sentences
+    flag_emotionally_charged_sentences
 )
 
 from app.utils.flagging.user_focus_flagging import (
     flag_impersonal_sentences,
-    flag_rights_absent_sections,
     flag_no_action_sentences,
-    flag_missing_contact_sections,
     flag_corporate_speak_sentences
 )
 
@@ -114,7 +106,6 @@ def analyze_text(text: str) -> AnalysisResult:
         flesch_score=flesch_reading_ease(text),
         gunning_fog_index=gunning_fog(text),
         smog_index=smog_index(text),
-        dale_chall_score=dale_chall_score(text),
         flesch_kincaid_grade=flesch_kincaid_grade(text)
     )
 
@@ -164,10 +155,7 @@ def analyze_text_flagging(text: str) -> FlaggingAnalysisResult:
     # Readability flagging
     readability_flags = ReadabilityFlags(
         difficult_sentences_flesch=flag_difficult_sentences_flesch(text),
-        high_grade_level_sentences=flag_high_grade_level_sentences(text),
-        complex_sentences_gunning_fog=flag_complex_sentences_gunning_fog(text),
         hard_sentences_smog=flag_hard_sentences_smog(text),
-        difficult_sentences_dale_chall=flag_difficult_sentences_dale_chall(text),
         polysyllabic_sentences=flag_polysyllabic_sentences(text)
     )
 
@@ -195,19 +183,15 @@ def analyze_text_flagging(text: str) -> FlaggingAnalysisResult:
 
     # Sentiment flagging
     sentiment_flags = SentimentFlags(
-        subjective_sentences=flag_subjective_sentences(text),
         biased_sentences=flag_biased_sentences(text),
         opinion_heavy_sentences=flag_opinion_heavy_sentences(text),
-        emotionally_charged_sentences=flag_emotionally_charged_sentences(text),
-        non_neutral_sentences=flag_non_neutral_sentences(text)
+        emotionally_charged_sentences=flag_emotionally_charged_sentences(text)
     )
 
     # User focus flagging
     user_focus_flags = UserFocusFlags(
         impersonal_sentences=flag_impersonal_sentences(text),
-        rights_absent_sections=flag_rights_absent_sections(text),
         no_action_sentences=flag_no_action_sentences(text),
-        missing_contact_sections=flag_missing_contact_sections(text),
         corporate_speak_sentences=flag_corporate_speak_sentences(text)
     )
 

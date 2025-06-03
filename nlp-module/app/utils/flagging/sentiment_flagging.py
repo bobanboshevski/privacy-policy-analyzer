@@ -4,26 +4,6 @@ from typing import List
 
 nlp = spacy.load("en_core_web_sm")
 
-def flag_subjective_sentences(text: str, threshold: float = 0.7) -> List[str]:
-    """
-    Returns sentences that are highly subjective (subjectivity > threshold).
-    Default threshold: 0.7 (very subjective for a policy document)
-    """
-    doc = nlp(text)
-    subjective_sentences = []
-    
-    for sent in doc.sents:
-        sentence_text = sent.text.strip()
-        if not sentence_text:
-            continue
-            
-        blob = TextBlob(sentence_text)
-        if blob.sentiment.subjectivity > threshold:
-            subjective_sentences.append(sentence_text)
-    
-    return subjective_sentences
-
-
 def flag_biased_sentences(text: str, threshold: float = 0.4) -> List[str]:
     """
     Returns sentences with strong sentiment polarity (absolute value > threshold).
@@ -83,24 +63,3 @@ def flag_emotionally_charged_sentences(text: str, polarity_threshold: float = 0.
             emotional_sentences.append(sentence_text)
     
     return emotional_sentences
-
-
-def flag_non_neutral_sentences(text: str, polarity_threshold: float = 0.1, subjectivity_threshold: float = 0.3) -> List[str]:
-    """
-    Returns sentences that are not neutral (either subjective or polarized).
-    Good for identifying sentences that don't maintain formal/legal tone.
-    """
-    doc = nlp(text)
-    non_neutral_sentences = []
-    
-    for sent in doc.sents:
-        sentence_text = sent.text.strip()
-        if not sentence_text:
-            continue
-            
-        blob = TextBlob(sentence_text)
-        if (abs(blob.sentiment.polarity) > polarity_threshold or 
-            blob.sentiment.subjectivity > subjectivity_threshold):
-            non_neutral_sentences.append(sentence_text)
-    
-    return non_neutral_sentences

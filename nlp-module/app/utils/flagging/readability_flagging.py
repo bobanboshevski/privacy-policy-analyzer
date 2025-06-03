@@ -25,46 +25,6 @@ def flag_difficult_sentences_flesch(text: str, threshold: float = 30.0) -> List[
     return difficult_sentences
 
 
-def flag_high_grade_level_sentences(text: str, threshold: float = 12.0) -> List[str]:
-    """
-    Returns sentences requiring high education level (Flesch-Kincaid > threshold).
-    Default threshold: 12.0 (college level+)
-    """
-    doc = nlp(text)
-    high_grade_sentences = []
-    
-    for sent in doc.sents:
-        sentence_text = sent.text.strip()
-        if len(sentence_text.split()) < 3:  # Skip very short sentences
-            continue
-            
-        grade_level = textstat.flesch_kincaid_grade(sentence_text)
-        if grade_level > threshold:
-            high_grade_sentences.append(sentence_text)
-    
-    return high_grade_sentences
-
-
-def flag_complex_sentences_gunning_fog(text: str, threshold: float = 16.0) -> List[str]:
-    """
-    Returns sentences with high Gunning Fog index (> threshold).
-    Default threshold: 16.0 (college+ level)
-    """
-    doc = nlp(text)
-    complex_sentences = []
-    
-    for sent in doc.sents:
-        sentence_text = sent.text.strip()
-        if len(sentence_text.split()) < 3:  # Skip very short sentences
-            continue
-            
-        fog_score = textstat.gunning_fog(sentence_text)
-        if fog_score > threshold:
-            complex_sentences.append(sentence_text)
-    
-    return complex_sentences
-
-
 def flag_hard_sentences_smog(text: str, threshold: float = 14.0) -> List[str]:
     """
     Returns sentences with high SMOG index (> threshold).
@@ -83,27 +43,6 @@ def flag_hard_sentences_smog(text: str, threshold: float = 14.0) -> List[str]:
             hard_sentences.append(sentence_text)
     
     return hard_sentences
-
-
-def flag_difficult_sentences_dale_chall(text: str, threshold: float = 8.0) -> List[str]:
-    """
-    Returns sentences with high Dale-Chall score (> threshold).
-    Default threshold: 8.0 (difficult to read)
-    """
-    doc = nlp(text)
-    difficult_sentences = []
-    
-    for sent in doc.sents:
-        sentence_text = sent.text.strip()
-        if len(sentence_text.split()) < 3:  # Skip very short sentences
-            continue
-            
-        dale_chall_score = textstat.dale_chall_readability_score(sentence_text)
-        if dale_chall_score > threshold:
-            difficult_sentences.append(sentence_text)
-    
-    return difficult_sentences
-
 
 def flag_polysyllabic_sentences(text: str, threshold: float = 0.3) -> List[str]:
     """

@@ -178,6 +178,5 @@ module.exports = {
     analyzeWithPdfParse,
     analyzeWithPdf2Json,
     analyzeWithPdfJsExtract
-    // sendTextToPython
 };
 

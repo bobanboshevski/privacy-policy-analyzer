@@ -33,7 +33,7 @@ const analyzeGdprWithPython = async (text) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            timeout: 30000 // 30 seconds timeout
+            timeout: 60000
         });
 
         return response.data;
@@ -60,7 +60,7 @@ const analyzeCcpaWithPython = async (text) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            timeout: 30000 // 30 seconds timeout
+            timeout: 60000
         });
 
         return response.data;
@@ -74,8 +74,33 @@ const analyzeCcpaWithPython = async (text) => {
     }
 };
 
+
+const analyzeWithPythonForFlagging = async (text) => {
+    try {
+        const response = await axios.post(`${baseURL}/api/v1/analyze/text/flagging`, {
+            text: text
+        },{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            timeout: 60000
+        });
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error calling Python Flagging root-analysis service:', error.message);
+        if (error.response) {
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+        throw new Error('Python Flagging root-analysis service failed');
+    }
+};
+
+
 module.exports = {
     analyzeWithPython,
     analyzeGdprWithPython,
-    analyzeCcpaWithPython
+    analyzeCcpaWithPython,
+    analyzeWithPythonForFlagging
 };

@@ -6,7 +6,6 @@ class ReadabilityMetrics(BaseModel):
     flesch_score: float
     gunning_fog_index: float
     smog_index: float
-    dale_chall_score: float
     flesch_kincaid_grade: float
 
 
@@ -76,10 +75,6 @@ class ReadabilityFlags(BaseModel):
         default_factory=list,
         description="Sentences with very low Flesch Reading Ease scores"
     )
-    high_grade_level_sentences: List[str] = Field(
-        default_factory=list,
-        description="Sentences requiring high education level"
-    )
     complex_sentences_gunning_fog: List[str] = Field(
         default_factory=list,
         description="Sentences with high Gunning Fog index"
@@ -87,10 +82,6 @@ class ReadabilityFlags(BaseModel):
     hard_sentences_smog: List[str] = Field(
         default_factory=list,
         description="Sentences with high SMOG index"
-    )
-    difficult_sentences_dale_chall: List[str] = Field(
-        default_factory=list,
-        description="Sentences with high Dale-Chall score"
     )
     polysyllabic_sentences: List[str] = Field(
         default_factory=list,
@@ -171,17 +162,9 @@ class UserFocusFlags(BaseModel):
         default_factory=list,
         description="Sentences not directly addressing users"
     )
-    rights_absent_sections: List[str] = Field(
-        default_factory=list,
-        description="Text sections without user rights mentions"
-    )
     no_action_sentences: List[str] = Field(
         default_factory=list,
         description="Passive sentences that could be more actionable"
-    )
-    missing_contact_sections: List[str] = Field(
-        default_factory=list,
-        description="Sections without contact/action information"
     )
     corporate_speak_sentences: List[str] = Field(
         default_factory=list,

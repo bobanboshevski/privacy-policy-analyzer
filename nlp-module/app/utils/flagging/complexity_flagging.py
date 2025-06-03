@@ -3,7 +3,7 @@ from typing import List
 
 nlp = spacy.load("en_core_web_sm")
 
-def flag_long_sentences(text: str, threshold: int = 25) -> List[str]:
+def flag_long_sentences(text: str, threshold: int = 50) -> List[str]:
     """
     Returns sentences that are too long (> threshold words).
     Default threshold: 25 words (considered hard to follow)
@@ -21,7 +21,7 @@ def flag_long_sentences(text: str, threshold: int = 25) -> List[str]:
     return long_sentences
 
 
-def flag_complex_vocabulary_sentences(text: str, threshold: float = 6.0) -> List[str]:
+def flag_complex_vocabulary_sentences(text: str, threshold: float = 60.0) -> List[str]:
     """
     Returns sentences with overly complex vocabulary (avg word length > threshold).
     Default threshold: 6.0 characters per word
@@ -44,7 +44,7 @@ def flag_complex_vocabulary_sentences(text: str, threshold: float = 6.0) -> List
     return complex_sentences
 
 
-def flag_syntactically_complex_sentences(text: str, threshold: int = 7) -> List[str]:
+def flag_syntactically_complex_sentences(text: str, threshold: int = 15) -> List[str]:
     """
     Returns sentences with high syntactic complexity (depth > threshold).
     Default threshold: 7 (considered harder to parse)

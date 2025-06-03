@@ -40,28 +40,6 @@ def flag_impersonal_sentences(text: str, threshold: float = 0.02) -> List[str]:
     
     return impersonal_sentences
 
-
-def flag_rights_absent_sections(text: str, min_section_length: int = 50) -> List[str]:
-    """
-    Returns text sections that don't mention user rights.
-    Splits text into sections and flags those without rights-related phrases.
-    """
-    # Split text into sections (by double newlines or periods followed by capital letters)
-    sections = re.split(r'\n\n|\. [A-Z]', text)
-    sections = [section.strip() for section in sections if len(section.strip()) > min_section_length]
-    
-    rights_absent_sections = []
-    
-    for section in sections:
-        section_lower = section.lower()
-        has_rights_mention = any(phrase in section_lower for phrase in RIGHT_PHRASES)
-        
-        if not has_rights_mention:
-            rights_absent_sections.append(section)
-    
-    return rights_absent_sections
-
-
 def flag_no_action_sentences(text: str) -> List[str]:
     """
     Returns sentences that describe processes but don't tell users what they can do.
@@ -96,31 +74,6 @@ def flag_no_action_sentences(text: str) -> List[str]:
             no_action_sentences.append(sentence_text)
     
     return no_action_sentences
-
-
-def flag_missing_contact_sections(text: str, section_size: int = 100) -> List[str]:
-    """
-    Returns sections of text that lack clear call-to-action or contact information.
-    """
-    # Break text into chunks
-    words = text.split()
-    sections = []
-    
-    for i in range(0, len(words), section_size):
-        section = ' '.join(words[i:i + section_size])
-        sections.append(section)
-    
-    missing_contact_sections = []
-    
-    for section in sections:
-        section_lower = section.lower()
-        has_cta = any(re.search(pattern, section_lower) for pattern in CALL_TO_ACTION_PATTERNS)
-        
-        if not has_cta and len(section.split()) > 20:  # Only check substantial sections
-            missing_contact_sections.append(section)
-    
-    return missing_contact_sections
-
 
 def flag_corporate_speak_sentences(text: str) -> List[str]:
     """

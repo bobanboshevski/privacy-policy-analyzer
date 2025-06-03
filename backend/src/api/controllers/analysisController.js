@@ -3,7 +3,8 @@ const urlAnalysisService = require('../services/urlAnalysisService');
 const {
     analyzeWithPython,
     analyzeGdprWithPython,
-    analyzeCcpaWithPython
+    analyzeCcpaWithPython,
+    analyzeWithPythonForFlagging
 } = require("../services/externalPrivacyAnalysisService");
 const {handlePdfAnalysis} = require("../../utils/helper");
 const {computeOverallScore} = require("../../utils/metricScoring");
@@ -63,6 +64,39 @@ const analyzeText = async (req, res, next) => {
         next(error);
     }
 };
+
+
+const analyzeTextFlagging = async (req, res, next) => {
+    try {
+        const {text} = req.body;
+
+        if (!text || text.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                error: 'Text content is required'
+            });
+        }
+
+        if (!isPrivacyPolicy(text)) {
+            const error = new Error("Text does not contain sufficient words or is not a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const flaggingAnalysisResult = await analyzeWithPythonForFlagging(text.trim());
+
+        console.log("Text flagging root-analysis:", flaggingAnalysisResult);
+
+        return res.status(200).json({
+            success: true,
+            data: {extractedText: text.trim()},
+            flaggingAnalysis: flaggingAnalysisResult.flaggingAnalysis
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 /**
  * Analyze GDPR compliance for text/document/URL
@@ -290,6 +324,42 @@ const analyzeUrlCcpaCompliance = async (req, res, next) => {
     }
 };
 
+
+const analyzeUrlFlagging = async (req, res, next) => {
+    try {
+        const {url} = req.body;
+
+        if (!url) {
+            return res.status(400).json({
+                success: false,
+                error: 'URL is required',
+            });
+        }
+
+        const result = await urlAnalysisService.analyze(url);
+        console.log("URL scraped text for text-flagging root-analysis: ", result);
+
+        if (!isPrivacyPolicy(result.extractedText)) {
+            const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const flaggingAnalysisResult = await analyzeWithPythonForFlagging(result.extractedText);
+
+        console.log("URL text-flagging root-analysis:", flaggingAnalysisResult);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+            flaggingAnalysis: flaggingAnalysisResult.flaggingAnalysis
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 /**
  * Helper function for PDF GDPR compliance root-analysis
  */
@@ -344,9 +414,45 @@ const handlePdfCcpaCompliance = async (req, res, next, analyzeFunction) => {
     }
 };
 
+const handlePdfTextFlagging = async (req, res, next, analyzeFunction) => {
+    try {
+        const result = await analyzeFunction(req.file);
+
+        if (!result.extractedText || !isPrivacyPolicy(result.extractedText)) {
+            const error = new Error("Extracted text does not contain sufficient words or is not a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        const flaggingAnalysisResult = await analyzeWithPythonForFlagging(result.extractedText);
+
+        console.log("PDF text flagging root-analysis:", flaggingAnalysisResult);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+            flaggingAnalysis: flaggingAnalysisResult.flaggingAnalysis
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 /**
  * PDF GDPR compliance root-analysis functions
  */
+const analyzePdfTextFlagging = (req, res, next) => {
+    return handlePdfTextFlagging(req, res, next, pdfAnalysisService.analyzeWithPdfParse);
+};
+
+const analyzePdf2JsonTextFlagging = (req, res, next) => {
+    return handlePdfTextFlagging(req, res, next, pdfAnalysisService.analyzeWithPdf2Json);
+};
+
+const analyzePdfJsExtractTextFlagging = (req, res, next) => {
+    return handlePdfTextFlagging(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
+};
+
 const analyzePdfGdprCompliance = (req, res, next) => {
     return handlePdfGdprCompliance(req, res, next, pdfAnalysisService.analyzeWithPdfParse);
 };
@@ -358,6 +464,7 @@ const analyzePdf2JsonGdprCompliance = (req, res, next) => {
 const analyzePdfJsExtractGdprCompliance = (req, res, next) => {
     return handlePdfGdprCompliance(req, res, next, pdfAnalysisService.analyzeWithPdfJsExtract);
 };
+
 
 /**
  * PDF CCPA compliance root-analysis functions
@@ -386,10 +493,12 @@ const analyzePdfJsExtract = (req, res, next) => {
 
 module.exports = {
     analyzeText,
+    analyzeTextFlagging,
     analyzeGdprCompliance,
     analyzeCcpaCompliance,
     analyzeUrlGdprCompliance,
     analyzeUrlCcpaCompliance,
+    analyzeUrlFlagging,
     analyzeUrl,
     analyzePdfParser,
     analyzePdf2Json,
@@ -397,6 +506,9 @@ module.exports = {
     analyzePdfGdprCompliance,
     analyzePdf2JsonGdprCompliance,
     analyzePdfJsExtractGdprCompliance,
+    analyzePdfTextFlagging,
+    analyzePdf2JsonTextFlagging,
+    analyzePdfJsExtractTextFlagging,
     analyzePdfCcpaCompliance,
     analyzePdf2JsonCcpaCompliance,
     analyzePdfJsExtractCcpaCompliance
