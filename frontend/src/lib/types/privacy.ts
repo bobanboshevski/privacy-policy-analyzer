@@ -8,7 +8,7 @@ export interface PrivacyAnalysisConfig<TResponse> {
     components: {
         AnalysisResultContainer: React.ComponentType<AnalysisResultContainerProps<TResponse>>;
     };
-    renderMetric: (key: string, value: any) => React.ReactNode;
+    renderMetric: (key: string, value: number) => React.ReactNode;
     complianceTitle: string;
     feedbackCategory: string;
 }
