@@ -43,15 +43,6 @@ def format_sentences_for_pdf(sentences: List[str], max_length: int = 200) -> Lis
 
     return formatted_sentences
 
-def create_pdf_section_header(title: str, count: int) -> str:
-    """
-    Create a visually distinct section header.
-
-    Returns:
-        Clean header with underline and newline
-    """
-    header = f"\n{title.upper()} ({count} flagged):\n" + "-" * (len(title) + len(str(count)) + 10) + "\n"
-    return header
 
 def format_numbered_items_for_pdf(items: List[str]) -> List[str]:
     """
@@ -133,23 +124,6 @@ def clean_sentence(sentence: str) -> str:
 
     return cleaned
 
-
-def create_pdf_section_header(title: str, count: int) -> str:
-    """
-    Create a formatted section header for PDF.
-    
-    Args:
-        title: Section title
-        count: Number of items in section
-    
-    Returns:
-        Formatted header string
-    """
-    return f"\n{title} ({count} found):\n" + "=" * (len(title) + len(str(count)) + 10)
-
-
-# Wrapper functions for each flagging module
-# These maintain the exact same return type as original functions
 
 def format_vague_sentences(sentences: List[str]) -> List[str]:
     """Format vague sentences flagging results for PDF."""

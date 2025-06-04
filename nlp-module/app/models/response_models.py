@@ -74,10 +74,6 @@ class ReadabilityFlags(BaseModel):
         default_factory=list,
         description="Sentences with very low Flesch Reading Ease scores"
     )
-    complex_sentences_gunning_fog: List[str] = Field(
-        default_factory=list,
-        description="Sentences with high Gunning Fog index"
-    )
     hard_sentences_smog: List[str] = Field(
         default_factory=list,
         description="Sentences with high SMOG index"
