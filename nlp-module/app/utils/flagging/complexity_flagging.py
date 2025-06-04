@@ -1,5 +1,6 @@
 import spacy
 from typing import List
+from app.utils.flagging.pdf_formatter import format_long_sentences, format_complex_vocabulary_sentences, format_syntactically_complex_sentences
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -18,7 +19,7 @@ def flag_long_sentences(text: str, threshold: int = 50) -> List[str]:
         if word_count > threshold:
             long_sentences.append(sentence_text)
     
-    return long_sentences
+    return format_long_sentences(long_sentences)
 
 
 def flag_complex_vocabulary_sentences(text: str, threshold: float = 60.0) -> List[str]:
@@ -41,7 +42,7 @@ def flag_complex_vocabulary_sentences(text: str, threshold: float = 60.0) -> Lis
         if avg_word_length > threshold:
             complex_sentences.append(sentence_text)
     
-    return complex_sentences
+    return format_complex_vocabulary_sentences(complex_sentences)
 
 
 def flag_syntactically_complex_sentences(text: str, threshold: int = 15) -> List[str]:
@@ -67,4 +68,4 @@ def flag_syntactically_complex_sentences(text: str, threshold: int = 15) -> List
         if max_depth > threshold:
             complex_sentences.append(sentence_text)
     
-    return complex_sentences
+    return format_syntactically_complex_sentences(complex_sentences)

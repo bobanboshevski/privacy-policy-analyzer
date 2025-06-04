@@ -1,6 +1,7 @@
 import re
 import spacy
 from typing import List
+from app.utils.flagging.pdf_formatter import format_impersonal_sentences, format_no_action_sentences, format_corporate_speak_sentences
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -38,7 +39,7 @@ def flag_impersonal_sentences(text: str, threshold: float = 0.02) -> List[str]:
         if pronoun_ratio < threshold:
             impersonal_sentences.append(sentence_text)
     
-    return impersonal_sentences
+    return format_impersonal_sentences(impersonal_sentences)
 
 def flag_no_action_sentences(text: str) -> List[str]:
     """
@@ -73,7 +74,7 @@ def flag_no_action_sentences(text: str) -> List[str]:
         if has_passive and not has_action and len(sentence_text.split()) > 7:
             no_action_sentences.append(sentence_text)
     
-    return no_action_sentences
+    return format_no_action_sentences(no_action_sentences)
 
 def flag_corporate_speak_sentences(text: str) -> List[str]:
     """
@@ -97,4 +98,4 @@ def flag_corporate_speak_sentences(text: str) -> List[str]:
         if any(re.search(phrase, sentence_lower) for phrase in corporate_phrases):
             corporate_sentences.append(sentence_text)
     
-    return corporate_sentences
+    return format_corporate_speak_sentences(corporate_sentences)

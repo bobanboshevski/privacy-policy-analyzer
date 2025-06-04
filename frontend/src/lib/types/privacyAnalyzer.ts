@@ -47,26 +47,31 @@ export type AnalyzedPrivacyResponse = {
             rights_phrase_density: number,
             call_to_action_presence: number
         },
-        readability_flags?: {
+        readability_flags: {
             difficult_sentences_flesch: string[];  // sentences or fragments
             hard_sentences_smog: string[];
             polysyllabic_sentences: string[];
         };
-        user_focus_flags?: {
-            impersonal_sentences?: string[];
-            no_action_sentences?: string[];
-            corporate_speak_sentences?: string[];
+        user_focus_flags: {
+            impersonal_sentences: string[];
+            no_action_sentences: string[];
+            corporate_speak_sentences: string[];
         };
-        complexity_flags?: {
-            long_sentences?: string[];
-            complex_vocabulary_sentences?: string[];
-            syntactically_complex_sentences?: string[];
+        complexity_flags: {
+            long_sentences: string[];
+            complex_vocabulary_sentences: string[];
+            syntactically_complex_sentences: string[];
         };
-        ambiguity_flags?: {
-            vague_sentences?: string[];
-            passive_voice_sentences?: string[];
-            conditional_sentences?: string[];
+        ambiguity_flags: {
+            vague_sentences: string[];
+            passive_voice_sentences: string[];
+            conditional_sentences: string[];
         };
+        sentiment_flags:{
+            biased_sentences: string[];
+            opinion_heavy_sentences: string[];
+            emotionally_charged_sentences: string[];
+        }
     },
     summary: string,
     overallScore: number

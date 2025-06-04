@@ -2,6 +2,7 @@ import textstat
 import spacy
 import re
 from typing import List
+from app.utils.flagging.pdf_formatter import format_difficult_sentences_flesch, format_hard_sentences_smog, format_polysyllabic_sentences
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -22,7 +23,7 @@ def flag_difficult_sentences_flesch(text: str, threshold: float = 30.0) -> List[
         if flesch_score < threshold:
             difficult_sentences.append(sentence_text)
     
-    return difficult_sentences
+    return format_difficult_sentences_flesch(difficult_sentences)
 
 
 def flag_hard_sentences_smog(text: str, threshold: float = 14.0) -> List[str]:
@@ -42,7 +43,7 @@ def flag_hard_sentences_smog(text: str, threshold: float = 14.0) -> List[str]:
         if smog_score > threshold:
             hard_sentences.append(sentence_text)
     
-    return hard_sentences
+    return format_hard_sentences_smog(hard_sentences)
 
 def flag_polysyllabic_sentences(text: str, threshold: float = 0.3) -> List[str]:
     """
@@ -65,4 +66,4 @@ def flag_polysyllabic_sentences(text: str, threshold: float = 0.3) -> List[str]:
         if polysyllabic_ratio > threshold:
             polysyllabic_sentences.append(sentence_text)
     
-    return polysyllabic_sentences
+    return format_polysyllabic_sentences(polysyllabic_sentences)

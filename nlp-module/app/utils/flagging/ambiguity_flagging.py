@@ -1,6 +1,7 @@
 import spacy
 import re
 from typing import List
+from app.utils.flagging.pdf_formatter import format_vague_sentences, format_passive_voice_sentences, format_conditional_sentences
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -29,7 +30,7 @@ def flag_vague_sentences(text: str, threshold: float = 0.05) -> List[str]:
         if vague_ratio > threshold:
             problematic_sentences.append(sentence_text)
     
-    return problematic_sentences
+    return format_vague_sentences(problematic_sentences)
 
 
 def flag_passive_voice_sentences(text: str) -> List[str]:
@@ -44,7 +45,7 @@ def flag_passive_voice_sentences(text: str) -> List[str]:
         if any(tok.dep_ == "auxpass" for tok in sent):
             passive_sentences.append(sentence_text)
     
-    return passive_sentences
+    return format_passive_voice_sentences(passive_sentences)
 
 
 CONDITIONAL_WORDS = {"if", "when", "could", "would", "should", "unless"}
@@ -69,4 +70,4 @@ def flag_conditional_sentences(text: str, threshold: float = 0.03) -> List[str]:
         if conditional_ratio > threshold:
             problematic_sentences.append(sentence_text)
     
-    return problematic_sentences
+    return format_conditional_sentences(problematic_sentences)

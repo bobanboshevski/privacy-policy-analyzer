@@ -1,6 +1,7 @@
 from textblob import TextBlob
 import spacy
 from typing import List
+from app.utils.flagging.pdf_formatter import format_biased_sentences, format_opinion_heavy_sentences, format_emotionally_charged_sentences
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -21,7 +22,7 @@ def flag_biased_sentences(text: str, threshold: float = 0.4) -> List[str]:
         if abs(blob.sentiment.polarity) > threshold:
             biased_sentences.append(sentence_text)
     
-    return biased_sentences
+    return format_biased_sentences(biased_sentences)
 
 
 def flag_opinion_heavy_sentences(text: str, subjectivity_threshold: float = 0.5) -> List[str]:
@@ -42,7 +43,7 @@ def flag_opinion_heavy_sentences(text: str, subjectivity_threshold: float = 0.5)
         if blob.sentiment.subjectivity > subjectivity_threshold:
             opinion_sentences.append(sentence_text)
     
-    return opinion_sentences
+    return format_opinion_heavy_sentences(opinion_sentences)
 
 
 def flag_emotionally_charged_sentences(text: str, polarity_threshold: float = 0.3) -> List[str]:
@@ -62,4 +63,4 @@ def flag_emotionally_charged_sentences(text: str, polarity_threshold: float = 0.
         if abs(blob.sentiment.polarity) > polarity_threshold:
             emotional_sentences.append(sentence_text)
     
-    return emotional_sentences
+    return format_emotionally_charged_sentences(emotional_sentences)
