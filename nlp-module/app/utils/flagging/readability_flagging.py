@@ -16,7 +16,7 @@ def flag_difficult_sentences_flesch(text: str, threshold: float = 30.0) -> List[
     
     for sent in doc.sents:
         sentence_text = sent.text.strip()
-        if len(sentence_text.split()) < 3:  # Skip very short sentences
+        if len(sentence_text.split()) < 3:
             continue
             
         flesch_score = textstat.flesch_reading_ease(sentence_text)

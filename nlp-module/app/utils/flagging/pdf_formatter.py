@@ -27,15 +27,13 @@ def format_sentences_for_pdf(sentences: List[str], max_length: int = 200) -> Lis
     for i, sentence in enumerate(sentences, 1):
         cleaned = clean_sentence(sentence)
 
-        # Smart truncation if sentence is excessively long
         if len(cleaned) > max_length:
             cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
 
         formatted = f"  • ({i}) {cleaned}"
 
-        # Remove dangling commas or artifacts (defensive sanitization)
-        formatted = re.sub(r'^[,\.]+', '', formatted)  # Remove leading , or .
-        formatted = formatted.rstrip(",")  # Remove trailing commas
+        formatted = re.sub(r'^[,\.]+', '', formatted)
+        formatted = formatted.rstrip(",")
         if not formatted.endswith(('.', '!', '?', '...')):
             formatted += "."
 
@@ -57,7 +55,6 @@ def format_numbered_items_for_pdf(items: List[str]) -> List[str]:
     formatted = []
     for i, item in enumerate(items, 1):
         cleaned = clean_sentence(item)
-        # Convert markdown-style bold to readable asterisks or quotes
         cleaned = re.sub(r'\*\*(.*?)\*\*', r'"\1"', cleaned)
         formatted.append(f"{i}. {cleaned}\n")
 
@@ -79,7 +76,6 @@ def format_topic_coverage_for_pdf(coverage_result: Dict[str, List[str]]) -> Dict
     
     formatted_result = {}
     
-    # Format missing topics
     if 'missing_topics' in coverage_result:
         missing_topics = coverage_result['missing_topics']
         if missing_topics:
@@ -88,7 +84,6 @@ def format_topic_coverage_for_pdf(coverage_result: Dict[str, List[str]]) -> Dict
         else:
             formatted_result['missing_topics'] = ["• No missing topics identified"]
     
-    # Format weak coverage sentences
     if 'weak_coverage_sentences' in coverage_result:
         weak_sentences = coverage_result['weak_coverage_sentences']
         formatted_result['weak_coverage_sentences'] = format_sentences_for_pdf(weak_sentences)
@@ -106,19 +101,15 @@ def clean_sentence(sentence: str) -> str:
     Returns:
         Cleaned sentence
     """
-    # Remove extra whitespace
     cleaned = re.sub(r'\s+', ' ', sentence.strip())
 
-    # Remove quotes that wrap the entire sentence
     if cleaned.startswith('"') and cleaned.endswith('"'):
         cleaned = cleaned[1:-1]
     elif cleaned.startswith("'") and cleaned.endswith("'"):
         cleaned = cleaned[1:-1]
 
-    # Remove leading or trailing punctuation artifacts like rogue commas
     cleaned = cleaned.lstrip(",. ").rstrip(",. ")
 
-    # Capitalize first letter if not already
     if cleaned and not cleaned[0].isupper():
         cleaned = cleaned[0].upper() + cleaned[1:]
 

@@ -30,7 +30,7 @@ def flag_impersonal_sentences(text: str, threshold: float = 0.02) -> List[str]:
         sentence_text = sent.text.strip()
         words = sentence_text.lower().split()
         
-        if len(words) < 5:  # Skip very short sentences
+        if len(words) < 5:
             continue
             
         pronoun_count = sum(1 for word in words if word in second_person_pronouns)
@@ -49,14 +49,12 @@ def flag_no_action_sentences(text: str) -> List[str]:
     doc = nlp(text)
     no_action_sentences = []
     
-    # Patterns that suggest actionable content
     action_indicators = [
         r"\byou can\b", r"\byou may\b", r"\bcontact\b", r"\brequest\b",
         r"\bopt-out\b", r"\bopt out\b", r"\bunsubscribe\b", r"\bmanage\b",
         r"\bchange\b", r"\bupdate\b", r"\bdelete\b", r"\baccess\b"
     ]
     
-    # Patterns that suggest passive/descriptive content
     passive_indicators = [
         r"\bwe collect\b", r"\bwe use\b", r"\bwe share\b", r"\bwe store\b",
         r"\bis collected\b", r"\bis used\b", r"\bis shared\b", r"\bis stored\b",

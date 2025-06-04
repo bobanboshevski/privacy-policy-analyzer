@@ -60,7 +60,6 @@ def flag_missing_topics(text: str, threshold: float = 0.6) -> Dict[str, List[str
 
         if max_score < threshold:
             missing_topics.append(topic)
-            # If there's some weak coverage (score between 0.3 and threshold), flag it
             if max_score > 0.3 and best_sentence:
                 weak_coverage_sentences.append(best_sentence)
 
