@@ -39,15 +39,18 @@ export type AnalyzedPrivacyResponse = {
             polarity: number,
             opinion_density: number
         },
+        coverage: {
+            coverage_score: number
+        },
+        userFocus: {
+            pronoun_ratio: number,
+            rights_phrase_density: number,
+            call_to_action_presence: number
+        },
         readability_flags: {
             difficult_sentences_flesch: string[];
             hard_sentences_smog: string[];
             polysyllabic_sentences: string[];
-        };
-        user_focus_flags: {
-            impersonal_sentences: string[];
-            no_action_sentences: string[];
-            corporate_speak_sentences: string[];
         };
         complexity_flags: {
             long_sentences: string[];
