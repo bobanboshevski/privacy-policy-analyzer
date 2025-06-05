@@ -5,6 +5,7 @@ const getTrainingDataFromFirestore = async () => {
     const trainingData = snapshot.docs.map(doc => {
         const data = doc.data();
         return {
+            id: doc.id,
             title: data.title,
             description: data.description,
             category: data.category,
