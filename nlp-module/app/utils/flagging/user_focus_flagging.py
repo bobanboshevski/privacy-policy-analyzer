@@ -65,7 +65,6 @@ def flag_no_action_sentences(text: str) -> List[str]:
         sentence_text = sent.text.strip()
         sentence_lower = sentence_text.lower()
         
-        # Check if sentence has passive/descriptive language but no actionable language
         has_passive = any(re.search(pattern, sentence_lower) for pattern in passive_indicators)
         has_action = any(re.search(pattern, sentence_lower) for pattern in action_indicators)
         

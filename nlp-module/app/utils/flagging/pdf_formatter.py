@@ -1,10 +1,3 @@
-"""
-PDF Formatting Utility for Flagging Analysis Functions
-
-This module provides formatting functions to improve the appearance of flagged sentences
-in PDF exports while maintaining the same return type as the original functions.
-"""
-
 import re
 from typing import List, Dict, Union
 
@@ -27,14 +20,11 @@ def format_sentences_for_pdf(sentences: List[str], max_length: int = 500) -> Lis
     for i, sentence in enumerate(sentences, 1):
         cleaned = clean_sentence(sentence)
 
-        # Smart truncation if sentence is excessively long
         if len(cleaned) > max_length:
             cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
 
-        # Bullet formatting with numbering
         formatted = f"\n • ({i}) {cleaned}"
         
-        # Add period if sentence doesn't end with punctuation
         if not formatted.endswith(('.', '!', '?', '...')):
             formatted += "."
 
@@ -61,16 +51,13 @@ def format_sentences_without_numbers(sentences: List[str], max_length: int = 500
     for sentence in sentences:
         cleaned = clean_sentence(sentence)
 
-        # Smart truncation if sentence is excessively long
         if len(cleaned) > max_length:
             cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
 
-        # Bullet formatting without numbering
         formatted = f"• {cleaned}"
         if not formatted.endswith(('.', '!', '?', '...')):
             formatted += "."
 
-        # Add newline for consistent formatting
         formatted_sentences.append(formatted)
 
     return formatted_sentences
@@ -89,7 +76,6 @@ def format_numbered_items_for_pdf(items: List[str]) -> List[str]:
     formatted = []
     for i, item in enumerate(items, 1):
         cleaned = clean_sentence(item)
-        # Convert markdown-style bold to readable asterisks or quotes
         cleaned = re.sub(r'\*\*(.*?)\*\*', r'"\1"', cleaned)
         formatted.append(f"{i}. {cleaned}" + "\n")
 
@@ -110,8 +96,7 @@ def format_topic_coverage_for_pdf(coverage_result: Dict[str, List[str]]) -> Dict
         return coverage_result
     
     formatted_result = {}
-    
-    # Format missing topics
+  
     if 'missing_topics' in coverage_result:
         missing_topics = coverage_result['missing_topics']
         if missing_topics:
@@ -119,8 +104,7 @@ def format_topic_coverage_for_pdf(coverage_result: Dict[str, List[str]]) -> Dict
             formatted_result['missing_topics'] = formatted_topics
         else:
             formatted_result['missing_topics'] = ["• No missing topics identified\n"]
-    
-    # Format weak coverage sentences
+
     if 'weak_coverage_sentences' in coverage_result:
         weak_sentences = coverage_result['weak_coverage_sentences']
         formatted_result['weak_coverage_sentences'] = format_sentences_for_pdf(weak_sentences)
@@ -138,24 +122,18 @@ def clean_sentence(sentence: str) -> str:
     Returns:
         Cleaned sentence
     """
-    # Remove extra whitespace
     cleaned = re.sub(r'\s+', ' ', sentence.strip())
 
-    # Remove quotes at the beginning and end if they wrap the entire sentence
     if cleaned.startswith('"') and cleaned.endswith('"'):
         cleaned = cleaned[1:-1]
     elif cleaned.startswith("'") and cleaned.endswith("'"):
         cleaned = cleaned[1:-1]
     
-    # Capitalize first letter if not already
     if cleaned and not cleaned[0].isupper():
         cleaned = cleaned[0].upper() + cleaned[1:]
     
     return cleaned
 
-
-# Wrapper functions for each flagging module
-# These maintain the exact same return type as original functions
 
 def format_vague_sentences(sentences: List[str]) -> List[str]:
     """Format vague sentences flagging results for PDF."""

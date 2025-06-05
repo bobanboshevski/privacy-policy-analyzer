@@ -40,7 +40,7 @@ export type AnalyzedPrivacyResponse = {
             opinion_density: number
         },
         readability_flags: {
-            difficult_sentences_flesch: string[];  // sentences or fragments
+            difficult_sentences_flesch: string[];
             hard_sentences_smog: string[];
             polysyllabic_sentences: string[];
         };
