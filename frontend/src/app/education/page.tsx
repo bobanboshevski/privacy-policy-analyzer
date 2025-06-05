@@ -56,7 +56,7 @@ export default function TrainingPage() {
                             <div className="mt-4">
                                 <h4 className="text-white font-medium">Resources:</h4>
                                 <div className="space-y-4 mt-2">
-                                    {item.resources.map((res, i) => (
+                                    {item.resources.map((res) => (
                                         <div key={res.url}>
                                             {res.type === "video" ? (
                                                 <div>
