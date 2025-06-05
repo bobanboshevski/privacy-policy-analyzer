@@ -34,18 +34,10 @@ export type AnalyzedPrivacyResponse = {
             passive_voice_ratio: number,
             conditional_statement_ratio: number
         },
-        coverage: {
-            coverage_score: number
-        },
         sentiment: {
             subjectivity: number,
             polarity: number,
             opinion_density: number
-        },
-        userFocus: {
-            pronoun_ratio: number,
-            rights_phrase_density: number,
-            call_to_action_presence: number
         },
         readability_flags: {
             difficult_sentences_flesch: string[];  // sentences or fragments

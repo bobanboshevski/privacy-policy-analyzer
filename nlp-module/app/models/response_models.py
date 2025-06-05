@@ -70,10 +70,6 @@ class CcpaComplianceMetrics(BaseModel):
 
 
 class ReadabilityFlags(BaseModel):
-    difficult_sentences_flesch: List[str] = Field(
-        default_factory=list,
-        description="Sentences with very low Flesch Reading Ease scores"
-    )
     hard_sentences_smog: List[str] = Field(
         default_factory=list,
         description="Sentences with high SMOG index"
@@ -104,10 +100,6 @@ class AmbiguityFlags(BaseModel):
         default_factory=list,
         description="Sentences with high vague word density"
     )
-    passive_voice_sentences: List[str] = Field(
-        default_factory=list,
-        description="Sentences using passive voice"
-    )
     conditional_sentences: List[str] = Field(
         default_factory=list,
         description="Sentences with high conditional word density"
@@ -130,10 +122,6 @@ class CoverageFlags(BaseModel):
 
 
 class SentimentFlags(BaseModel):
-    subjective_sentences: List[str] = Field(
-        default_factory=list,
-        description="Highly subjective sentences"
-    )
     biased_sentences: List[str] = Field(
         default_factory=list,
         description="Sentences with strong sentiment bias"
@@ -145,10 +133,6 @@ class SentimentFlags(BaseModel):
     emotionally_charged_sentences: List[str] = Field(
         default_factory=list,
         description="Emotionally charged sentences"
-    )
-    non_neutral_sentences: List[str] = Field(
-        default_factory=list,
-        description="Sentences that aren't neutral/formal"
     )
 
 
@@ -177,9 +161,7 @@ class AnalysisResult(BaseModel):
     readabilityFlags: ReadabilityFlags
     complexityFlags: ComplexityFlags
     ambiguityFlags: AmbiguityFlags
-    coverageFlags: CoverageFlags
     sentimentFlags: SentimentFlags
-    userFocusFlags: UserFocusFlags
 
 
 class GdprAnalysisResult(BaseModel):

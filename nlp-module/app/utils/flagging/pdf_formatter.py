@@ -9,7 +9,7 @@ import re
 from typing import List, Dict, Union
 
 
-def format_sentences_for_pdf(sentences: List[str], max_length: int = 200) -> List[str]:
+def format_sentences_for_pdf(sentences: List[str], max_length: int = 500) -> List[str]:
     """
     Format a list of sentences for better PDF presentation with vertical spacing and bullets.
 
@@ -21,23 +21,57 @@ def format_sentences_for_pdf(sentences: List[str], max_length: int = 200) -> Lis
         List of well-formatted sentences
     """
     if not sentences:
-        return ["No flagged sentences found for this category."]
+        return ["• No flagged sentences found.\n"]
 
     formatted_sentences = []
     for i, sentence in enumerate(sentences, 1):
         cleaned = clean_sentence(sentence)
 
+        # Smart truncation if sentence is excessively long
         if len(cleaned) > max_length:
             cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
 
-        formatted = f"  • ({i}) {cleaned}"
-
-        formatted = re.sub(r'^[,\.]+', '', formatted)
-        formatted = formatted.rstrip(",")
+        # Bullet formatting with numbering
+        formatted = f"\n • ({i}) {cleaned}"
+        
+        # Add period if sentence doesn't end with punctuation
         if not formatted.endswith(('.', '!', '?', '...')):
             formatted += "."
 
-        formatted_sentences.append(formatted + "\n")
+        formatted_sentences.append(formatted)
+
+    return formatted_sentences
+
+
+def format_sentences_without_numbers(sentences: List[str], max_length: int = 500) -> List[str]:
+    """
+    Format a list of sentences for PDF without numbering, but with bullets and newlines.
+
+    Args:
+        sentences: List of sentences to format
+        max_length: Maximum character length before truncating
+
+    Returns:
+        List of well-formatted sentences without numbers
+    """
+    if not sentences:
+        return ["• No flagged sentences found.\n"]
+
+    formatted_sentences = []
+    for sentence in sentences:
+        cleaned = clean_sentence(sentence)
+
+        # Smart truncation if sentence is excessively long
+        if len(cleaned) > max_length:
+            cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
+
+        # Bullet formatting without numbering
+        formatted = f"• {cleaned}"
+        if not formatted.endswith(('.', '!', '?', '...')):
+            formatted += "."
+
+        # Add newline for consistent formatting
+        formatted_sentences.append(formatted)
 
     return formatted_sentences
 
@@ -55,8 +89,9 @@ def format_numbered_items_for_pdf(items: List[str]) -> List[str]:
     formatted = []
     for i, item in enumerate(items, 1):
         cleaned = clean_sentence(item)
+        # Convert markdown-style bold to readable asterisks or quotes
         cleaned = re.sub(r'\*\*(.*?)\*\*', r'"\1"', cleaned)
-        formatted.append(f"{i}. {cleaned}\n")
+        formatted.append(f"{i}. {cleaned}" + "\n")
 
     return formatted if formatted else ["No items found.\n"]
 
@@ -76,14 +111,16 @@ def format_topic_coverage_for_pdf(coverage_result: Dict[str, List[str]]) -> Dict
     
     formatted_result = {}
     
+    # Format missing topics
     if 'missing_topics' in coverage_result:
         missing_topics = coverage_result['missing_topics']
         if missing_topics:
-            formatted_topics = [f"• {topic.replace('_', ' ').title()}" for topic in missing_topics]
+            formatted_topics = [f"• {topic.replace('_', ' ').title()}\n" for topic in missing_topics]
             formatted_result['missing_topics'] = formatted_topics
         else:
-            formatted_result['missing_topics'] = ["• No missing topics identified"]
+            formatted_result['missing_topics'] = ["• No missing topics identified\n"]
     
+    # Format weak coverage sentences
     if 'weak_coverage_sentences' in coverage_result:
         weak_sentences = coverage_result['weak_coverage_sentences']
         formatted_result['weak_coverage_sentences'] = format_sentences_for_pdf(weak_sentences)
@@ -101,20 +138,24 @@ def clean_sentence(sentence: str) -> str:
     Returns:
         Cleaned sentence
     """
+    # Remove extra whitespace
     cleaned = re.sub(r'\s+', ' ', sentence.strip())
 
+    # Remove quotes at the beginning and end if they wrap the entire sentence
     if cleaned.startswith('"') and cleaned.endswith('"'):
         cleaned = cleaned[1:-1]
     elif cleaned.startswith("'") and cleaned.endswith("'"):
         cleaned = cleaned[1:-1]
-
-    cleaned = cleaned.lstrip(",. ").rstrip(",. ")
-
+    
+    # Capitalize first letter if not already
     if cleaned and not cleaned[0].isupper():
         cleaned = cleaned[0].upper() + cleaned[1:]
-
+    
     return cleaned
 
+
+# Wrapper functions for each flagging module
+# These maintain the exact same return type as original functions
 
 def format_vague_sentences(sentences: List[str]) -> List[str]:
     """Format vague sentences flagging results for PDF."""
@@ -133,8 +174,7 @@ def format_conditional_sentences(sentences: List[str]) -> List[str]:
 
 def format_long_sentences(sentences: List[str]) -> List[str]:
     """Format long sentences flagging results for PDF."""
-    return format_sentences_for_pdf(sentences, max_length=120)  # Longer for complex sentences
-
+    return format_sentences_for_pdf(sentences, max_length=500)
 
 def format_complex_vocabulary_sentences(sentences: List[str]) -> List[str]:
     """Format complex vocabulary sentences flagging results for PDF."""
@@ -143,7 +183,7 @@ def format_complex_vocabulary_sentences(sentences: List[str]) -> List[str]:
 
 def format_syntactically_complex_sentences(sentences: List[str]) -> List[str]:
     """Format syntactically complex sentences flagging results for PDF."""
-    return format_sentences_for_pdf(sentences, max_length=130)
+    return format_sentences_for_pdf(sentences, max_length=500)
 
 
 def format_missing_topics(coverage_result: Dict[str, List[str]]) -> Dict[str, List[str]]:
@@ -187,13 +227,15 @@ def format_emotionally_charged_sentences(sentences: List[str]) -> List[str]:
 
 
 def format_impersonal_sentences(sentences: List[str]) -> List[str]:
-    """Format emotionally charged sentences flagging results for PDF."""
+    """Format impersonal sentences flagging results for PDF."""
     return format_sentences_for_pdf(sentences)
+
 
 def format_no_action_sentences(sentences: List[str]) -> List[str]:
-    """Format emotionally charged sentences flagging results for PDF."""
+    """Format no action sentences flagging results for PDF."""
     return format_sentences_for_pdf(sentences)
 
+
 def format_corporate_speak_sentences(sentences: List[str]) -> List[str]:
-    """Format emotionally charged sentences flagging results for PDF."""
+    """Format corporate speak sentences flagging results for PDF."""
     return format_sentences_for_pdf(sentences)
