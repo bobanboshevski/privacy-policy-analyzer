@@ -42,7 +42,7 @@ const analyzeText = async (req, res, next) => {
 
         const userId = req.user?.uid || null;
         console.log("USER ID:", userId);
-        const docId = await saveAnalysisToFirestore({
+        await saveAnalysisToFirestore({
             inputType: InputType.TEXT,
             userId,
             originalInput: text.trim(),
@@ -60,6 +60,7 @@ const analyzeText = async (req, res, next) => {
             overallScore: overallScore
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
@@ -168,7 +169,7 @@ const analyzeUrl = async (req, res, next) => {
         const userId = req.user?.uid || null;
         console.log("USER ID:", userId);
 
-        const docId = await saveAnalysisToFirestore({
+        await saveAnalysisToFirestore({
             inputType: InputType.URL,
             userId,
             originalInput: url,
@@ -186,6 +187,7 @@ const analyzeUrl = async (req, res, next) => {
             overallScore: overallScore
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
