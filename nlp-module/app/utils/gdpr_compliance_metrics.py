@@ -22,7 +22,7 @@ def check_lawful_basis_coverage(text: str) -> float:
     
     lower_text = text.lower()
     matches = sum(1 for pattern in patterns if re.search(pattern, lower_text))
-    return min(matches / 8, 1.0)  # Reduced from len(patterns)
+    return min(matches / 8, 1.0)
 
 
 def check_data_subject_rights_coverage(text: str) -> float:
@@ -181,25 +181,17 @@ def check_retention_periods(text: str) -> float:
 def gdpr_overall_score(text: str) -> float:
     """Calculate overall GDPR compliance score with more balanced weighting"""
     scores = {
-        'lawful_basis': check_lawful_basis_coverage(text) * 0.18,
-        'data_subject_rights': check_data_subject_rights_coverage(text) * 0.22,
-        'consent_mechanism': check_consent_mechanism_quality(text) * 0.15,
-        'dpo_information': check_dpo_information(text) * 0.12,
-        'international_transfers': check_international_transfers(text) * 0.12,
-        'security_measures': check_security_measures(text) * 0.12,
-        'breach_notification': check_breach_notification(text) * 0.05,
+        'lawful_basis': check_lawful_basis_coverage(text) * 0.17,
+        'data_subject_rights': check_data_subject_rights_coverage(text) * 0.21,
+        'consent_mechanism': check_consent_mechanism_quality(text) * 0.14,
+        'dpo_information': check_dpo_information(text) * 0.11,
+        'international_transfers': check_international_transfers(text) * 0.11,
+        'security_measures': check_security_measures(text) * 0.11,
+        'breach_notification': check_breach_notification(text) * 0.06,
         'retention_periods': check_retention_periods(text) * 0.09
     }
     
     total_score = sum(scores.values())
-    
-    lower_text = text.lower()
-    if re.search(r'gdpr|general data protection regulation|data protection regulation', lower_text):
-        total_score += 0.08
-    if re.search(r'european union|eu\b|eea|europe', lower_text):
-        total_score += 0.05
-    if re.search(r'privacy policy|privacy notice|data policy', lower_text):
-        total_score += 0.03
     
     return min(total_score, 1.0)
 

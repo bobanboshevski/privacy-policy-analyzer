@@ -180,16 +180,6 @@ def ccpa_overall_score(text: str) -> float:
     
     total_score = sum(scores.values())
     
-    lower_text = text.lower()
-    if re.search(r'ccpa|california consumer privacy act|california.*privacy', lower_text):
-        total_score += 0.08
-    if re.search(r'california|ca\b|california.*resident', lower_text):
-        total_score += 0.05
-    if re.search(r'privacy policy|privacy notice|consumer.*privacy', lower_text):
-        total_score += 0.03
-    if re.search(r'personal information|consumer.*right|privacy.*right', lower_text):
-        total_score += 0.02
-    
     return min(total_score, 1.0)
 
 
