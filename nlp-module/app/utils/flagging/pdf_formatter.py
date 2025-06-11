@@ -23,7 +23,7 @@ def format_sentences_for_pdf(sentences: List[str], max_length: int = 500) -> Lis
         if len(cleaned) > max_length:
             cleaned = cleaned[:max_length].rsplit(' ', 1)[0] + "..."
 
-        formatted = f"\n • ({i}) {cleaned}"
+        formatted = f"\n ({i}) {cleaned}"
         
         if not formatted.endswith(('.', '!', '?', '...')):
             formatted += "."
