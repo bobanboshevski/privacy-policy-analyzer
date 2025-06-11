@@ -10,6 +10,8 @@ import ExportDropdown from "@/components/ui/root-analysis/ExportDropdown";
 import SummarySection from "@/components/ui/root-analysis/SummarySection";
 import {renderMetric} from "@/lib/utils/renderHelpers";
 import FeedbackForm from "@/components/forms/FeedbackForm";
+import ReactMarkdown from "react-markdown";
+import {overallScoreExplanation} from "@/lib/constants/metricExplanations";
 
 
 interface Props {
@@ -83,6 +85,9 @@ export default function AnalysisResult({result, mode}: Props) {
 
                         <hr className="border-gray-700 my-6"/>
                         <ScoreDisplay score={result.overallScore}/>
+                        <div className="mt-2 text-sm text-gray-300 prose prose-invert max-w-none text-left">
+                            <ReactMarkdown>{overallScoreExplanation}</ReactMarkdown>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

@@ -28,9 +28,5 @@ export const metricExplanations: Record<string, string> = {
 };
 
 export const overallScoreExplanation = `
-The overall score (1–10) reflects how clear, user-focused, and privacy-aware the document is.
-
-It’s calculated from key metrics across readability, ambiguity, topic coverage, sentiment, and user relevance — with critical metrics weighted more heavily.
-
-Higher scores mean the document is clearer and more helpful to users.
+The overall score (1–10) reflects how clear, user-focused, and privacy-aware the document is. It’s calculated from key metrics across readability, ambiguity, topic coverage, sentiment, and user relevance — with critical metrics weighted more heavily. Higher scores mean the document is clearer and more helpful to users.
 `;
