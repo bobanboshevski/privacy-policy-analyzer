@@ -51,7 +51,7 @@ export default function GenericUrlInputForm<TResponse>({config}: Props<TResponse
                 <div className="flex justify-end">
                     <button
                         type="submit"
-                        className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
+                        className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded cursor-pointer"
                         disabled={loading}
                     >
                         {loading ? "Analyzing..." : "Analyze URL"}

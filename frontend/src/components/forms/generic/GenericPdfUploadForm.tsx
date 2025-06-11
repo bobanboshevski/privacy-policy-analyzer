@@ -65,7 +65,7 @@ export default function GenericPdfUploadForm<TResponse>({config}: Props<TRespons
                     <button
                         type="submit"
                         disabled={loading}
-                        className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded disabled:opacity-50"
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded disabled:opacity-50 cursor-pointer"
                     >
                         {loading ? 'Analyzing...' : 'Analyze PDF'}
                     </button>

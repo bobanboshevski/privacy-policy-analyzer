@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {useState} from "react";
 import {useAuth} from "@/context/AuthContext";
-import {Menu, X} from "lucide-react"; // Install lucide-react if not already
+import {Menu, X} from "lucide-react";
 
 export default function Header() {
     const {user, logout} = useAuth();
@@ -23,7 +23,7 @@ export default function Header() {
                         <div className="relative group">
                             <button
                                 className="inline-flex items-center gap-1 text-gray-300 hover:text-indigo-400 transition
-                                duration-150 ease-in-out">
+                                duration-150 ease-in-out cursor-pointer">
                                 Policies
                                 <svg
                                     className="w-4 h-4 transition-transform duration-200 transform group-hover:rotate-180"
@@ -37,12 +37,12 @@ export default function Header() {
                             transition-all duration-200 flex flex-col bg-zinc-800 border border-zinc-600 text-sm rounded-xl
                             shadow-xl py-2 w-32 z-50">
                                 <Link href="/gdpr"
-                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors
+                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors cursor-pointer
                                       duration-150">
                                     GDPR
                                 </Link>
                                 <Link href="/ccpa"
-                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors
+                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors cursor-pointer
                                        duration-150">
                                     CCPA
                                 </Link>

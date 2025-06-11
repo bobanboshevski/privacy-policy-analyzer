@@ -12,7 +12,6 @@ export default function TrainingPage() {
     const [trainingItems, setTrainingItems] = useState<TrainingItem[]>([]);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
         if (user === null) {
             router.push("/auth");
@@ -30,29 +29,25 @@ export default function TrainingPage() {
                 setLoading(false);
             }
         };
-
         if (user) {
             fetchTrainingText();
         }
     }, [user]);
 
     function extractYouTubeId(url: string): string | null {
-        const match = url.match(
-            /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/
-        );
-        return match ? match[1] : "";
+        const regex = /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/;
+        const match = regex.exec(url);
+        return match ? match[1] : null;
     }
 
     return (
         <div className="p-8 max-w-6xl">
             <h2 className="text-4xl text-center font-bold text-white">Education Center</h2>
-
             {loading ? (
-                // <p className="text-gray-300 mt-2">Loading...</p>
                 <LoadingSpinner/>
             ) : (
-                trainingItems.map((item, idx) => (
-                    <div key={idx} className="bg-gray-800 p-6 rounded-lg shadow-md mt-6">
+                trainingItems.map((item) => (
+                    <div key={item.id} className="bg-gray-800 p-6 rounded-lg shadow-md mt-6">
                         <h3 className="text-xl font-semibold text-white">{item.title}</h3>
                         <p className="text-gray-300 mt-1">{item.description}</p>
                         <div className="text-gray-400 mt-2 whitespace-pre-line">{item.content}</div>
@@ -61,8 +56,8 @@ export default function TrainingPage() {
                             <div className="mt-4">
                                 <h4 className="text-white font-medium">Resources:</h4>
                                 <div className="space-y-4 mt-2">
-                                    {item.resources.map((res, i) => (
-                                        <div key={i}>
+                                    {item.resources.map((res) => (
+                                        <div key={res.url}>
                                             {res.type === "video" ? (
                                                 <div>
                                                     <p className="text-blue-300 font-medium mb-2">

@@ -9,7 +9,6 @@ const HeroSection = ({isVisible}: { isVisible: boolean }) => (
                 Empowering Privacy
                 <span className="block text-5xl md:text-6xl mt-4 pb-4">with Intelligence</span>
             </h1>
-
             {/* Glowing accent */}
             <div
                 className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur-sm opacity-60"></div>

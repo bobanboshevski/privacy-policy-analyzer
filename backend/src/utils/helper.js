@@ -52,6 +52,7 @@ const handlePdfAnalysis = async (req, res, next, analysisFunction) => {
             overallScore: overallScore
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };

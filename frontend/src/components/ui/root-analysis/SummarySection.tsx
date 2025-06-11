@@ -1,5 +1,4 @@
-import ReactMarkdown from "react-markdown";
-import {Components} from "react-markdown";
+import ReactMarkdown, {Components} from "react-markdown";
 
 const renderers: Components = {
     h2: ({children}) => {
@@ -12,9 +11,13 @@ const renderers: Components = {
 };
 
 interface Props {
-    sections: { summary: string; positive: string; negative: string };
-    expandedSections: Set<string>;
-    toggleSection: (key: string) => void;
+    readonly sections: Readonly<{
+        summary: string;
+        positive: string;
+        negative: string;
+    }>;
+    readonly expandedSections: ReadonlySet<string>;
+    readonly toggleSection: (key: string) => void;
 }
 
 export default function SummarySection({sections, expandedSections, toggleSection}: Props) {
@@ -26,23 +29,25 @@ export default function SummarySection({sections, expandedSections, toggleSectio
 
     return (
         <div className="space-y-4">
-            {items.map(({label, key, content}) => (
-                <div key={key} className="bg-gray-800 rounded-lg">
-                    <button
-                        onClick={() => toggleSection(key)}
-                        className={`w-full text-left p-3 font-semibold hover:bg-gray-700 ${
-                            key === "positive" ? "text-green-400" : key === "negative" ? "text-red-400" : "text-white"
-                        }`}
-                    >
-                        {label}
-                    </button>
-                    {expandedSections.has(key) && (
-                        <div className="px-4 pb-4 prose prose-invert max-w-none text-sm text-left">
-                            <ReactMarkdown components={renderers}>{content}</ReactMarkdown>
-                        </div>
-                    )}
-                </div>
-            ))}
+            {items.map(({label, key, content}) => {
+                let textColor = "text-white";
+                if (key === "positive") textColor = "text-green-400";
+                else if (key === "negative") textColor = "text-red-400";
+
+                return (
+                    <div key={key} className="bg-gray-800 rounded-lg">
+                        <button onClick={() => toggleSection(key)}
+                                className={`w-full text-left p-3 font-semibold hover:bg-gray-700 cursor-pointer ${textColor}`}>
+                            {label}
+                        </button>
+                        {expandedSections.has(key) && (
+                            <div className="px-4 pb-4 prose prose-invert max-w-none text-sm text-left">
+                                <ReactMarkdown components={renderers}>{content}</ReactMarkdown>
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 }

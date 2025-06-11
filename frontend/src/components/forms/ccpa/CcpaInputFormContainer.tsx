@@ -1,5 +1,3 @@
-'use client';
-
 import GenericInputFormContainer from "@/components/forms/generic/GenericInputFormContainer";
 import {ccpaConfig} from "@/lib/config/ccpaConfig";
 
