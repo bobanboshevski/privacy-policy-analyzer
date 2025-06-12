@@ -1,16 +1,19 @@
 'use client';
 
-import {AnimatePresence, motion} from "framer-motion";
-import {ccpaRenderMetric} from "@/lib/utils/ccpa/ccpaRenderHelpers";
-import {easyMotionProps} from "@/lib/utils/animations";
-import {AnalyzedCcpaPrivacyResponse} from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
+import { AnimatePresence, motion } from "framer-motion";
+import { ccpaRenderMetric } from "@/lib/utils/ccpa/ccpaRenderHelpers";
+import { easyMotionProps } from "@/lib/utils/animations";
+import { AnalyzedCcpaPrivacyResponse } from "@/lib/types/ccpa/ccpaPrivacyAnalyzer";
 import FeedbackForm from "@/components/forms/FeedbackForm";
+import ComplianceScoreDisplay from "../ComplianceScoreDisplay";
+import ReactMarkdown from "react-markdown";
+import { overallCCPAComplianceScoreExplanation } from "@/lib/constants/metricExplanations";
 
 interface Props {
     result: AnalyzedCcpaPrivacyResponse;
 }
 
-export default function CcpaAnalysisResult({result}: Props) {
+export default function CcpaAnalysisResult({ result }: Props) {
 
     return (
         <div className="bg-gray-900 text-white p-4 rounded-lg shadow-md space-y-4">
@@ -28,14 +31,17 @@ export default function CcpaAnalysisResult({result}: Props) {
                         {ccpaRenderMetric("notice_at_collection", result.ccpaCompliance.notice_at_collection)}
                         {ccpaRenderMetric("verification_process", result.ccpaCompliance.verification_process)}
                         {ccpaRenderMetric("authorized_agent_process", result.ccpaCompliance.authorized_agent_process)}
-                        {ccpaRenderMetric("overall_score", result.ccpaCompliance.overall_score)}
-                        {ccpaRenderMetric("Compliance %", result.ccpaCompliance.compliance_percentage)}
                         {ccpaRenderMetric("Compliant", result.ccpaCompliance.is_compliant ? "✅ Yes" : "❌ No")}
+                    </div>
+                    <hr className="border-gray-700 my-6" />
+                    <ComplianceScoreDisplay score={result.ccpaCompliance.compliance_percentage} />
+                    <div className="mt-2 text-sm text-gray-300 prose prose-invert max-w-none text-left">
+                        <ReactMarkdown>{overallCCPAComplianceScoreExplanation}</ReactMarkdown>
                     </div>
                 </motion.div>
             </AnimatePresence>
 
-            <FeedbackForm category={'ccpa'}/>
+            <FeedbackForm category={'ccpa'} />
         </div>
     );
 }

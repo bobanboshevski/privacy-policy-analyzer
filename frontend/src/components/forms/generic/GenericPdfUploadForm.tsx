@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {ApiError} from "@/lib/types/input";
 import {PrivacyAnalysisConfig} from "@/lib/types/privacy";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 interface Props<TResponse> {
     config: PrivacyAnalysisConfig<TResponse>;
@@ -70,6 +71,7 @@ export default function GenericPdfUploadForm<TResponse>({config}: Props<TRespons
                         {loading ? 'Analyzing...' : 'Analyze PDF'}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-purple-600"/>}
             </form>
 
             <AnalysisResultContainer error={error} result={result}/>

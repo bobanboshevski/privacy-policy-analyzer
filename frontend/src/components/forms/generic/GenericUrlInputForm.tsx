@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {ApiError} from "@/lib/types/input";
 import {PrivacyAnalysisConfig} from "@/lib/types/privacy";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 interface Props<TResponse> {
     config: PrivacyAnalysisConfig<TResponse>;
@@ -57,6 +58,7 @@ export default function GenericUrlInputForm<TResponse>({config}: Props<TResponse
                         {loading ? "Analyzing..." : "Analyze URL"}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-green-600"/>}
             </form>
 
             <AnalysisResultContainer error={error} result={result}/>

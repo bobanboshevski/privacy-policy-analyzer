@@ -28,9 +28,13 @@ export const metricExplanations: Record<string, string> = {
 };
 
 export const overallScoreExplanation = `
-The overall score (1–10) reflects how clear, user-focused, and privacy-aware the document is.
+The overall score (1–10) reflects how clear, user-focused, and privacy-aware the document is. It’s calculated from key metrics across readability, ambiguity, topic coverage, sentiment, and user relevance — with critical metrics weighted more heavily. Higher scores mean the document is clearer and more helpful to users.
+`;
 
-It’s calculated from key metrics across readability, ambiguity, topic coverage, sentiment, and user relevance — with critical metrics weighted more heavily.
+export const overallGDPRComplianceScoreExplanation = `
+The overall compliance score (0–100%) represents how well the document aligns with GDPR ("General Data Protection Regulation") principles. It’s derived from key metrics like coverage of lawful basis, security measures, retention periods and data tranfers between different countries — with the most crucial factors given higher weight. Scores above 50% indicate that the document meets the essential GDPR standards and demonstrates a privacy-aware approach.
+`;
 
-Higher scores mean the document is clearer and more helpful to users.
+export const overallCCPAComplianceScoreExplanation = `
+The overall compliance score (0–100%) represents how well the document aligns with CCPA ("California Consumer Privacy Act") principles. It’s derived from key metrics like coverage of right to know things, right to delete things, notices at collection and verification processes — with the most crucial factors given higher weight. Scores above 50% indicate that the document meets the essential CCPA standards and demonstrates a privacy-aware approach.
 `;

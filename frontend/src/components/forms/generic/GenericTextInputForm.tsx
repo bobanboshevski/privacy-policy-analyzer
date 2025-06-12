@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {ApiError} from "next/dist/server/api-utils";
 import {PrivacyAnalysisConfig} from "@/lib/types/privacy";
+import LoadingTips from "@/components/ui/LoadingTips";
 
 interface Props<TResponse> {
     config: PrivacyAnalysisConfig<TResponse>;
@@ -55,6 +56,7 @@ export default function GenericTextInputForm<TResponse>({config}: Props<TRespons
                         {loading ? "Analyzing..." : "Analyze Text"}
                     </button>
                 </div>
+                {loading && <LoadingTips colorClass="text-blue-600"/>}
             </form>
 
             <AnalysisResultContainer error={error} result={result}/>
