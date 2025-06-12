@@ -1,4 +1,5 @@
 const metricExplanations = {
+    flagging: "Each of the flagging metrics outputs sentences that have 1 more or more problematic words which are exposed using same python metrics analysis that are used for calculating scores",
     flesch_score: "Higher scores indicate easier reading (0-100 scale). Good: 60–100 (easy), Bad: <30 (very difficult)",
     gunning_fog_index: "Estimates the years of formal education needed to understand. Good: <12 (high school level), Bad: >16 (college+)",
     smog_index: "Estimates years of education needed to understand (for longer texts). Like Gunning Fog, based on polysyllables. Good: <10 (easy), Bad: >14 (very hard)",

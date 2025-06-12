@@ -1,8 +1,17 @@
-
 from fastapi import APIRouter
 from app.models.request_models import TextInput
-from app.models.response_models import AnalysisResult, GdprAnalysisResult, CcpaAnalysisResult
-from app.services.analysis_service import analyze_text, analyze_gdpr_compliance, analyze_ccpa_compliance
+from app.models.response_models import (
+    AnalysisResult, 
+    GdprAnalysisResult, 
+    CcpaAnalysisResult,
+    FlaggingAnalysisResult
+)
+from app.services.analysis_service import (
+    analyze_text, 
+    analyze_gdpr_compliance, 
+    analyze_ccpa_compliance,
+    analyze_text_flagging
+)
 
 router = APIRouter()
 
@@ -11,6 +20,12 @@ router = APIRouter()
 async def analyze(input: TextInput):
     """Main analysis endpoint without compliance metrics"""
     return analyze_text(input.text)
+
+
+@router.post("/text/flagging", response_model=FlaggingAnalysisResult)
+async def analyze_flagging(input: TextInput):
+    """Text flagging analysis endpoint - returns problematic sentences"""
+    return analyze_text_flagging(input.text)
 
 
 @router.post("/gdpr", response_model=GdprAnalysisResult)

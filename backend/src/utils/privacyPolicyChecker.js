@@ -7,6 +7,7 @@ const isPrivacyPolicy = (text) => {
 
     const patterns = [
         /privacy policy/,
+        /privacy-statement/,
         /data protection/,
         /\b(gdpr|ccpa|lgpd)\b/,
         /personal (data|information)/,
