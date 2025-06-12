@@ -49,7 +49,6 @@ const analyze = async (url) => {
 
         return { extractedText };
     } catch (err) {
-        // Add context to the error if it's a Puppeteer or timeout issue
         console.error(`Error analyzing URL ${url}:`, err.message);
         throw err;
     } finally {

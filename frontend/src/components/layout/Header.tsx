@@ -10,10 +10,8 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
 
-    // Helper function to check if a link is active
     const isActive = (path: string): boolean => pathname === path;
 
-    // Helper function to get link classes with active state
     const getLinkClasses = (path: string): string => {
         const baseClasses = "cursor-pointer transition-colors duration-150";
         const activeClasses = "text-indigo-400 border-b-2 border-indigo-400 pb-1";
@@ -22,7 +20,6 @@ export default function Header() {
         return `${baseClasses} ${isActive(path) ? activeClasses : inactiveClasses}`;
     };
 
-    // Helper function for mobile link classes
     const getMobileLinkClasses = (path: string): string => {
         const baseClasses = "cursor-pointer transition-colors duration-150";
         const activeClasses = "text-indigo-400 font-bold";
