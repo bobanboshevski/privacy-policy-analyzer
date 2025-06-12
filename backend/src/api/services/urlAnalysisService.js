@@ -13,11 +13,19 @@ const analyze = async (url) => {
         browser = await puppeteer.launch({ headless: 'new' });
         const page = await browser.newPage();
 
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+
+        await page.waitForSelector('p, span', { timeout: 15000 });
 
         let extractedText = await page.evaluate(() => {
-            const paragraphs = Array.from(document.querySelectorAll('p'));
-            return paragraphs.map(p => p.textContent.trim()).join(' ');
+            const elements = Array.from(document.querySelectorAll('p, span'))
+                .filter(el => el.offsetParent !== null);
+            return elements
+                .map(el => el.textContent.trim())
+                .filter(text => text.length > 30)
+                .join(' ');
         });
 
         extractedText = extractedText
@@ -27,13 +35,21 @@ const analyze = async (url) => {
             .replace(/\s+/g, ' ')
             .trim();
 
-        if (!isPrivacyPolicy(extractedText)) {
-            const error = new Error("URL does not contain sufficient text content or is not a privacy policy.");
+        if (!extractedText || extractedText.length < 300) {
+            const error = new Error("Insufficient text content extracted from the page. Page may be protected from analysis.");
             error.statusCode = 400;
             throw error;
         }
+
+        if (!isPrivacyPolicy(extractedText)) {
+            const error = new Error("Page content does not resemble a privacy policy.");
+            error.statusCode = 400;
+            throw error;
+        }
+
         return { extractedText };
     } catch (err) {
+        console.error(`Error analyzing URL ${url}:`, err.message);
         throw err;
     } finally {
         if (browser) {
