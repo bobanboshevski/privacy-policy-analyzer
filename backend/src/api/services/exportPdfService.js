@@ -1,6 +1,12 @@
 const PDFDocument = require("pdfkit");
-const {metricThresholds, metricExplanations} = require("../../utils/analysisMetrics");
+const { metricThresholds, metricExplanations } = require("../../utils/analysisMetrics");
 
+const formatTitle = (raw) => {
+    return raw
+        .replace(/([a-z])([A-Z])/g, '$1 $2')       // Add space between camelCase words
+        .replace(/_/g, ' ')                        // Replace underscores
+        .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize each word
+};
 
 const generatePdfBuffer = async (summary, metrics, overallRating) => {
     return new Promise((resolve, reject) => {
@@ -15,17 +21,17 @@ const generatePdfBuffer = async (summary, metrics, overallRating) => {
             });
 
             // Title
-            doc.fontSize(20).text('Privacy Policy Report', {align: 'center'}).moveDown(1.5);
+            doc.fontSize(20).text('Privacy Policy Report', { align: 'center' }).moveDown(1.5);
 
             renderMarkdownText(doc, summary);
 
             // Metrics Section
-            doc.fontSize(14).text('Analysis Metrics', {underline: true}).moveDown(0.5);
+            doc.fontSize(14).text('Analysis Metrics', { underline: true }).moveDown(0.5);
 
             Object.entries(metrics).forEach(([section, values]) => {
                 doc.fontSize(13).fillColor('#333').text(
-                    section.charAt(0).toUpperCase() + section.slice(1),
-                    {underline: true}
+                    formatTitle(section),
+                    { underline: true }
                 );
                 doc.moveDown(0.3);
 
@@ -34,8 +40,8 @@ const generatePdfBuffer = async (summary, metrics, overallRating) => {
                     const color = isCritical ? 'red' : '#000';
 
                     doc.fontSize(12).fillColor(color).text(
-                        `• ${key.replaceAll("_", " ").replace(/^./, c => c.toUpperCase())}: ${value}`,
-                        {indent: 20}
+                       `• ${formatTitle(key)}: ${value}`,
+                        { indent: 20 }
                     );
                 });
                 doc.moveDown(1);
@@ -44,11 +50,11 @@ const generatePdfBuffer = async (summary, metrics, overallRating) => {
             renderOverallRatingSection(doc, overallRating);
 
             // Legend
-            doc.addPage().fontSize(14).fillColor('#000').text('Metric Legend', {underline: true}).moveDown(0.5);
+            doc.addPage().fontSize(14).fillColor('#000').text('Metric Legend', { underline: true }).moveDown(0.5);
             Object.entries(metricExplanations).forEach(([key, explanation]) => {
                 doc.fontSize(12).text(
                     `• ${key.replaceAll("_", " ").replace(/^./, c => c.toUpperCase())}: ${explanation}`,
-                    {indent: 20}
+                    { indent: 20 }
                 );
                 doc.moveDown(0.2);
             });
@@ -74,7 +80,7 @@ const renderOverallRatingSection = (doc, overallRating) => {
         ratingColor = '#facc15';
     }
 
-    doc.fillColor('#000').text(label, {continued: true});
+    doc.fillColor('#000').text(label, { continued: true });
     doc.fillColor(ratingColor).text(` ${(overallRating * 10).toFixed(2)}`); // continues same line
     doc.moveDown(1.5);
     const overallScoreExplanation = `
@@ -120,9 +126,9 @@ const renderMarkdownText = (doc, markdownText) => {
             } else if (text.trim().toLowerCase().includes('negative')) {
                 color = '#ef4444';
             }
-            doc.moveDown(0.5).fontSize(13).fillColor(color).text(line.replace(/^##\s/, ''), {underline: true});
+            doc.moveDown(0.5).fontSize(13).fillColor(color).text(line.replace(/^##\s/, ''), { underline: true });
         } else if (line.startsWith('# ')) {
-            doc.moveDown(1).fontSize(14).fillColor('#000').text(line.replace(/^#\s/, ''), {underline: true});
+            doc.moveDown(1).fontSize(14).fillColor('#000').text(line.replace(/^#\s/, ''), { underline: true });
 
         } else if (line.trim() === '') {
             doc.moveDown(0.5);
