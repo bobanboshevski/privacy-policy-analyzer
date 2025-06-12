@@ -2,11 +2,34 @@
 import Link from "next/link";
 import {useState} from "react";
 import {useAuth} from "@/context/AuthContext";
+import {usePathname} from "next/navigation";
 import {Menu, X} from "lucide-react";
 
 export default function Header() {
     const {user, logout} = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    // Helper function to check if a link is active
+    const isActive = (path: string): boolean => pathname === path;
+
+    // Helper function to get link classes with active state
+    const getLinkClasses = (path: string): string => {
+        const baseClasses = "cursor-pointer transition-colors duration-150";
+        const activeClasses = "text-indigo-400 border-b-2 border-indigo-400 pb-1";
+        const inactiveClasses = "text-gray-300 hover:text-indigo-400";
+        
+        return `${baseClasses} ${isActive(path) ? activeClasses : inactiveClasses}`;
+    };
+
+    // Helper function for mobile link classes
+    const getMobileLinkClasses = (path: string): string => {
+        const baseClasses = "cursor-pointer transition-colors duration-150";
+        const activeClasses = "text-indigo-400 font-bold";
+        const inactiveClasses = "text-gray-300 hover:text-indigo-400";
+        
+        return `${baseClasses} ${isActive(path) ? activeClasses : inactiveClasses}`;
+    };
 
     return (
         <header
@@ -17,13 +40,16 @@ export default function Header() {
                 </h1>
 
                 {/* Desktop Nav */}
-                <nav className="hidden lg:flex space-x-8 text-lg font-semibold text-gray-300">
-                    <Link href="/" className="hover:text-indigo-400 cursor-pointer">Home</Link>
+                <nav className="hidden lg:flex space-x-8 text-lg font-semibold">
+                    <Link href="/" className={getLinkClasses("/")}>Home</Link>
                     {user && (
                         <div className="relative group">
                             <button
-                                className="inline-flex items-center gap-1 text-gray-300 hover:text-indigo-400 transition
-                                duration-150 ease-in-out cursor-pointer">
+                                className={`inline-flex items-center gap-1 transition duration-150 ease-in-out cursor-pointer ${
+                                    (isActive("/gdpr") || isActive("/ccpa")) 
+                                        ? "text-indigo-400 border-b-2 border-indigo-400 pb-1" 
+                                        : "text-gray-300 hover:text-indigo-400"
+                                }`}>
                                 Policies
                                 <svg
                                     className="w-4 h-4 transition-transform duration-200 transform group-hover:rotate-180"
@@ -37,29 +63,34 @@ export default function Header() {
                             transition-all duration-200 flex flex-col bg-zinc-800 border border-zinc-600 text-sm rounded-xl
                             shadow-xl py-2 w-32 z-50">
                                 <Link href="/gdpr"
-                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors cursor-pointer
-                                      duration-150">
+                                      className={`px-5 py-2 transition-colors duration-150 ${
+                                          isActive("/gdpr") 
+                                              ? "bg-zinc-700 text-indigo-400 font-semibold" 
+                                              : "text-gray-300 hover:bg-zinc-700 hover:text-white"
+                                      }`}>
                                     GDPR
                                 </Link>
                                 <Link href="/ccpa"
-                                      className="px-5 py-2 text-gray-300 hover:bg-zinc-700 hover:text-white transition-colors cursor-pointer
-                                       duration-150">
+                                      className={`px-5 py-2 transition-colors duration-150 ${
+                                          isActive("/ccpa") 
+                                              ? "bg-zinc-700 text-indigo-400 font-semibold" 
+                                              : "text-gray-300 hover:bg-zinc-700 hover:text-white"
+                                      }`}>
                                     CCPA
                                 </Link>
                             </div>
                         </div>
-
                     )}
-                    {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
-                    {user && <Link href="/education" className="hover:text-indigo-400 cursor-pointer">Education</Link>}
-                    <Link href="/about-us" className="hover:text-indigo-400 cursor-pointer">About us</Link>
+                    {user && <Link href="/rankings" className={getLinkClasses("/rankings")}>Rankings</Link>}
+                    {user && <Link href="/education" className={getLinkClasses("/education")}>Education</Link>}
+                    <Link href="/about-us" className={getLinkClasses("/about-us")}>About us</Link>
                     {user && (
-                        <button onClick={logout} className="hover:text-red-40=0 ml-4 cursor-pointer">
+                        <button onClick={logout} className="hover:text-red-400 ml-4 cursor-pointer text-gray-300">
                             Logout
                         </button>
                     )}
                     {!user && (
-                        <Link href="/auth" className="hover:text-green-400 cursor-pointer">
+                        <Link href="/auth" className={getLinkClasses("/auth")}>
                             Login
                         </Link>
                     )}
@@ -73,27 +104,29 @@ export default function Header() {
 
             {/* Mobile Nav Dropdown */}
             {menuOpen && (
-                <nav className="flex flex-col mt-4 space-y-4 text-lg font-semibold text-gray-300 lg:hidden">
-                    <Link href="/" className="hover:text-indigo-400 cursor-pointer"
+                <nav className="flex flex-col mt-4 space-y-4 text-lg font-semibold lg:hidden">
+                    <Link href="/" className={getMobileLinkClasses("/")}
                           onClick={() => setMenuOpen(false)}>Home</Link>
-                    {user && <Link href="/gdpr" className="hover:text-indigo-400 cursor-pointer"
+                    {user && <Link href="/gdpr" className={getMobileLinkClasses("/gdpr")}
                                    onClick={() => setMenuOpen(false)}>GDPR</Link>}
-                    {user && <Link href="/ccpa" className="hover:text-indigo-400 cursor-pointer">CCPA</Link>}
-                    {user && <Link href="/rankings" className="hover:text-indigo-400 cursor-pointer">Rankings</Link>}
-                    {user && <Link href="/education" className="hover:text-indigo-400 cursor-pointer"
+                    {user && <Link href="/ccpa" className={getMobileLinkClasses("/ccpa")}
+                                   onClick={() => setMenuOpen(false)}>CCPA</Link>}
+                    {user && <Link href="/rankings" className={getMobileLinkClasses("/rankings")}
+                                   onClick={() => setMenuOpen(false)}>Rankings</Link>}
+                    {user && <Link href="/education" className={getMobileLinkClasses("/education")}
                                    onClick={() => setMenuOpen(false)}>Education</Link>}
-                    <Link href="/about-us" className="hover:text-indigo-400 cursor-pointer"
+                    <Link href="/about-us" className={getMobileLinkClasses("/about-us")}
                           onClick={() => setMenuOpen(false)}>About us</Link>
                     {user && (
                         <button onClick={() => {
                             logout();
                             setMenuOpen(false);
-                        }} className="hover:text-red-400 cursor-pointer">
+                        }} className="hover:text-red-400 cursor-pointer text-gray-300 text-left">
                             Logout
                         </button>
                     )}
                     {!user && (
-                        <Link href="/auth" className="hover:text-green-400 cursor-pointer"
+                        <Link href="/auth" className={getMobileLinkClasses("/auth")}
                               onClick={() => setMenuOpen(false)}>
                             Login
                         </Link>
