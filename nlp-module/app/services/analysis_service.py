@@ -26,6 +26,7 @@ from app.utils.readability_metrics import (
     flesch_reading_ease,
     gunning_fog,
     smog_index,
+    dale_chall_score,
     flesch_kincaid_grade
 )
 
@@ -105,6 +106,7 @@ def analyze_text(text: str) -> AnalysisResult:
         flesch_score=flesch_reading_ease(text),
         gunning_fog_index=gunning_fog(text),
         smog_index=smog_index(text),
+        dale_chall_score=dale_chall_score(text),
         flesch_kincaid_grade=flesch_kincaid_grade(text)
     )
 

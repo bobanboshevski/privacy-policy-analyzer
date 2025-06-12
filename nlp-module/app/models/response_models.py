@@ -6,6 +6,7 @@ class ReadabilityMetrics(BaseModel):
     flesch_score: float
     gunning_fog_index: float
     smog_index: float
+    dale_chall_score: float
     flesch_kincaid_grade: float
 
 
